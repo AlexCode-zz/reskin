@@ -53,5 +53,9 @@ Mantener el contexto liviano: SKILL.md solo orquesta, el contenido vive en las r
 
 - `references/styles/glassmorphism.md` — vidrio con escena suave. Tokens en
   `assets/tokens/glassmorphism.css`.
+- `references/styles/liquid-glass.md` — cristal líquido (preset de intensidad sobre los
+  mismos tokens `--rs-*`).
+- `references/styles/retro.md` — arcade / CRT terminal / synthwave.
 
-Próximos en orden: liquid-glass, retro, brutalismo. Cada uno con su adaptador de stack.
+Próximos: brutalismo y más direcciones. Cada estilo trae su adaptador de stack
+(`react`, `html-css`, `tailwind-v4`, `nextjs`, ...).

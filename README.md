@@ -66,8 +66,9 @@ Flujo que ejecuta la skill:
 
 - **Fase 1 (hecha):** `SKILL.md`, `references/` base (`rules`, `detection`, `interview`,
   `styles/glassmorphism`, `adapters/react`) y `assets/tokens/glassmorphism.css`.
-- **Fase 2 (pendiente):** `references/styles/liquid-glass.md`, `references/styles/retro.md`,
-  adaptadores `html-css.md`, `tailwind-v4.md`, `nextjs.md`.
+- **Fase 2 (hecha):** `styles/liquid-glass.md`, `styles/retro.md`, adapters
+  `html-css.md`, `tailwind-v4.md`, `nextjs.md`.
+- **Pendiente:** `scripts/detect-stack.sh` (opcional), brutalismo y más estilos.
 
 ## Licencia
 
