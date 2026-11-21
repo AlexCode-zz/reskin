@@ -43,10 +43,19 @@ No confundas "Next.js + Tailwind" con "framework Tailwind". La detección los se
    - Lee `package.json`, configs y estructura; usa `scripts/detect-stack.sh` si está.
    - Si no puedes determinar framework o capa de estilos: pregunta una vez. **No adivines.**
 2. **Entrevistar** (`references/interview.md`).
-   - Máximo 4 preguntas, 2–4 opciones, la recomendada primero con "(Recomendado)" y una
-     razón basada en el stack. "Otro" siempre. No preguntes lo ya detectado.
-3. **Resumen + confirmación.** Muestra el brief (stack, estilo, intensidad, identidad,
-   alcance y qué no se toca). **No edites código hasta un "sí" explícito.**
+   - **Siempre primero la herramienta nativa de preguntas:** `question` (OpenCode) o
+     `AskUserQuestion` (Claude Code). Entrevista en vivo, no números escritos en el chat.
+   - Un campo por pregunta: texto, header corto (máx. 30 caracteres) y opciones con
+     label + description. La recomendada primero con "(Recomendado)" y una razón corta.
+   - No agregues una opción "Otro" manual: la herramienta ya acepta respuesta libre; solo
+     si esa variante no la trae, va como última opción.
+   - 3 preguntas: estilo, tono/paleta y alcance. Sin solapamientos.
+   - Si la herramienta admite varias preguntas, mándalas en una sola llamada; si exige una
+     por llamada, haz 3 llamadas seguidas.
+   - No preguntes lo ya detectado: anúncialo en una línea.
+3. **Resumen + confirmación.** Muestra el brief (stack, estilo, tono, alcance y qué no se
+   toca) y confirma con la misma herramienta: `Aplicar` / `Cambiar algo`.
+   **No edites código hasta un "Aplicar" o un "sí" explícito.**
 4. **Aplicar** (`references/rules.md` + estilo + adapter).
    - Orden: tokens → base/escena → superficies → controles → estados → responsive.
    - Diff revisable: solo clases, CSS y tokens.
@@ -104,4 +113,6 @@ Cada estilo define sus componentes, errores comunes, WCAG AA y reduced motion.
   ni lockfiles.
 - No agregar paquetes ni fuentes por npm. Un `<link>` de fuente solo si el brief lo aprueba.
 - Si el estilo exige lógica, props o reestructurar el DOM: **para y pregunta**.
+- La entrevista va por la herramienta nativa de preguntas. Las opciones numeradas en el
+  chat son solo el plan B: si la herramienta no existe o falló.
 - Si no hay confirmación del brief, no hay código.

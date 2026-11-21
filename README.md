@@ -1,7 +1,7 @@
 # reskin
 
 Skill de Agent Skills que cambia la piel visual de un frontend que **ya funciona** sin
-tocar su lógica. Detecta el stack, hace un brief de 4 preguntas, pide confirmación y
+tocar su lógica. Detecta el stack, hace un brief de 3 preguntas, pide confirmación y
 aplica el estilo con los tokens y el sistema de estilos que el proyecto ya usa.
 
 ## Qué hace
@@ -9,8 +9,9 @@ aplica el estilo con los tokens y el sistema de estilos que el proyecto ya usa.
 - **Detecta dos ejes:** framework (React, Next.js, HTML puro) y capa de estilos
   (Tailwind v4, Tailwind v3, CSS Modules, CSS puro). También router de Next.js y
   TypeScript.
-- **Entrevista corta:** máximo 4 preguntas, recomendación basada en el stack, opción
-  "Otro" y confirmación antes de editar.
+- **Entrevista en vivo:** 3 preguntas con el selector nativo del agente (`question` en
+  OpenCode, `AskUserQuestion` en Claude Code), recomendación basada en el stack,
+  respuesta libre y confirmación antes de editar.
 - **Aplica el estilo:** tokens, escena, navbar, cards, botones, inputs, modales y tablas,
   con WCAG AA y `prefers-reduced-motion`.
 - **Respeta el sistema:** con Tailwind, tokens al theme y utilidades; sin Tailwind,
@@ -50,8 +51,8 @@ Lee ./reskin/SKILL.md y úsala como guía para este proyecto.
    No cambies lógica, textos ni rutas.
    ```
 
-3. Confirma el stack que detecta y responde las preguntas (máx. 4).
-4. Revisa el brief y responde "sí".
+3. Confirma el stack que detecta y responde las 3 preguntas con el selector.
+4. Revisa el brief y elige "Aplicar".
 5. Mira el diff: solo clases, CSS y tokens. Ejecuta tu build y revisa 360/768/1280px.
 
 Si no sabes qué estilo elegir, pide "el que recomiendes": la skill propone según el

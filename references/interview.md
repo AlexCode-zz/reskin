@@ -1,6 +1,7 @@
 # Entrevista al brief
 
-Secuencia: detectar → presentar stack → preguntar → resumir → confirmar → aplicar.
+Secuencia: detectar → anunciar stack → preguntar con la herramienta → resumir →
+confirmar → aplicar.
 
 ## Antes de preguntar
 
@@ -12,36 +13,67 @@ una línea y no lo vuelvas a preguntar:
 
 Si falta un dato, pregunta solo ese dato, una vez.
 
-## Reglas
+## Regla de oro: herramienta nativa primero
 
-- **Máximo 4 preguntas.** Si el brief pide más, cierra las decisiones abiertas en el
-  resumen y sigue.
-- **2–4 opciones por pregunta**, con la recomendada primero, marcada "(Recomendado)" y una
-  razón ligada al stack o al proyecto.
-- **"Otro" siempre presente** para respuesta libre.
-- No preguntes lo detectable: framework, Tailwind, CSS Modules, router, TypeScript, ni la
-  paleta que ya está en el código.
+La entrevista es **en vivo, con flechas/selección**, no escribiendo números en el chat.
+
+| Agente | Herramienta |
+|---|---|
+| OpenCode | `question` |
+| Claude Code | `AskUserQuestion` |
+| Otro con selector interactivo | la equivalente nativa del agente |
+
+- **Llámala siempre primero**, antes de escribir cualquier opción en el chat.
+- Sin excepción por comodidad, prisa o porque sean varias preguntas.
+- Si no reconoces el nombre, localiza la herramienta de preguntas/opciones del agente y
+  úsala.
 - Si el usuario ya dijo el estilo en el prompt, no lo preguntes: úsalo y pasa a las demás.
+- El chat numerado es **plan B** (ver abajo), nunca el camino normal.
 
-## Preguntas
+## Formato de cada pregunta
 
-| # | Tema | Opciones | Recomendación |
-|---|---|---|---|
-| 1 | Estilo | Glassmorphism (Recomendado) / Liquid Glass / Retro | Glassmorphism si no hay preferencia: funciona en cualquier stack, sin plugins y con contraste controlado. Si el brief pide chrome premium, recomienda Liquid; si es portafolio, landing o juego, recomienda Retro. |
-| 2 | Variante o intensidad | Glass: Equilibrada (Recomendado) / Sutil / Marcada · Liquid: Oscuro (Recomendado) / Claro / Automático · Retro: Arcade (Recomendado) / CRT / Synthwave | Equilibrada por defecto; arcade sobrio si hay datos; CRT si el brief es terminal. Pregunta solo la variante del estilo elegido. |
-| 3 | Alcance | Toda la app (Recomendado) / Shell (nav, fondos, layout) / Una página o flujo | Toda la app: un reskin a medias se ve incoherente. Shell si el resto está en rediseño. |
-| 4 | Identidad | Conservar colores y tipografía (Recomendado) / Conservar colores y cambiar tipografía / Aplicar la paleta completa del estilo | Conservar identidad: el reskin cambia materiales y superficies sin perder reconocimiento de marca. Aplicar paleta solo si el proyecto no tiene marca fuerte. |
+Un campo por pregunta:
 
-Adapta las opciones al stack: en Next.js puedes mencionar Server Components; en HTML puro,
-la ausencia de build. Nunca preguntes "¿usas Tailwind?" si la detección ya lo respondió.
+- **Texto** (`question`): la pregunta, en una línea.
+- **Header** (`header`): máximo 30 caracteres: `Estilo`, `Tono`, `Alcance`.
+- **Opciones** (`options`): 2–3 reales, cada una con `label` (2–4 palabras) y `description`
+  (una razón corta ligada al proyecto detectado).
+- La recomendada va **primero**, con "(Recomendado)" en el label y la razón en `description`.
+- **No agregues una opción "Otro" manual**: la herramienta ya permite respuesta
+  personalizada. Agrégala como última opción **solo** si esa variante no la trae.
 
-## Herramienta de preguntas
+## Llamadas
 
-1. Si el agente tiene selector interactivo, úsalo.
-2. Si no, enumera en el chat: `1) ... 2) ... 3) ... 4) Otro: escribe tu respuesta`.
-   Recomendada primero y con la razón.
+- Si la herramienta admite varias preguntas: **una sola llamada** con las 3.
+- Si exige una por llamada: 3 llamadas seguidas, sin pedir permiso entre ellas.
+- Nunca cambies a plan B porque haya que hacer varias llamadas.
 
-## Plan B (si el usuario no responde o pide "tú decides")
+## Las 3 preguntas
+
+| # | Tema | Pregunta | Opciones | Recomendación |
+|---|---|---|---|---|
+| 1 | Estilo | ¿Qué estilo visual aplicamos? | Glassmorphism / Liquid Glass / Retro | Panel, dashboard o SaaS → Glassmorphism. Producto de consumo, chrome premium o marca fuerte → Liquid Glass. Portafolio, landing creativa, juego o terminal → Retro. |
+| 2 | Tono | ¿Tono claro u oscuro? | Claro / Oscuro / Según la app | Datos, herramientas, terminal o uso nocturno → Oscuro. Contenido, docs, marketing o comercio → Claro. Si ya existe toggle de tema → Según la app, que lo respeta. |
+| 3 | Alcance | ¿Hasta dónde llega el reskin? | Toda la app / Solo los componentes principales / Una página o ruta específica | Toda la app: un reskin a medias se ve incoherente. Componentes principales = nav, botones, cards y formularios. Página/ruta solo si el resto se rediseña aparte. |
+
+Sin solapamientos: el tono cubre la paleta y el alcance cubre la extensión. La identidad no
+tiene pregunta propia: por defecto se conservan paleta y tipografía y solo cambian
+materiales y superficies. Si el usuario quiere otra cosa, lo dirá con "Cambiar algo" o en
+la respuesta libre.
+
+Adapta las descripciones al stack: en Next.js puedes mencionar Server Components; en HTML
+puro, la ausencia de build. Nunca preguntes "¿usas Tailwind?" si la detección ya lo respondió.
+
+## Plan B: opciones numeradas en el chat
+
+**Solo** si llamaste a la herramienta y falló, devolvió error o el agente no tiene
+selector interactivo. Nunca por defecto ni por comodidad.
+
+1. Avísalo en una línea: "No hay selector interactivo; te dejo las opciones numeradas."
+2. Enumera: `1) ... 2) ... 3) Otro: escribe tu respuesta`.
+3. Recomendada primero y con la razón.
+
+## Si el usuario no responde o pide "tú decides"
 
 1. Elige la recomendación de cada pregunta.
 2. Anótalo en el resumen como "decidido por el agente".
@@ -52,16 +84,25 @@ la ausencia de build. Nunca preguntes "¿usas Tailwind?" si la detección ya lo 
 ```markdown
 ## Brief reskin
 - Stack: Next.js (App Router) + Tailwind v4 + TypeScript
-- Estilo: Liquid Glass · intensidad equilibrada · tema oscuro
+- Estilo: Liquid Glass
+- Tono: oscuro
 - Alcance: toda la app
-- Identidad: conservar paleta y tipografía
+- Identidad: conservar paleta y tipografía; solo cambian materiales y superficies
 - Implementación: tokens → @theme → utilidades (sin hojas nuevas)
 - No se toca: lógica, estado, props, textos, rutas, dependencias
 ```
 
-Cierra con: "¿Aplico este brief? Responde **sí**, o dime qué ajusto." **No edites código
-hasta un sí explícito.** Si el usuario corrige algo, actualiza el brief y vuelve a
-confirmar; no repitas las preguntas que no cambiaron.
+Confirma con la **misma herramienta**, no escribiendo "responde sí" en el chat:
+
+- `header`: `Confirmar`
+- Opciones, en este orden:
+  1. `Aplicar` (Recomendado) — "Aplico el brief: solo clases, CSS y tokens".
+  2. `Cambiar algo` — "Ajustamos estilo, tono o alcance antes de editar".
+
+Si la herramienta no está disponible, pregunta en el chat: "¿Aplico este brief?".
+**No edites código hasta un "Aplicar" o un "sí" explícito.** Si el usuario elige "Cambiar
+algo", pregunta qué ajusta, actualiza el brief y vuelve a confirmar; no repitas las
+preguntas que no cambiaron.
 
 ## No preguntar
 
