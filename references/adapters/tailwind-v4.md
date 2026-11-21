@@ -1,62 +1,98 @@
 # Adaptador: Tailwind CSS v4
 
+Aplica cualquiera de los estilos del skill con utilidades. No repite las recetas: esas
+están en `references/styles/`.
+
 ## Detección
 
-- `tailwindcss` + `@tailwindcss/postcss` (PostCSS) o plugin Vite; o directiva `@import
-  "tailwindcss"` / `@theme` en CSS. (v3: `tailwind.config.*`.)
+- `@tailwindcss/postcss` o `@tailwindcss/vite`, o CSS con `@import "tailwindcss"` /
+  `@theme`.
+- **Puede no haber `tailwind.config.*`.** No lo exijas ni lo crees.
 
-## Tokens en `@theme`
+## Tokens: CSS global existente + `@theme`
+
+Pega el bloque de `assets/tokens/<estilo>.css` en el CSS global que ya importa Tailwind y
+mapea lo necesario. **No crees una hoja nueva.**
 
 ```css
 @import "tailwindcss";
 
+:root {
+  /* tokens del estilo (incluye fallback y reduced motion) */
+}
+
 @theme inline {
   --color-rs-bg: var(--rs-bg);
   --color-rs-ink: var(--rs-ink);
+  --color-rs-ink-muted: var(--rs-ink-muted);
   --color-rs-accent: var(--rs-accent);
-  --color-rs-radius-md: var(--rs-radius-md);
+  --color-rs-accent-ink: var(--rs-accent-ink);
+  --color-rs-glass: var(--rs-glass);
+  --color-rs-glass-strong: var(--rs-glass-strong);
+  --color-rs-glass-border: var(--rs-glass-border);
+  --color-rs-focus: var(--rs-focus);
+  --radius-rs-sm: var(--rs-radius-sm);
+  --radius-rs-md: var(--rs-radius-md);
+  --radius-rs-lg: var(--rs-radius-lg);
+  --shadow-rs-1: var(--rs-shadow-1);
+  --shadow-rs-2: var(--rs-shadow-2);
+  --font-rs-sans: var(--rs-font-sans);
+  --font-rs-mono: var(--rs-font-mono);
 }
 ```
 
-Con `inline`, los utilities generados referencian las variables CSS en cascada (evita
-duplicación y mantiene overrides de tema).
+- `@theme inline` es lo correcto cuando el valor referencia otra variable (`var(...)`).
+- Nombres: `--color-rs-*` genera `bg-rs-*`, `text-rs-*`, `border-rs-*`;
+  `--radius-rs-*` genera `rounded-rs-*`; `--shadow-rs-*` genera `shadow-rs-*`;
+  `--font-rs-*` genera `font-rs-*`.
+- Mapea solo lo que uses. No inventes nombres que no estén en el theme.
+- El ejemplo usa los nombres de glassmorphism/liquid. En retro mapea los tokens reales del
+  archivo (`--color-rs-surface`, `--shadow-rs-hard`...); no mapees `glass` ni `shadow-1`
+  si el estilo no los define.
 
-## Utilidades en clases
-
-```html
-<article class="rounded-[var(--rs-radius-md)] border border-[var(--rs-glass-border)] bg-[var(--rs-glass)] bg-[image:var(--rs-scrim)] shadow-[var(--rs-shadow-1)] [backdrop-filter:var(--rs-glass-filter)] [-webkit-backdrop-filter:var(--rs-glass-filter)]">
-```
-
-- Vidrio: arbitrario con variables (no nombres cortos) salvo que el `@theme` ya lo mapee.
-- Blur/saturate: arbitrario en propiedades compuestas.
-- Radio: `rounded-[var(--rs-radius-md)]`.
-- Transiciones: arbitrario por propiedades, no `transition-all`.
-
-## Overrides de preset
-
-Para liquid-glass o retro, usar clases condicionales de tema/tokens según el brief:
+## Utilidades
 
 ```html
-<div class="[--rs-glass-blur:48px] ..."> <!-- override inline por elemento -->
+<article class="rounded-rs-md border border-rs-glass-border bg-rs-glass bg-[image:var(--rs-scrim)] text-rs-ink shadow-rs-1 [backdrop-filter:var(--rs-glass-filter)] [-webkit-backdrop-filter:var(--rs-glass-filter)]">
 ```
 
-Mejor: sobreescribir en un wrapper o en el layout, no inline por elemento (salvo hover).
+- Si un token no está mapeado, usa el valor arbitrario: `bg-[var(--rs-glass)]`,
+  `rounded-[var(--rs-radius-md)]`.
+- El scrim va como `bg-[image:var(--rs-scrim)]`; no lo omitas en superficies con texto.
+- Transiciones: `transition-colors duration-[var(--rs-dur-fast)] ease-[var(--rs-ease)]`.
+  **Nunca `transition-all`.**
+- Movimiento reducido: `motion-reduce:transform-none` en los hover que muevan. Los tokens
+  ya anulan las duraciones.
+- Foco: `focus-visible:outline-2 focus-visible:outline-offset-2
+  focus-visible:outline-rs-focus`.
 
-## Modificadores nativos a respetar
+## Reglas
 
-- `dark:`, `motion-reduce:`, `sr-only`, `hidden`, `print:*`, `data-*`, `group`, `peer`.
-- No usar `!important`; ajustar la utilidad o el token.
-- No `@apply` salvo que ya exista su uso.
+- No añadas `@apply` nuevo ni CSS de componentes. Todo va en clases.
+- No borres utilidades funcionales: `sr-only`, `hidden`, `print:*`, `dark:*`,
+  `motion-reduce:*`, `group`, `peer`, variantes `data-*`.
+- No uses `!important`; ajusta la utilidad o el token.
+- No cambies `content`, `plugins`, `presets` ni la estrategia de dark mode del proyecto.
+- No agregues variantes de tema nuevas (`@custom-variant`) para este trabajo.
+- El fallback sin `backdrop-filter` y `prefers-reduced-motion` ya vienen en el bloque de
+  tokens; no los reescribas en cada componente.
 
 ## Checklist
 
-- [ ] Tokens en `@theme` / CSS global existentes.
-- [ ] No se creó hoja CSS nueva.
-- [ ] `backdrop-filter` arbitrario con fallback (o `supports`).
-- [ ] Breakpoints y `motion-reduce:` intactos.
+- [ ] Tokens en `@theme` del CSS global existente.
+- [ ] Ninguna hoja CSS nueva.
+- [ ] Utilidades en lugar de CSS de componentes.
+- [ ] `transition-all` no introducido.
+- [ ] Variantes funcionales intactas.
+- [ ] Fallback y reduced motion presentes.
 
 ## Errores comunes
 
-- `bg-glass` sin token definido → usar arbitrario `bg-[var(--rs-glass)]`.
-- Anidar blur en controles → mover a superficies.
-- `transition-all` → arbitrario por propiedades.
+| Error | Arreglo |
+|---|---|
+| `bg-glass` sin token | Mapear `--color-rs-glass` o usar `bg-[var(--rs-glass)]` |
+| `rounded-2xl` en retro | `rounded-rs-sm` o `rounded-none` |
+| `transition-all` | `transition-colors duration-[var(--rs-dur-fast)]` |
+| Blur en botones/inputs | Solo en superficies; controles con relleno y borde |
+| Crear `tailwind.config.js` en v4 | No hace falta; tokens en `@theme` |
+| Mapear todos los tokens "por si acaso" | Solo los usados; menos ruido |

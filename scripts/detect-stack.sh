@@ -1,85 +1,124 @@
 #!/usr/bin/env bash
 # reskin · detect-stack.sh
-# Detecta el stack frontend del proyecto actual (rápido, solo bash/grep/sed, sin deps).
-# Opcional: la skill funciona leyendo los archivos a mano; este script es un atajo.
+# Detecta framework, capa de estilos, router (Next.js) y TypeScript.
+# Solo bash/grep/find/sed. Sin dependencias. La skill funciona sin este script.
 # Uso: ./scripts/detect-stack.sh [directorio]
 
 set -euo pipefail
 
-json_escape() { printf '%s' "$1" | tr -d '"'; }
-
 ROOT="${1:-.}"
 PKG="$ROOT/package.json"
 
+# --- helpers -------------------------------------------------------------
+
 get_dep() {
-  # $1 = nombre de la dependencia; imprime su versión
-  # (con `|| true` para tolerar dependencias ausentes)
+  # $1 = nombre de la dependencia; imprime su versión (o nada)
   grep -oE "\"${1}\"[[:space:]]*:[[:space:]]*\"[^\"]+\"" "$PKG" 2>/dev/null \
     | head -n1 \
     | sed -E 's/^[^:]*:[[:space:]]*"([^"]*)".*$/\1/' \
     || true
 }
 
-if [ ! -f "$PKG" ]; then
-  cat <<'EOF'
-{
-  "framework": "html-css",
-  "uiLibrary": "none",
-  "cssApproach": "plain-css",
-  "router": "none",
-  "source": "missing-package-json"
+css_has() {
+  # $1 = patrón ERE; imprime el primer CSS que lo contiene
+  find "$ROOT" -type f \( -name '*.css' -o -name '*.scss' \) \
+    -not -path '*/node_modules/*' \
+    -not -path '*/.next/*' \
+    -not -path '*/dist/*' \
+    -not -path '*/build/*' \
+    -exec grep -lE "$1" {} + 2>/dev/null | head -n1
 }
-EOF
-  exit 0
+
+has_file() {
+  # $1 = glob; imprime la primera coincidencia
+  find "$ROOT" -type f -name "$1" \
+    -not -path '*/node_modules/*' \
+    -not -path '*/.next/*' \
+    -not -path '*/dist/*' \
+    -not -path '*/build/*' \
+    2>/dev/null | head -n1
+}
+
+# --- dependencias --------------------------------------------------------
+
+if [ -f "$PKG" ]; then
+  NEXT="$(get_dep next)"
+  REACT="$(get_dep react)"
+  REACT_DOM="$(get_dep react-dom)"
+  TW_POSTCSS="$(get_dep "@tailwindcss/postcss")"
+  TW_VITE="$(get_dep "@tailwindcss/vite")"
+  SOURCE="package-json"
+else
+  NEXT=""; REACT=""; REACT_DOM=""; TW_POSTCSS=""; TW_VITE=""
+  SOURCE="filesystem"
 fi
 
-NEXT="$(get_dep next)"
-REACT="$(get_dep react)"
-REACT_DOM="$(get_dep react-dom)"
-TAILWIND="$(get_dep tailwindcss)"
-TAILWIND_V4="$(get_dep "@tailwindcss/postcss")"
-EMOTION="$(get_dep "@emotion/react")"
-MUI="$(get_dep "@mui/material")"
-CHAKRA="$(get_dep "@chakra-ui")"
-MANTINE="$(get_dep "@mantine/core")"
-STYLED="$(get_dep styled-components)"
+# --- framework -----------------------------------------------------------
 
-FRAMEWORK="html-css"
+FRAMEWORK="html-puro"
 if [ -n "$NEXT" ]; then
-  FRAMEWORK="next"
+  FRAMEWORK="nextjs"
 elif [ -n "$REACT" ] || [ -n "$REACT_DOM" ]; then
   FRAMEWORK="react"
 fi
 
-UI_LIBRARY="none"
-CSS_APPROACH="plain-css"
-if [ -n "$TAILWIND_V4" ]; then
-  UI_LIBRARY="tailwind"
-  CSS_APPROACH="tailwind-v4"
-elif [ -n "$TAILWIND" ]; then
-  UI_LIBRARY="tailwind"
-  CSS_APPROACH="tailwind-v3"
-fi
-if [ -n "$EMOTION" ]; then UI_LIBRARY="emotion"; fi
-if [ -n "$MUI" ]; then UI_LIBRARY="mui"; fi
-if [ -n "$CHAKRA" ]; then UI_LIBRARY="chakra"; fi
-if [ -n "$MANTINE" ]; then UI_LIBRARY="mantine"; fi
-if [ -n "$STYLED" ]; then UI_LIBRARY="styled-components"; fi
+# --- capa de estilos -----------------------------------------------------
 
-if [ -d "$ROOT/app" ]; then
-  ROUTER="app"
-elif [ -d "$ROOT/pages" ]; then
-  ROUTER="pages"
+TW4=""
+if [ -n "$TW_POSTCSS" ] || [ -n "$TW_VITE" ]; then TW4=1; fi
+if [ -n "$(css_has '@import[[:space:]]+["'\'']tailwindcss')" ]; then TW4=1; fi
+if [ -n "$(css_has '@theme')" ]; then TW4=1; fi
+
+TW3=""
+for f in tailwind.config.js tailwind.config.ts tailwind.config.cjs tailwind.config.mjs; do
+  if [ -f "$ROOT/$f" ]; then TW3=1; fi
+done
+if [ -n "$(css_has '@tailwind[[:space:]]+(base|components|utilities)')" ]; then TW3=1; fi
+
+MODULES="$(has_file '*.module.css')"
+
+if [ "$TW4" = "1" ]; then
+  STYLING="tailwind-v4"
+elif [ "$TW3" = "1" ]; then
+  STYLING="tailwind-v3"
+elif [ -n "$MODULES" ]; then
+  STYLING="css-modules"
 else
-  ROUTER="none"
+  STYLING="css-puro"
 fi
+
+# --- router (solo Next.js) ----------------------------------------------
+
+ROUTER="none"
+if [ "$FRAMEWORK" = "nextjs" ]; then
+  HAS_APP=""
+  HAS_PAGES=""
+  if [ -d "$ROOT/app" ] || [ -d "$ROOT/src/app" ]; then HAS_APP=1; fi
+  if [ -d "$ROOT/pages" ] || [ -d "$ROOT/src/pages" ]; then HAS_PAGES=1; fi
+  if [ -n "$HAS_APP" ] && [ -n "$HAS_PAGES" ]; then
+    ROUTER="mixed"
+  elif [ -n "$HAS_APP" ]; then
+    ROUTER="app"
+  elif [ -n "$HAS_PAGES" ]; then
+    ROUTER="pages"
+  fi
+fi
+
+# --- TypeScript ----------------------------------------------------------
+
+TYPESCRIPT="false"
+if [ -f "$ROOT/tsconfig.json" ] || [ -n "$(has_file '*.tsx')" ]; then
+  TYPESCRIPT="true"
+fi
+
+# --- salida --------------------------------------------------------------
 
 cat <<EOF
 {
-  "framework": "$(json_escape "$FRAMEWORK")",
-  "uiLibrary": "$(json_escape "$UI_LIBRARY")",
-  "cssApproach": "$(json_escape "$CSS_APPROACH")",
-  "router": "$(json_escape "$ROUTER")",
-  "source": "package-json"
+  "framework": "$FRAMEWORK",
+  "styling": "$STYLING",
+  "router": "$ROUTER",
+  "typescript": $TYPESCRIPT,
+  "source": "$SOURCE"
 }
 EOF

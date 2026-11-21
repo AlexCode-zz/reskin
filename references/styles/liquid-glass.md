@@ -1,130 +1,274 @@
 # Liquid Glass
 
-**Una frase:** cristal líquido. Igual que glassmorphism, pero con más cuerpo: blur fuerte,
-translucencia densa y una luz especular que hace que la superficie "tremble" al moverse.
+**Una frase:** vidrio con cuerpo. Blur alto, saturación alta y un borde de luz (specular)
+que hace que la superficie parezca cristal líquido.
 
-No es una segunda librería ni un segundo sistema. Es un **preset de intensidad** dentro del
-mismo skill, sobre los mismos tokens `--rs-*`.
+No es glassmorphism con más blur: es un material distinto, pensado para **chrome flotante**
+sobre escenas ricas. Si el brief pide superficies medianas y sobrias, usa glassmorphism.
 
 ## Cuándo usarlo
 
-- Chrome flotante de alto gama: barra de navegación flotante, tab bar, dock, menús de
-  contexto, controladores de media, widgets.
-- Producto consumer premium (sutil, no kitsch): apps de audio, productividad, creadores.
-- Superficies que se mueven con scroll o tilt.
+- Barra de navegación flotante, tab bar, dock, popovers, controles de media, widgets.
+- Producto consumer premium, con poco contenido por pantalla.
+- Modales sobre imágenes o video, siempre con scrim.
 
 ## Cuándo NO usarlo
 
-- Tablas, datos densos o pantallas 100% operativas: el blur compite con la lectura.
-- Dispositivos con rendimiento comprometido: blur fuerte en varios elementos cuesta.
-- Preferencia del usuario por `prefers-reduced-transparency` (si existe): usar vidrio opaco.
-- Si el brief pidió "menos glass": escalar a glassmorphism.
+- Tablas densas, dashboards operativos o pantallas con mucho texto.
+- Dispositivos de gama baja como target principal: blur de 48px en varias capas cuesta.
+- Preferencia `prefers-reduced-transparency`: el token file ya devuelve vidrio opaco.
+- Si el brief pide sobriedad: glassmorphism.
 
-## Relación con glassmorphism
+## Tokens
 
-| | Glassmorphism | Liquid Glass |
-|---|---:|---:|
-| Blur | 12–26px | 40–60px |
-| Alpha oscuro | 0.05–0.11 | 0.35–0.55 |
-| Satinado | suave | fuerte (saturate 150–200%) |
-| Especular | borde sutil | highlight superior pronunciado |
-| Ideal para | superficies medianas | chrome flotante premium |
+Archivo: `assets/tokens/liquid-glass.css`. Todo el estilo se controla desde ahí.
 
-Regla: si el brief elige "liquid", se aplican los overrides de intensidad; si pide "más
-fresco / sutil", se usa glassmorphism. No se mezclan los dos en el mismo layout salvo que
-cada uno tenga su rol.
+| Token | Uso |
+|---|---|
+| `--rs-bg`, `--rs-scene`, `--rs-ink` | Lienzo, escena y texto |
+| `--rs-accent`, `--rs-accent-ink` | CTA y foco |
+| `--rs-glass`, `--rs-glass-strong` | Relleno translúcido |
+| `--rs-glass-border`, `--rs-specular` | Borde y luz superior |
+| `--rs-glass-blur` (48px), `--rs-glass-saturate` (180%) | Material |
+| `--rs-glass-filter` | `blur() saturate()` listo para `backdrop-filter` |
+| `--rs-shadow-1`, `--rs-shadow-2` | Sombras internas + exteriores |
+| `--rs-radius-sm`, `--rs-radius-md`, `--rs-radius-lg`, `--rs-radius-pill` | Forma |
+| `--rs-focus`, `--rs-focus-ring`, `--rs-dur-fast`, `--rs-dur`, `--rs-dur-slow` | Foco y movimiento |
+| `--rs-glass-fallback` | Fondo opaco sin `backdrop-filter` |
 
-## Overrides de intensidad (mismo archivo de tokens)
+**Con Tailwind:** mapea estos tokens en `@theme` (v4) o `theme.extend` (v3) y usa
+utilidades. **Sin Tailwind:** pega los tokens en `:root` del CSS existente y usa clases
+semánticas. En ambos casos: **no agregues una hoja CSS aparte**.
 
-```css
-:root {
-  --rs-glass-blur: 48px;
-  --rs-glass-saturate: 190%;
-  --rs-surface-alpha: 0.42;
-  --rs-surface-alpha-strong: 0.5;
-}
-```
+## Reglas del material
 
-Tema claro: blur 40px, saturate 150%, alpha 0.72–0.85, `--rs-scrim` más denso
-(rgb(255 255 255 / 0.62) → /0.34).
+- Blur 40–60px, `saturate` 160–200%. Menos blur se ve como glassmorphism; más, como leche.
+- El brillo del borde es **inner shadow** (`--rs-specular`), no un `border` grueso.
+- Scrim siempre que haya texto: `background-image: var(--rs-scrim)`.
+- Máximo 3–4 superficies con blur visibles. Los controles pequeños **no** llevan blur.
+- No anides vidrio dentro de vidrio. Si necesitas una tarjeta interior, usa un tinte sólido.
 
-## Especular (highlight superior)
+## Componentes
 
-Dentro de la capa de vidrio, añade una luz superior; no uses borde exterior:
-
-```css
-.glass-liquid {
-  position: relative;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.45),
-    inset 0 -1px 0 rgb(255 255 255 / 0.10),
-    var(--rs-shadow-1);
-}
-```
-
-El inner shadow superior sostiene la luz; el inferior lo suaviza. No uses `border: 1px` para
-el brillo: el brillo es sombra interna.
-
-## Recetas
-
-### Chrome flotante (nav / tab bar)
+### Navbar flotante
 
 ```css
-.glass-liquid--chrome {
-  border: 0;
+.nav-liquid {
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--rs-glass-border);
   border-radius: var(--rs-radius-pill);
   background-color: var(--rs-glass);
   background-image: var(--rs-scrim);
   -webkit-backdrop-filter: var(--rs-glass-filter);
   backdrop-filter: var(--rs-glass-filter);
+  box-shadow: var(--rs-shadow-1);
 }
 ```
 
-Pill (radio máxima) cuando flota sobre contenido; recto (`--rs-radius-sm/md`) cuando es barra
-de página.
+Si el proyecto ya tiene una barra fija, no cambies su `position`; solo el material.
 
-### Tarjeta con movimiento (hover)
+### Card
 
 ```css
-.glass-liquid {
-  transition: background-color var(--rs-dur-fast) var(--rs-ease),
-    box-shadow var(--rs-dur-fast) var(--rs-ease),
-    border-color var(--rs-dur-fast) var(--rs-ease);
-}
-.glass-liquid:hover {
-  background-color: var(--rs-glass-strong);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.55),
-    inset 0 -1px 0 rgb(255 255 255 / 0.12),
-    var(--rs-shadow-2);
+.card-liquid {
+  border: 1px solid var(--rs-glass-border);
+  border-radius: var(--rs-radius-md);
+  background-color: var(--rs-glass);
+  background-image: var(--rs-scrim);
+  box-shadow: var(--rs-shadow-1);
+  -webkit-backdrop-filter: var(--rs-glass-filter);
+  backdrop-filter: var(--rs-glass-filter);
+  color: var(--rs-ink);
 }
 ```
+
+### Botón
+
+```css
+.btn-liquid {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: var(--rs-radius-pill);
+  background: var(--rs-accent);
+  color: var(--rs-accent-ink);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.45),
+    0 12px 28px -16px rgb(0 0 0 / 0.65);
+  transition: background-color var(--rs-dur-fast) var(--rs-ease);
+}
+
+.btn-liquid:hover { background: var(--rs-accent-strong); }
+
+.btn-liquid:focus-visible {
+  outline: 2px solid var(--rs-focus);
+  outline-offset: 3px;
+}
+```
+
+El CTA va sólido, no con blur: el vidrio le quita fuerza y contraste.
+
+### Input
+
+```css
+.field-liquid {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--rs-glass-border);
+  border-radius: var(--rs-radius-sm);
+  background: var(--rs-glass);
+  color: var(--rs-ink);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10);
+}
+
+.field-liquid::placeholder {
+  color: var(--rs-ink-muted);
+  opacity: 1;
+}
+
+.field-liquid:focus-visible {
+  outline: 2px solid var(--rs-focus);
+  outline-offset: 2px;
+}
+```
+
+Sin `backdrop-filter` en inputs: fondo translúcido, borde y foco.
+
+### Modal
+
+```css
+.overlay-liquid {
+  background: rgb(3 8 14 / 0.62);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.dialog-liquid {
+  border: 1px solid var(--rs-glass-border);
+  border-radius: var(--rs-radius-lg);
+  background-color: var(--rs-glass-strong);
+  background-image: var(--rs-scrim);
+  box-shadow: var(--rs-shadow-2);
+  -webkit-backdrop-filter: var(--rs-glass-filter);
+  backdrop-filter: var(--rs-glass-filter);
+  color: var(--rs-ink);
+}
+```
+
+No cambies el focus trap ni el estado de apertura. Si el modal se renderiza en un portal,
+déjalo así.
+
+### Tabla
+
+El blur va en el **contenedor**, nunca en cada fila. En tablas densas, desactívalo:
+
+```css
+.table-liquid-wrap {
+  border: 1px solid var(--rs-glass-border);
+  border-radius: var(--rs-radius-md);
+  background-color: var(--rs-glass);
+  background-image: var(--rs-scrim);
+  box-shadow: var(--rs-shadow-1);
+  -webkit-backdrop-filter: var(--rs-glass-filter);
+  backdrop-filter: var(--rs-glass-filter);
+  overflow: auto;
+}
+
+.table-liquid {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--rs-ink);
+}
+
+.table-liquid th {
+  background: var(--rs-bg-elevated);
+  color: var(--rs-ink);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+.table-liquid td {
+  border-top: 1px solid var(--rs-glass-border);
+}
+
+.table-liquid tbody tr:hover {
+  background: var(--rs-accent-soft);
+}
+```
+
+Con muchas filas, usa `background: var(--rs-glass-fallback)` y elimina el
+`backdrop-filter`. La legibilidad gana a la estética.
+
+## Filtros SVG (solo mejora opcional)
+
+Un `feTurbulence` + `feDisplacementMap` puede dar refracción. Reglas:
+
+- Aplícalo **solo a capas decorativas**, nunca a texto, botones ni inputs.
+- Debe existir un fallback: sin SVG, el estilo se ve completo.
+- Nada de animar el filtro. Cuesta y marea.
+- Si el proyecto soporta `prefers-reduced-transparency`, desactívalo.
+
+```html
+<svg aria-hidden="true" width="0" height="0">
+  <filter id="liquid-warp">
+    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.012"
+      numOctaves="2" seed="8" result="noise" />
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="8"
+      xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+</svg>
+```
+
+## Accesibilidad
+
+- Texto normal 4.5:1; texto grande y UI 3:1. Verifica sobre la zona **más clara** y la
+  **más oscura** de la escena.
+- El scrim es obligatorio en cualquier superficie con texto. Sin él, el contraste depende
+  de lo que pase por detrás (video, scroll, imagen).
+- No uses opacidad en el texto: usa `--rs-ink-muted`.
+- Foco visible de 2px, offset 3px y 3:1 contra el entorno.
+- `prefers-reduced-motion`: los tokens anulan las duraciones; añade `transform: none` en
+  los hover que muevan.
+- `prefers-reduced-transparency`: vidrio opaco (ya cubierto por los tokens).
 
 ## Errores comunes
 
 | Síntoma | Causa | Arreglo |
 |---|---|---|
-| Se ve "vidrio doble" | Dos superposiciones con alpha bajo | Un solo material, overrides limpios |
-| Falta brillo | No hay inner shadow | `inset 0 1px 0 ...` |
-| Se ve plano | Blur no sobresale / sat bajo | Overrides de intensidad |
-| Muy lento | Blur + backdrop en muchas capas | ≤ 3–4 superficies, controles sin blur |
-| Texto ilegible sobre scroll | Scrim insuficiente | Subir `--rs-surface-alpha` / scrim |
-| Muy oscuro el contenido detrás | Alpha bajo | Subir alpha, no quitar blur |
+| Se ve "doble" | Vidrio sobre vidrio | Un solo material; interior con tinte sólido |
+| Falta el brillo de cristal | No hay `--rs-specular` | Inner shadow superior |
+| Se ve lechoso | Blur > 60px o alpha alto | Baja alpha; el blur no es el problema |
+| Texto ilegible | Scrim insuficiente | `background-image: var(--rs-scrim)` |
+| Va lento | Blur en muchas capas/filas | ≤ 3–4 superficies; tabla sin blur |
+| No funciona en Safari | Falta prefijo | `-webkit-backdrop-filter` |
+| Sin soporte, se rompe | No hay fallback | `--rs-glass-fallback` + `@supports` |
+| Filtro SVG deforma el texto | Se aplicó a contenido | Solo a capas decorativas |
 
 ## Qué NO hacer
 
-- No mezclar `glassmorphism` y `liquid` en el mismo componente sin decisión.
-- No animar `backdrop-filter` ni `filter`; anima color, sombra, alpha.
-- No usar `border` + especular a la vez para el mismo borde.
-- No aplicar a inputs ni botones pequeños (el blur no aporta, el brillo sí se pierde).
-- No crear variables nuevas paralelas: sobrescribe los `--rs-*` del preset.
+- No glass sobre glass.
+- No filtros SVG en texto, botones ni inputs.
+- No blur en controles pequeños ni en cada fila de tabla.
+- No animar `backdrop-filter` ni `filter`.
+- No usar el vidrio como excusa para bajar el contraste.
+- No agregar una hoja CSS nueva si hay Tailwind.
+- No cambiar el layout, los textos ni la lógica para que el material luzca.
 
 ## Checklist
 
-- [ ] Blur ≥ 40px y saturate ≥ 150% (oscuro) / 150% (claro).
-- [ ] Highlight superior (inner shadow) presente.
-- [ ] Fallback sin backdrop-filter.
-- [ ] Scrim ajustado para el peor contraste.
-- [ ] Solo ≤ 3–4 superficies con blur.
-- [ ] Contraste AA y `prefers-reduced-motion`.
-- [ ] No se creó un segundo sistema de tokens.
+- [ ] Blur 40–60px y saturate 160–200%.
+- [ ] Specular superior presente.
+- [ ] Scrim en toda superficie con texto.
+- [ ] ≤ 3–4 superficies con blur.
+- [ ] Tabla/lista densa sin blur (o con fallback opaco).
+- [ ] Fallback sin `backdrop-filter` y sin transparencia reducida.
+- [ ] Contraste AA en el peor caso.
+- [ ] Foco visible y `prefers-reduced-motion`.
+- [ ] Sin filtros SVG sobre contenido.

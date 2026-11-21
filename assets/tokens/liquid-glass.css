@@ -1,0 +1,202 @@
+/* ============================================================
+   reskin · liquid-glass tokens
+   Pega este bloque en el CSS/theme que YA existe en el proyecto.
+   Con Tailwind: mapea estos tokens en @theme (v4) o
+   theme.extend (v3). No crees una hoja de componentes nueva.
+
+   - Oscuro por defecto; claro con [data-theme="light"].
+   - Adapta los selectores al mecanismo de tema del proyecto.
+   - El filtro SVG es opcional: estos tokens funcionan sin él.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* Lienzo y texto ------------------------------------------------ */
+  --rs-bg: #060d14;
+  --rs-bg-elevated: #0a1622;
+  --rs-ink: #f5faff;          /* 18.6:1 sobre --rs-bg */
+  --rs-ink-muted: #b7c9d8;    /* 11.5:1 sobre --rs-bg */
+  --rs-accent: #a8d8ff;       /* 13.0:1 sobre --rs-bg */
+  --rs-accent-strong: #c7e7ff;
+  --rs-accent-ink: #06121f;   /* 12.5:1 sobre --rs-accent */
+  --rs-accent-soft: rgb(168 216 255 / 0.16);
+  --rs-danger: #ff9e9e;
+  --rs-success: #8fe3c0;
+  --rs-warning: #f0c97f;
+
+  /* Escena fría con un contrapunto cálido */
+  --rs-scene:
+    radial-gradient(1200px 800px at 12% -10%, rgb(64 156 196 / 0.45), transparent 60%),
+    radial-gradient(1000px 700px at 98% 0%, rgb(94 112 214 / 0.35), transparent 58%),
+    radial-gradient(800px 600px at 50% 115%, rgb(170 140 90 / 0.18), transparent 62%),
+    linear-gradient(160deg, #050b12 0%, #08131f 58%, #04090f 100%);
+
+  /* Scrim: obligatorio cuando hay texto sobre vidrio */
+  --rs-scrim: linear-gradient(180deg, rgb(3 8 14 / 0.50), rgb(3 8 14 / 0.26));
+
+  /* Material ------------------------------------------------------ */
+  --rs-surface-rgb: 220 240 255;
+  --rs-surface-alpha: 0.18;
+  --rs-surface-alpha-strong: 0.30;
+  --rs-glass: rgb(var(--rs-surface-rgb) / var(--rs-surface-alpha));
+  --rs-glass-strong: rgb(var(--rs-surface-rgb) / var(--rs-surface-alpha-strong));
+  --rs-glass-fallback: #0e1b2a;
+  --rs-line-rgb: 220 240 255;
+  --rs-line-alpha: 0.28;
+  --rs-glass-border: rgb(var(--rs-line-rgb) / var(--rs-line-alpha));
+  --rs-specular: rgb(255 255 255 / 0.55);
+  --rs-glass-highlight: rgb(255 255 255 / 0.30);
+  --rs-glass-blur: 48px;
+  --rs-glass-saturate: 180%;
+  --rs-glass-filter: blur(var(--rs-glass-blur)) saturate(var(--rs-glass-saturate));
+  --rs-shadow-alpha: 0.62;
+  --rs-shadow-1:
+    inset 0 1px 0 var(--rs-specular),
+    inset 0 -1px 0 rgb(255 255 255 / 0.12),
+    0 18px 48px -24px rgb(0 0 0 / var(--rs-shadow-alpha));
+  --rs-shadow-2:
+    inset 0 1px 0 var(--rs-specular),
+    inset 0 -1px 0 rgb(255 255 255 / 0.14),
+    0 36px 90px -36px rgb(0 0 0 / calc(var(--rs-shadow-alpha) + 0.12));
+
+  /* Forma --------------------------------------------------------- */
+  --rs-radius-sm: 12px;
+  --rs-radius-md: 20px;
+  --rs-radius-lg: 28px;
+  --rs-radius-pill: 999px;
+
+  /* Foco ---------------------------------------------------------- */
+  --rs-focus: #a8d8ff;
+  --rs-focus-ring: 0 0 0 3px rgb(168 216 255 / 0.40);
+
+  /* Tipografía ---------------------------------------------------- */
+  --rs-font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rs-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --rs-font-display: var(--rs-font-sans);
+  --rs-text-display: clamp(2.5rem, 5vw, 4.5rem);
+  --rs-text-h1: clamp(2rem, 3.2vw, 3rem);
+  --rs-text-h2: clamp(1.35rem, 2vw, 1.75rem);
+  --rs-leading-display: 1.02;
+  --rs-tracking-display: -0.035em;
+
+  /* Movimiento ---------------------------------------------------- */
+  --rs-dur-fast: 160ms;
+  --rs-dur: 220ms;
+  --rs-dur-slow: 340ms;
+  --rs-ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+
+/* Tema claro ------------------------------------------------------ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --rs-bg: #edf3f8;
+  --rs-bg-elevated: #f7fafc;
+  --rs-ink: #0a1520;          /* 16.5:1 sobre --rs-bg */
+  --rs-ink-muted: #40576b;    /* 6.7:1 sobre --rs-bg */
+  --rs-accent: #1d5d8c;       /* 6.3:1 sobre --rs-bg */
+  --rs-accent-strong: #144a72;
+  --rs-accent-ink: #f7fbff;   /* 6.7:1 sobre --rs-accent */
+  --rs-accent-soft: rgb(29 93 140 / 0.14);
+  --rs-danger: #a62b1f;
+  --rs-success: #1c6b48;
+  --rs-warning: #7a4e12;
+
+  --rs-scene:
+    radial-gradient(1000px 700px at 10% -6%, rgb(120 190 220 / 0.32), transparent 62%),
+    radial-gradient(860px 600px at 98% 2%, rgb(130 150 220 / 0.24), transparent 58%),
+    radial-gradient(720px 520px at 54% 108%, rgb(200 170 120 / 0.16), transparent 62%),
+    linear-gradient(150deg, #f6fafd 0%, #e8f0f6 60%, #eef4f8 100%);
+
+  --rs-scrim: linear-gradient(180deg, rgb(255 255 255 / 0.58), rgb(255 255 255 / 0.30));
+
+  --rs-surface-rgb: 255 255 255;
+  --rs-surface-alpha: 0.62;
+  --rs-surface-alpha-strong: 0.78;
+  --rs-glass-fallback: #f4f8fc;
+  --rs-line-rgb: 10 21 32;
+  --rs-line-alpha: 0.16;
+  --rs-specular: rgb(255 255 255 / 0.90);
+  --rs-glass-highlight: rgb(255 255 255 / 0.75);
+  --rs-shadow-alpha: 0.18;
+
+  --rs-focus: #1d5d8c;
+  --rs-focus-ring: 0 0 0 3px rgb(29 93 140 / 0.28);
+}
+
+/* Autodetectado. No aplica si el proyecto fijó un tema. ------------- */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    --rs-bg: #edf3f8;
+    --rs-bg-elevated: #f7fafc;
+    --rs-ink: #0a1520;
+    --rs-ink-muted: #40576b;
+    --rs-accent: #1d5d8c;
+    --rs-accent-strong: #144a72;
+    --rs-accent-ink: #f7fbff;
+    --rs-accent-soft: rgb(29 93 140 / 0.14);
+    --rs-danger: #a62b1f;
+    --rs-success: #1c6b48;
+    --rs-warning: #7a4e12;
+
+    --rs-scene:
+      radial-gradient(1000px 700px at 10% -6%, rgb(120 190 220 / 0.32), transparent 62%),
+      radial-gradient(860px 600px at 98% 2%, rgb(130 150 220 / 0.24), transparent 58%),
+      radial-gradient(720px 520px at 54% 108%, rgb(200 170 120 / 0.16), transparent 62%),
+      linear-gradient(150deg, #f6fafd 0%, #e8f0f6 60%, #eef4f8 100%);
+
+    --rs-scrim: linear-gradient(180deg, rgb(255 255 255 / 0.58), rgb(255 255 255 / 0.30));
+
+    --rs-surface-rgb: 255 255 255;
+    --rs-surface-alpha: 0.62;
+    --rs-surface-alpha-strong: 0.78;
+    --rs-glass-fallback: #f4f8fc;
+    --rs-line-rgb: 10 21 32;
+    --rs-line-alpha: 0.16;
+    --rs-specular: rgb(255 255 255 / 0.90);
+    --rs-glass-highlight: rgb(255 255 255 / 0.75);
+    --rs-shadow-alpha: 0.18;
+
+    --rs-focus: #1d5d8c;
+    --rs-focus-ring: 0 0 0 3px rgb(29 93 140 / 0.28);
+  }
+}
+
+/* Sin backdrop-filter: vidrio opaco, legible. ---------------------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root,
+  :root[data-theme="dark"],
+  :root[data-theme="light"],
+  :root:not([data-theme="dark"]) {
+    --rs-glass: var(--rs-glass-fallback);
+    --rs-glass-strong: var(--rs-glass-fallback);
+    --rs-glass-blur: 0px;
+    --rs-glass-filter: none;
+  }
+}
+
+/* Si el usuario pide menos transparencia, vidrio opaco. ------------ */
+@media (prefers-reduced-transparency: reduce) {
+  :root,
+  :root[data-theme="dark"],
+  :root[data-theme="light"],
+  :root:not([data-theme="dark"]) {
+    --rs-glass: var(--rs-glass-fallback);
+    --rs-glass-strong: var(--rs-glass-fallback);
+    --rs-glass-filter: none;
+  }
+}
+
+/* Movimiento reducido --------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --rs-dur-fast: 0.01ms;
+    --rs-dur: 0.01ms;
+    --rs-dur-slow: 0.01ms;
+  }
+}

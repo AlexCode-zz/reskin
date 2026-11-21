@@ -1,68 +1,118 @@
-# Detección de stack
+# Detección: framework + capa de estilos
 
-Objetivo: saber con qué se está trabajando para no recomendar lo que no aplica.
+Dos ejes independientes. **Tailwind no es un framework: es una capa de estilos.**
 
-## Orden de lectura (rápido)
+- **Framework:** `react` | `nextjs` | `html-puro`
+- **Capa de estilos:** `tailwind-v4` | `tailwind-v3` | `css-modules` | `css-puro`
 
-1. `package.json` — dependencias clave.
-2. Archivos de config: `tsconfig.json`, `vite.config.*`, `next.config.*`,
-   `tailwind.config.*`, `postcss.config.*`, `*.config.js`, `*.config.ts`.
-3. Estructura: `src/`, `app/` (Next), `pages/`, `components/`, `styles/`, `public/`.
-4. Si es puro: index.html, styles, scripts.
+## 1. Framework
 
-## Preguntas a responder internamente
-
-| Señal | Stack detectado |
+| Evidencia (package.json / estructura) | Resultado |
 |---|---|
-| `react` o `react-dom` en deps | React |
-| `next` en deps | Next.js (¿app router o pages? por `app/` vs `pages/`) |
-| `@tailwindcss/*` v3 o v4 (`tailwindcss` + `@tailwindcss/postcss`) | Tailwind |
-| `@emotion/react` / `@emotion/styled` / `@mui/material` / `@chakra-ui` / `@mantine/core` / `styled-components` | CSS-in-JS del proyecto |
-| Sin framework en `dependencies`, pero hay `index.html` + CSS | HTML/CSS puro |
-| `@vitejs/plugin-react` | Vite (contexto React) |
-| Svelte en deps | Svelte (deuda mínima: adaptar tokens a `.svelte` scoped) |
-| Vue en deps | Vue (deuda mínima: tokens a clases utilitarias) |
+| `next` en dependencies | `nextjs` |
+| `react` o `react-dom`, sin `next` | `react` |
+| Sin framework en deps + `index.html` | `html-puro` |
+| Sin package.json y sin `index.html` | No detectado: preguntar |
 
-## Cómo leerlo con seguridad
+Si están `next` y `react`, gana `nextjs` (React viene incluido).
 
-- `next` en `dependencies` → Next.js. Mira `app/` o `pages/`.
-- Tailwind v4: suele venir como `tailwindcss` + `@tailwindcss/postcss` (PostCSS) o como
-  plugin de Vite. En v4 los estilos base van en CSS plano con `@import "tailwindcss"`.
-- Tailwind v3: presencia de `tailwind.config.*` o de `@tailwind` directives en CSS.
-- Si hay ambas, revisar versiones exactas en `package.json` antes de decidir.
+## 2. Capa de estilos
 
-## Si no está claro
+### Tailwind v4 — señales
 
-- Si `package.json` está ausente o no da versión/estado, se asume HTML/CSS puro y se
-  confirma en la entrevista.
-- Si hay framework pero no CSS: se procede como "framework con estilos por defecto" y
-  la decisión queda documentada en el resumen del brief.
+- Dependencia `@tailwindcss/postcss` o `@tailwindcss/vite`.
+- CSS con `@import "tailwindcss";` (comillas simples o dobles).
+- CSS con `@theme { ... }`.
+- **Puede no tener `tailwind.config.js`.** No lo exijas.
 
-## Formato del resultado (interno)
+### Tailwind v3 — señales
 
-Emitir un bloque así en el resumen y las decisiones del brief:
+- `tailwind.config.js` / `.ts` / `.cjs` / `.mjs`.
+- CSS con `@tailwind base;`, `@tailwind components;` o `@tailwind utilities;`.
+- `tailwindcss` en deps y **sin** señales de v4.
+
+### CSS Modules
+
+- Archivos `*.module.css` (o `*.module.scss`) en `src/`, `app/` o `components/`.
+
+### CSS puro
+
+- Hojas `.css` sin Tailwind ni módulos.
+
+**Si conviven Tailwind y CSS Modules**, la capa principal es Tailwind: se aplica con
+utilidades y los módulos existentes se respetan. No se añade CSS de componentes.
+
+## 3. Next.js: router
+
+| Evidencia | Router |
+|---|---|
+| `app/layout.*` o `src/app/layout.*` | `app` |
+| `pages/_app.*` o `src/pages/_app.*` | `pages` |
+| Ambos | mixto: confirmar en el brief |
+
+Solo aplica a `nextjs`. En React o HTML puro, `router: none`.
+
+## 4. TypeScript
+
+- `tsconfig.json` o archivos `.tsx` → `typescript: true`.
+- Si no, `false`.
+
+## 5. Entrypoints que debes localizar
+
+- **Tailwind v4:** CSS global importado por el layout (`app/globals.css`,
+  `src/app/globals.css`, `styles/globals.css`). Ahí van los tokens con `@theme`.
+- **Tailwind v3:** `tailwind.config.*` + el CSS global con directivas `@tailwind`.
+- **CSS Modules:** el `.module.css` del componente; tokens en el CSS global.
+- **CSS puro:** la hoja principal (`styles.css`, `index.css`, la del `<link>`).
+
+No escanees `node_modules`, `.next`, `dist` ni `build`.
+
+## 6. Regla de aplicación (no negociable)
+
+**Si hay Tailwind:**
+
+1. Aplica el estilo con **clases utilitarias**.
+2. Lleva los tokens al theme:
+   - v4: `@theme` en el CSS global existente.
+   - v3: `theme.extend` en `tailwind.config.*`.
+3. **No agregues archivos CSS aparte** ni CSS de componentes. Nada de otro sistema.
+
+**Si no hay Tailwind:**
+
+1. Usa CSS normal con variables de `assets/tokens/<estilo>.css`.
+2. Los tokens van en `:root` del CSS existente (global o módulo).
+3. No introduzcas un framework CSS nuevo.
+
+## Ficha resultante
 
 ```json
 {
-  "framework": "react | next | html | css-only | ...",
-  "uiLibrary": "tailwind | mui | chakra | mantine | emotion | styled-components | none | css-modules",
-  "cssApproach": "tailwind-v3 | tailwind-v4 | css-modules | styled-components | plain-css | theme-ui | none",
-  "hasGlobalStyles": true,
-  "router": "app | pages | none",
-  "stateManagement": "...",
-  "componentsDir": "src/components | app/components | components | src | app | none"
+  "framework": "nextjs",
+  "styling": "tailwind-v4",
+  "router": "app",
+  "typescript": true,
+  "entryCss": "app/globals.css",
+  "source": "package-json"
 }
 ```
 
-## Checklist de detección
+En el brief se muestra en lenguaje natural:
+`Detecté Next.js (App Router) + Tailwind v4 + TypeScript.`
 
-- [ ] framework identificado con confianza
-- [ ] uiLibrary y cssApproach identificados
-- [ ] router / estructura leídos
-- [ ] Si falta algo relevante para el estilo propuesto (p. ej. tiene `tailwind.config`
-      para mapear tokens): registrar como requisito en el brief.
+## Script opcional
 
-## No se detecta
+```bash
+bash scripts/detect-stack.sh
+```
 
-No preguntar más allá de lo detectado. Si el usuario dice "no es nada de esto", el
-resultado es HTML/CSS puro y el brief lo confirma.
+Imprime `framework`, `styling`, `router` y `typescript`. Si no está, no es ejecutable o
+falla, el agente lee `package.json`, los configs y la estructura a mano. **El script no
+es una dependencia.**
+
+## No adivinar
+
+- No deduzcas Next.js por la carpeta `app/` sola: confirma `next` en deps.
+- No deduzcas Tailwind v3 por tener `tailwindcss` en deps: revisa el CSS.
+- Si hay señales contradictorias (config v3 + `@import "tailwindcss"`), gana la señal del
+  CSS y anótalo en el brief.
+- Si no hay evidencia suficiente, pregunta una sola vez. No rellenes con suposiciones.

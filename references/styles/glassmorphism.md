@@ -80,6 +80,12 @@ Aplícalo en el bloque del tema activo, no en un selector global nuevo:
 }
 ```
 
+## Con Tailwind
+
+Lleva los tokens a `@theme` (v4) o a `theme.extend` (v3) y aplica las recetas con
+utilidades; **no crees una hoja CSS nueva ni dupliques las recetas en CSS**. El detalle
+está en `references/adapters/tailwind-v4.md` y `tailwind-v3.md`.
+
 ## Recetas
 
 ### Superficie base

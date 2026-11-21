@@ -71,6 +71,8 @@
   /* Tipografía ---------------------------------------------------- */
   --rs-font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rs-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
   --rs-font-display: var(--rs-font-sans);
   --rs-text-display: clamp(2.5rem, 5vw, 4.5rem);
   --rs-text-h1: clamp(2rem, 3.2vw, 3rem);
