@@ -1,71 +1,71 @@
 # Entrevista al brief
 
-Sigue la secuencia exacta: detectar → preguntar → resumir → confirmar → aplicar.
+Secuencia: detectar → presentar stack → preguntar → resumir → confirmar → aplicar.
+
+## Antes de preguntar
+
+La detección ya respondió framework, capa de estilos, router y TypeScript. Preséntalo en
+una línea y no lo vuelvas a preguntar:
+
+> Detecté **Next.js (App Router) + Tailwind v4 + TypeScript**. No cambiaré lógica, textos
+> ni rutas.
+
+Si falta un dato, pregunta solo ese dato, una vez.
 
 ## Reglas
 
-- **Máximo 4 preguntas.** Nunca más. Si el brief necesita más, se reutiliza el
-  estilo elegido y se documentan las decisiones abiertas en el resumen.
-- **2–4 opciones por pregunta.** Con una opción solo no hay selección; poner
-  "(Recomendado)" y una razón corta basada en el stack detectado.
-- **"Otro"** siempre presente: permite escribir la respuesta.
-- **No preguntar lo ya detectado.** Solo lo que la detección dejó abierto
-  (p. ej. si no detectó `tailwind.config`, puede preguntar si usan CSS modules).
+- **Máximo 4 preguntas.** Si el brief pide más, cierra las decisiones abiertas en el
+  resumen y sigue.
+- **2–4 opciones por pregunta**, con la recomendada primero, marcada "(Recomendado)" y una
+  razón ligada al stack o al proyecto.
+- **"Otro" siempre presente** para respuesta libre.
+- No preguntes lo detectable: framework, Tailwind, CSS Modules, router, TypeScript, ni la
+  paleta que ya está en el código.
+- Si el usuario ya dijo el estilo en el prompt, no lo preguntes: úsalo y pasa a las demás.
 
-## Herramienta de preguntas interactivas
+## Preguntas
 
-1. Si el agente tiene herramienta de preguntas con selector por flechas (p. ej.
-   Gemini/GPT/Claude con Q&A interactivo): usarla.
-2. Si no: preguntar conversacionalmente, enumerando las opciones en orden, con
-   "(Recomendado)" primero y la razón. No inventar un mecanismo que no existe.
-
-## Preguntas (patrón — se adaptan al stack detectado)
-
-| # | Tema | Opciones típicas | Recomendación cuando… |
+| # | Tema | Opciones | Recomendación |
 |---|---|---|---|
-| 1 | **Dirección de estilo deseada** | Opción preferida del usuario / Otro. Si el usuario no la tiene: glassmorphism (Recomendado) — porque funciona con casi cualquier stack sin plugins. | Usuario sin preferencia. Razón: un solo tema, 3 niveles, sin dependencias. |
-| 2 | **Aesthetic persona** | 3D premium / Plano limpio / Retro / Orgánico / Brutalista / Minimalista. (Recomendado según estilo de la app.) | Si el proyecto ya tiene color propio fuerte: respetarlo. |
-| 3 | **Sensación / tono** | Sereno / Energético / Corporativo serio / Playful / Luxury discreto. | Basado en el sector de la app. |
-| 4 | **Alcance / excepción** | Solo marketing / Todo el producto / App completa / Solo paneles. (Recomendado: app completa.) | Según tamaño. Con "Otro" puede ampliarse.
+| 1 | Estilo | Glassmorphism (Recomendado) / Liquid Glass / Retro | Glassmorphism si no hay preferencia: funciona en cualquier stack, sin plugins y con contraste controlado. Si el brief pide chrome premium, recomienda Liquid; si es portafolio, landing o juego, recomienda Retro. |
+| 2 | Variante o intensidad | Glass: Equilibrada (Recomendado) / Sutil / Marcada · Liquid: Oscuro (Recomendado) / Claro / Automático · Retro: Arcade (Recomendado) / CRT / Synthwave | Equilibrada por defecto; arcade sobrio si hay datos; CRT si el brief es terminal. Pregunta solo la variante del estilo elegido. |
+| 3 | Alcance | Toda la app (Recomendado) / Shell (nav, fondos, layout) / Una página o flujo | Toda la app: un reskin a medias se ve incoherente. Shell si el resto está en rediseño. |
+| 4 | Identidad | Conservar colores y tipografía (Recomendado) / Conservar colores y cambiar tipografía / Aplicar la paleta completa del estilo | Conservar identidad: el reskin cambia materiales y superficies sin perder reconocimiento de marca. Aplicar paleta solo si el proyecto no tiene marca fuerte. |
 
-## Plantilla de pregunta (opción "Otro" y edición)
+Adapta las opciones al stack: en Next.js puedes mencionar Server Components; en HTML puro,
+la ausencia de build. Nunca preguntes "¿usas Tailwind?" si la detección ya lo respondió.
 
-- Opción libre: "Dime qué prefieres o describe tu dirección". Nunca adivinar su
-  respuesta.
-- Si el usuario edita una opción, actualizar la recomendación si cambia la razón.
+## Herramienta de preguntas
 
-## Plan B (sin herramienta de preguntas)
+1. Si el agente tiene selector interactivo, úsalo.
+2. Si no, enumera en el chat: `1) ... 2) ... 3) ... 4) Otro: escribe tu respuesta`.
+   Recomendada primero y con la razón.
 
-- Preguntas de opción múltiple numeradas en el chat: "1) A — 2) B — 3) C — 4) Otro: escribe tu respuesta".
-- "Otro: escribe tu respuesta" siempre al final.
+## Plan B (si el usuario no responde o pide "tú decides")
 
-## Resumen del brief (paso 3)
+1. Elige la recomendación de cada pregunta.
+2. Anótalo en el resumen como "decidido por el agente".
+3. Pide confirmación igualmente antes de editar.
 
-Antes de tocar código, presentar un bloque con:
+## Resumen y confirmación
 
 ```markdown
 ## Brief reskin
-- Stack detectado: <framework> / <uiLibrary> / <cssApproach>
-- Estilo propuesto: <estilo> (<por qué)
-- Dirección: <persona> · <tono>
-- Alcance: <marketing / app / paneles>
-- Decisiones abiertas: <lista corta o "ninguna">
-- Estilo de implementación: tokens → clases/utilidades → overrides
+- Stack: Next.js (App Router) + Tailwind v4 + TypeScript
+- Estilo: Liquid Glass · intensidad equilibrada · tema oscuro
+- Alcance: toda la app
+- Identidad: conservar paleta y tipografía
+- Implementación: tokens → @theme → utilidades (sin hojas nuevas)
+- No se toca: lógica, estado, props, textos, rutas, dependencias
 ```
 
-Formato: tabla de 4–6 filas (stack / estilo / dirección / alcance / decisiones). Pedir
-confirmación explícita. Si el usuario corrige, se actualiza el brief y se pregunta de
-nuevo SOLO lo que cambió.
+Cierra con: "¿Aplico este brief? Responde **sí**, o dime qué ajusto." **No edites código
+hasta un sí explícito.** Si el usuario corrige algo, actualiza el brief y vuelve a
+confirmar; no repitas las preguntas que no cambiaron.
 
-## No entrevistar
+## No preguntar
 
-- No preguntar diseño de marca que ya exista en el proyecto (logo, paleta, tipografía).
-- No preguntar colores ni logos nuevos si el usuario no dio señales de que quiere cambiarlos;
-  primero preguntar la dirección, y solo si el usuario elige "cambio total" ir al branding.
-- No preguntar "qué funcionalidad quieres": eso no es un reskin.
-
-## Entregables del paso 2–3
-
-- Brief confirmado.
-- Estilo elegido (de la lista del skill o libre).
-- Adaptación del estilo al stack (se carga `references/styles/<estilo>.md` y el adapter).
+- Lo que ya está en `package.json`, los configs o el CSS.
+- Funcionalidad nueva, copy, rutas o bugs: no es un reskin.
+- Logo o branding si el usuario no pidió cambiarlo.
+- "¿Qué framework usas?" cuando el script o los archivos ya lo dicen.

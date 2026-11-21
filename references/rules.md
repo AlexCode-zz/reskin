@@ -11,7 +11,7 @@ Un reskin cambia la piel. La lógica queda intacta.
 | `className`, `class`, `style` con propiedades visuales | Estados, hooks, `useEffect`, refs, handlers, condiciones |
 | CSS, tokens, keyframes y media queries en el entrypoint existente | Props, API de componentes, rutas, fetching, validación, tests |
 | Colores, tipografía, radios, sombras, espaciado, movimiento | Textos, `key` de listas, `aria-*`, roles, orden de tabulación |
-| Overrides visuales de la librería de UI (tema, `sx`, variantes) | Dependencias, versiones, lockfiles, configuración de build |
+| Overrides visuales de la librería de UI (tema, `sx`, variantes) | Dependencias, versiones, lockfiles, configuración de build (salvo tokens del theme de Tailwind: ver §2) |
 | Una capa decorativa fija si es imprescindible (ver abajo) | Reestructurar el DOM, añadir wrappers de layout, cambiar elementos semánticos |
 
 **Capa decorativa:** solo si no hay otra forma de aplicar la escena. Una sola, en la raíz, `aria-hidden="true"`, `pointer-events: none`, `position: fixed`, sin afectar el flujo. Si hay que envolver contenido, no lo hagas: busca el fondo del shell existente.
@@ -24,7 +24,7 @@ No introduzcas un segundo sistema. Si hay Tailwind, se usan utilidades de Tailwi
 
 | El proyecto usa | Haz esto | No hagas esto |
 |---|---|---|
-| Tailwind v3/v4 | Utilidades + tokens en el CSS global existente | Crear otra hoja, styled-components, CSS Modules nuevos |
+| Tailwind v3/v4 | Utilidades + tokens al theme (`@theme` v4 / `theme.extend` v3) | Crear otra hoja, styled-components, CSS Modules nuevos |
 | CSS Modules | Edita el `.module.css` que ya usa el componente | Renombrar clases exportadas (el JS las referencia) |
 | CSS plano | Edita la hoja existente; tokens en `:root` | Añadir un framework CSS |
 | styled-components / Emotion | Tokens en el theme o en el template existente | Mezclar con una hoja CSS nueva |
@@ -38,7 +38,8 @@ No introduzcas un segundo sistema. Si hay Tailwind, se usan utilidades de Tailwi
 - No borres clases funcionales: `sr-only`, `hidden`, `print:*`, `dark:*`, `motion-reduce:*`, `group`, `peer`, variantes `data-*`.
 - No uses `!important` para resolver conflictos. Ajusta la utilidad o usa `tailwind-merge` **solo si ya está en el proyecto**.
 - `@apply` solo si el proyecto ya lo usa.
-- No modifiques `tailwind.config.*` ni `@theme` salvo que el brief lo incluya y sea la vía natural para mapear tokens. Nunca para añadir plugins.
+- Lleva los tokens al theme: v4 → `@theme` en el CSS global existente; v3 → `theme.extend` en `tailwind.config.*`. Es la vía correcta para que existan `bg-rs-*`, `rounded-rs-*`, etc.
+- No añadas plugins ni presets ni cambies `content` o la estrategia de dark mode. El theme solo recibe tokens del estilo.
 
 ## 3. Clases condicionales y props
 

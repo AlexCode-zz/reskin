@@ -1,74 +1,105 @@
-# Adaptador: React (glassmorphism)
+# Adaptador: React
 
-Cómo aplicar los tokens y recetas de `references/styles/glassmorphism.md` al stack React.
+Traduce el estilo elegido al proyecto React. No repite las recetas del estilo: las aplica
+con el sistema de estilos que ya existe.
 
-## Precondición detectada
+## Detección
 
-Confirmar al final de la detección que se trata de React (con o sin Next.js) y qué CSS usa.
-Si el stack resultante es React + Tailwind → este adapter se combina con el adapter
-`tailwind-v4` o `tailwind-v3`. Si es React + CSS Modules / plain CSS → se edita el CSS
-existente. Si es React + Emotion / styled-components → se aplican los mismos tokens en el
-sistema existente.
+- `framework: react`
+- `styling: tailwind-v4 | tailwind-v3 | css-modules | css-puro`
 
-## Objetivo del diff
+Si el proyecto es Next.js, usa `nextjs.md` en lugar de este archivo (cubre React).
 
-- **Sin cambios en** componentes que ya compilan: solo se refuerza la cadena de clases.
-- **En** el CSS global existente: tokens + escena + fallback. O en el entrypoint de estilos
-  que ya existe (no crear hoja nueva).
+## Rama A — Tailwind (v4 o v3)
 
-## Tailwind (cuando aplique)
+1. Lleva los tokens de `assets/tokens/<estilo>.css` al theme:
+   - **v4:** `@theme` en el CSS global existente.
+   - **v3:** `theme.extend` en `tailwind.config.*`.
+2. Aplica el estilo con **clases utilitarias**.
+3. **No crees archivos CSS nuevos** ni CSS de componentes.
+4. Si un token no está mapeado, usa el valor arbitrario:
+   `bg-[var(--rs-glass)]`, `rounded-[var(--rs-radius-md)]`,
+   `[backdrop-filter:var(--rs-glass-filter)]`.
+5. No borres clases funcionales (`sr-only`, `hidden`, `dark:`, `motion-reduce:`, `group`,
+   `peer`).
 
-- Tokens: CSS variables en el CSS global (o en `@theme` si Tailwind v4 lo exige por su
-  arquitectura). Los nombres del skill (`--rs-*`) se mapean con `--color-rs-glass: var(--rs-glass);`
-  si se prefiere la convención Tailwind, o arbitrario: `bg-[var(--rs-glass)]`.
-- Vidrio: `[background-color:var(--rs-glass)] [background-image:var(--rs-scrim)] [backdrop-filter:var(--rs-glass-filter)] [-webkit-backdrop-filter:var(--rs-glass-filter)]`.
-- Borde: `border-[var(--rs-glass-border)]`.
-- Radio: `rounded-[var(--rs-radius-md)]`.
-- Sombras: `shadow-[var(--rs-shadow-1)]`.
-- Hover/foco: usa los estilos nativos (`hover:`, `focus-visible:`) combinados con los
-  tokens. Nunca `transition-all`; usa `transition-[background-color,border-color,box-shadow]`.
+Detalle: `tailwind-v4.md` / `tailwind-v3.md`.
+
+## Rama B — CSS Modules o CSS puro
+
+1. Pega los tokens en `:root` del CSS global existente.
+2. Edita el `.module.css` del componente o la hoja existente con los tokens.
+3. No renombres clases exportadas: el JS las referencia.
+4. No crees un segundo sistema (nada de styled-components si no existe).
+5. Si no hay CSS global, usa `:global(:root)` en el módulo del layout, no una hoja nueva.
+
+## Protocolo de edición
+
+1. Lee el componente completo y localiza estado, props, handlers, condiciones y `key`.
+2. Cambia **solo** `className`, `class` o `style` con propiedades visuales.
+3. Conserva condiciones, props, textos, `key`, `aria-*` y orden de elementos.
+4. En clases condicionales, añade clases dentro de cada rama; nunca inviertas la condición.
+5. Si el componente recibe `className` desde fuera, **añade** al final.
 
 ```jsx
-// Tarjeta existente
-<article className="glass-panel">
-  {/* solo se espera que la clase exista; si no existe, agregar al template */}
-</article>
+// Antes
+<button
+  className={active ? "nav-item nav-item--active" : "nav-item"}
+  onClick={onSelect}
+>
+  {label}
+</button>
+
+// Después (misma condición, mismos props)
+<button
+  className={
+    active
+      ? "nav-item border-b-2 border-[var(--rs-accent)] text-[var(--rs-ink)]"
+      : "nav-item border-b-2 border-transparent text-[var(--rs-ink-muted)]"
+  }
+  onClick={onSelect}
+>
+  {label}
+</button>
 ```
 
-Si la clase `.glass-panel` no existe, **añadirla en el CSS del proyecto** con las recetas
-de la referencia de estilos, usando los tokens. No duplicar estilos inline por elemento salvo
-caso justificado (hover dinámico).
+Con CSS Modules:
 
-## React sin Tailwind
+```jsx
+<button
+  className={`${styles.navItem} ${active ? styles.active : ""}`}
+  onClick={onSelect}
+>
+```
 
-- Crear/actualizar las clases en la hoja CSS global o en el CSS module del componente,
-  usando los tokens de `assets/tokens/glassmorphism.css`.
-- Componer con `className` existente; si el componente usa `className` interno, reemplazar
-  ese string por las clases semánticas del proyecto. No duplicar el mismo estilo en 10
-  componentes: buscar si ya existe una clase compartida (`Card`, `Panel`, `Surface`).
+Solo cambia la composición de clases; `onSelect`, `active` y `label` no se tocan.
 
-## Next.js
+## Componentes compartidos y librerías
 
-- Mismo CSS global o module. En App Router, el layout raíz (`app/layout.tsx`) es el lugar
-  correcto de la escena. En Pages Router, `_app.tsx`.
-- Nada de `styled-jsx` salvo que ya exista; no añadirlo.
-- Server Components: no se usan estilos; el CSS global es la vía. Si se necesita vidrio en un
-  Client Component, seguir sin añadir `'use client'` solo por estilos.
+- Si ya existe `Card`, `Panel`, `Button`, estilízalo **una vez** y reutilízalo. No dupliques
+  la receta en 10 archivos.
+- **shadcn/ui:** edita los strings de `cva`; conserva nombres de variantes, defaults y
+  `asChild`. No cambies la API.
+- **MUI / Chakra / Mantine:** usa `sx`, theme o clases del componente. No reemplaces el
+  componente por un `div`.
+- Si la librería no permite estilizar sin añadir props nuevas: **para y pregunta**.
 
-## Checklist de diff para React
+## Checklist
 
-- [ ] Solo strings de `className` / `class` modificados.
-- [ ] Solo CSS (global o module) y tokens modificados.
-- [ ] No hay cambios en `useState`, `useEffect`, props, tipos ni handlers.
-- [ ] `transition-all` no introducido.
+- [ ] Solo strings de `className` / `class` y CSS/tokens modificados.
+- [ ] Sin cambios en estado, hooks, props, tipos, handlers, textos ni `key`.
 - [ ] Clases condicionales conservan la condición original.
-- [ ] Foco y movimiento respetados.
+- [ ] No se añadieron props nuevas a componentes.
+- [ ] `transition-all` no introducido.
+- [ ] Foco visible y `motion-reduce` respetados.
 
 ## Errores comunes
 
-| Error | Causa | Arreglo |
-|---|---|---|
-| Cambia el componente entero | Falta delimitar qué es estética | Reescribir solo la cadena de clases |
-| Añade estilos inline repetidos | No hay clase compartida | Crear clase semántica existente o reutilizar |
-| Olvida el scrim | Vidrio sobre escena clara | `background-image` con scrim |
-| Olvida fallback | backdrop-filter sin soporte | `@supports` o tokens con fallback |
+| Error | Arreglo |
+|---|---|
+| Reescribir el componente entero | Editar solo la cadena de clases |
+| Añadir `useState` para hover/menú | Usar CSS (`:hover`, `:focus-within`) |
+| Añadir `className` a un componente que no lo acepta | Usar el tema de la librería o editar sus clases internas |
+| Duplicar la receta en cada tarjeta | Estilizar el componente compartido |
+| Crear una hoja CSS nueva con Tailwind | Tokens al `@theme` / config y utilidades |
+| Cambiar textos para que quepan | Ajustar tipografía/espaciado o preguntar |
