@@ -60,6 +60,16 @@
     inset 0 -1px 0 rgb(255 255 255 / 0.14),
     0 36px 90px -36px rgb(0 0 0 / calc(var(--rs-shadow-alpha) + 0.12));
 
+  /* Gráficos (librerías de charts: tooltips, ejes, series) ---------- */
+  --rs-chart-1: #a8d8ff;
+  --rs-chart-2: #8fe3c0;
+  --rs-chart-3: #c4b5ff;
+  --rs-chart-4: #f0c97f;
+  --rs-chart-5: #ff9e9e;
+  --rs-chart-grid: rgb(220 240 255 / 0.12);
+  --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #0c1b2b;
+
   /* Forma --------------------------------------------------------- */
   --rs-radius-sm: 12px;
   --rs-radius-md: 20px;
@@ -123,6 +133,14 @@
   --rs-glass-highlight: rgb(255 255 255 / 0.75);
   --rs-shadow-alpha: 0.18;
 
+  --rs-chart-1: #1d5d8c;
+  --rs-chart-2: #1c6b48;
+  --rs-chart-3: #5b3fb0;
+  --rs-chart-4: #7a4e12;
+  --rs-chart-5: #a62b1f;
+  --rs-chart-grid: rgb(10 21 32 / 0.12);
+  --rs-tooltip-bg: #fbfdff;
+
   --rs-focus: #1d5d8c;
   --rs-focus-ring: 0 0 0 3px rgb(29 93 140 / 0.28);
 }
@@ -162,6 +180,13 @@
     --rs-glass-highlight: rgb(255 255 255 / 0.75);
     --rs-shadow-alpha: 0.18;
 
+    --rs-chart-1: #1d5d8c;
+    --rs-chart-2: #1c6b48;
+    --rs-chart-3: #5b3fb0;
+    --rs-chart-4: #7a4e12;
+    --rs-chart-5: #a62b1f;
+    --rs-chart-grid: rgb(10 21 32 / 0.12);
+    --rs-tooltip-bg: #fbfdff;
     --rs-focus: #1d5d8c;
     --rs-focus-ring: 0 0 0 3px rgb(29 93 140 / 0.28);
   }
