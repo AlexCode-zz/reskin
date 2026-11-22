@@ -1,0 +1,79 @@
+/* reskin · brutalism · firma: tipografía gigante en mayúsculas, bordes de 3px, sombras duras,
+   bloques de color planos y contraste máximo. Requiere _base.css + tokens/brutalism.css.
+   Variantes: mono (default) · [data-brutal="pop"] · [data-theme="dark"] */
+
+.rs-display, .rs-title, .rs-subtitle, .rs-brand, .rs-stat-value, .rs-table th { text-transform: uppercase; }   /* uppercase, NUNCA capitalize */
+.rs-display { font-size: var(--rs-text-display); }
+.rs-title { border-bottom: var(--rs-border-width) solid var(--rs-border); padding-bottom: 0.2em; }
+.rs-brand { font-size: 1.5rem; }
+.rs-eyebrow, .rs-label { font-weight: 800; letter-spacing: 0.1em; color: var(--rs-ink); }
+
+/* Superficies planas con sombra dura */
+.rs-card { box-shadow: var(--rs-shadow); }
+.rs-card.is-interactive:hover { transform: translate(-3px, -3px); box-shadow: var(--rs-shadow-lg); }
+.rs-card--invert { background: var(--rs-ink); color: var(--rs-bg); }
+.rs-card--invert .rs-muted, .rs-card--invert .rs-stat-label { color: var(--rs-bg); opacity: 1; }
+.rs-card--lime { background: var(--rs-accent); color: var(--rs-accent-ink); }
+.rs-card--lime .rs-muted, .rs-card--lime .rs-stat-label { color: var(--rs-accent-ink); }
+.rs-card--coral { background: var(--rs-accent-3); color: #0a0a0a; }
+.rs-card--stat { border-top-width: 10px; }
+.rs-stat-value { font-size: clamp(2.5rem, 5vw, 3.75rem); line-height: 0.95; letter-spacing: 0; }
+
+/* Navegación */
+.rs-navbar { background: var(--rs-bg); border-width: 0 0 var(--rs-border-width) 0; box-shadow: none; }
+.rs-sidebar { background: var(--rs-bg); border-width: 0 var(--rs-border-width) 0 0; box-shadow: none; }
+.rs-nav-item { text-transform: uppercase; letter-spacing: 0.04em; font-weight: 800; border: 2px solid transparent; }
+.rs-nav-item:hover { background: transparent; border-color: var(--rs-border); color: var(--rs-ink); }
+.rs-nav-item[aria-current="page"], .rs-nav-item.is-active { background: var(--rs-accent); color: var(--rs-accent-ink); border-color: var(--rs-border); box-shadow: var(--rs-shadow-btn); }
+.rs-nav-item[aria-current="page"]::after, .rs-nav-item.is-active::after { content: "→"; margin-left: auto; }   /* marcador de forma */
+
+/* Botones: bloque con sombra que se "hunde" al pulsar */
+.rs-btn { --rs-btn-border: var(--rs-border); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 800; box-shadow: var(--rs-shadow-btn); }
+.rs-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--rs-border); }
+.rs-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--rs-border); }
+.rs-btn--secondary { background: var(--rs-surface); }
+.rs-btn--ghost { background: transparent; border-color: var(--rs-border); box-shadow: none; }
+.rs-btn--ghost:hover { background: var(--rs-accent); color: var(--rs-accent-ink); box-shadow: var(--rs-shadow-btn); }
+.rs-btn--arrow::after { content: "→"; font-size: 1.2em; }
+.rs-btn--pill { border-radius: 0; }
+.rs-btn[disabled], .rs-btn[aria-disabled="true"] { border-style: dashed; }
+
+/* Formularios */
+.rs-field, .rs-select, .rs-textarea { border-width: var(--rs-border-width); border-color: var(--rs-border); background: var(--rs-surface); font-weight: 600; }
+.rs-field:focus-visible, .rs-select:focus-visible, .rs-textarea:focus-visible { box-shadow: 5px 5px 0 var(--rs-accent); outline-offset: 2px; }
+.rs-select { color-scheme: inherit; }
+
+/* Tabs segmentadas, badges cuadrados */
+.rs-tabs { gap: 0; padding: 0; border: var(--rs-border-width) solid var(--rs-border); border-radius: 0; background: var(--rs-surface); }
+.rs-tab { border-radius: 0; border-right: var(--rs-border-width) solid var(--rs-border); text-transform: uppercase; font-weight: 800; letter-spacing: 0.04em; }
+.rs-tab:last-child { border-right: 0; }
+.rs-tab[aria-selected="true"], .rs-tab.is-active { background: var(--rs-ink); color: var(--rs-bg); }
+.rs-badge { border-radius: 0; border: 2px solid var(--rs-border); background: var(--rs-accent); color: var(--rs-accent-ink); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800; }
+
+/* Tabla: cabecera negra */
+.rs-table th { background: var(--rs-ink); color: var(--rs-bg); border-bottom: 0; font-weight: 800; }
+.rs-table td { border-bottom: 2px solid var(--rs-border); }
+.rs-table tbody tr:hover { background: var(--rs-accent); color: var(--rs-accent-ink); }
+
+/* Overlays, toasts, progreso: sin blur */
+.rs-overlay { background: rgb(10 10 10 / 0.72); }
+.rs-dialog { box-shadow: var(--rs-shadow-lg); }
+.rs-tooltip { border-width: 2px; border-color: var(--rs-bg); }
+.rs-toast { box-shadow: var(--rs-shadow); }
+.rs-progress { height: 22px; border-radius: 0; border: var(--rs-border-width) solid var(--rs-border); background: var(--rs-surface); }
+.rs-progress > * { border-radius: 0; border-right: var(--rs-border-width) solid var(--rs-border); }
+.rs-empty { border-style: solid; background: var(--rs-surface-2); font-weight: 700; }
+
+/* Piezas de imagen y bloques de la referencia */
+.rs-media { border-radius: 0; }
+.rs-media > img { filter: grayscale(1) contrast(1.15); }                  /* foto en B/N de alto contraste */
+[data-brutal="pop"] .rs-media > img { filter: none; }
+.rs-media:hover > img { filter: none; }
+.rs-ticker { display: flex; overflow: hidden; background: var(--rs-ink); color: var(--rs-accent); border-block: var(--rs-border-width) solid var(--rs-border); font-family: var(--rs-font-display); text-transform: uppercase; font-size: 1.5rem; white-space: nowrap; }
+.rs-blocks { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: var(--rs-border-width) solid var(--rs-border); }  /* franja ESTRATEGIA | DISEÑO | ... */
+.rs-blocks > * { padding: 22px; border-right: var(--rs-border-width) solid var(--rs-border); background: var(--rs-ink); color: var(--rs-bg); font-family: var(--rs-font-display); text-transform: uppercase; }
+.rs-blocks > :last-child { border-right: 0; background: var(--rs-accent); color: var(--rs-accent-ink); }
+.rs-sticker--asterisk::before { content: "✱"; font-family: var(--rs-font-display); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; }
+
+@media (prefers-reduced-motion: reduce) { .rs-btn:hover, .rs-btn:active, .rs-card.is-interactive:hover { transform: none; } }
+@media (max-width: 640px) { .rs-card { box-shadow: 4px 4px 0 var(--rs-border); } .rs-blocks { grid-auto-flow: row; } .rs-blocks > * { border-right: 0; border-bottom: var(--rs-border-width) solid var(--rs-border); } }

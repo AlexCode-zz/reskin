@@ -1,0 +1,41 @@
+/* ============================================================
+   reskin · claymorphism tokens  (formas infladas, plastilina)
+   Solo claro (pasteles). Referencia: apps lavanda con tarjetas blandas e iconos de colores.
+   Fuentes: https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap
+   ============================================================ */
+:root {
+  --rs-scheme: light;
+  --rs-bg: #ece6ff; --rs-surface: #ffffff; --rs-surface-2: #f2ecff;
+  --rs-ink: #26195a; --rs-ink-muted: #51467f;
+  --rs-accent: #6a4df0; --rs-accent-ink: #ffffff; --rs-accent-text: #5a3de0;
+  --rs-accent-2: #ff6fa3; --rs-accent-3: #ffc93c; --rs-accent-4: #4fd8a8; --rs-accent-soft: rgb(106 77 240 / 0.12);
+  --rs-danger: #cc1f47; --rs-danger-ink: #ffffff; --rs-success: #0d7f56; --rs-warning: #8f5600;
+  --rs-scene:
+    radial-gradient(900px 600px at 12% -10%, #d6c9ff 0%, transparent 60%),
+    radial-gradient(700px 520px at 100% 0%, #ffd3e8 0%, transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, #cdeaff 0%, transparent 60%),
+    linear-gradient(180deg, #ece6ff, #e7defc);
+  --rs-chart-1: #6a4df0; --rs-chart-2: #e0457f; --rs-chart-3: #b87400; --rs-chart-4: #0a8a5e; --rs-chart-5: #2b7be0;
+  --rs-chart-grid: rgb(106 77 240 / 0.28); --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #26195a; --rs-tooltip-ink: #ffffff;
+
+  --rs-border: #cfc3f7; --rs-border-width: 0px; --rs-border-width-sm: 0px; --rs-input-border: #8a7ed0;
+  --rs-radius: 28px; --rs-radius-sm: 18px; --rs-radius-lg: 40px;
+  --rs-clay-hi: rgb(255 255 255 / 0.95); --rs-clay-lo: rgb(106 77 240 / 0.16);
+  --rs-shadow: 0 18px 30px -12px rgb(78 52 200 / 0.38), inset 0 -8px 14px var(--rs-clay-lo), inset 0 8px 14px var(--rs-clay-hi);
+  --rs-shadow-lg: 0 28px 44px -16px rgb(78 52 200 / 0.45), inset 0 -10px 18px var(--rs-clay-lo), inset 0 10px 18px var(--rs-clay-hi);
+  --rs-shadow-btn: 0 12px 20px -8px rgb(78 52 200 / 0.6), inset 0 -7px 12px rgb(0 0 0 / 0.2), inset 0 7px 12px rgb(255 255 255 / 0.4);
+  --rs-focus: #26195a;
+
+  --rs-font-display: "Baloo 2", "Nunito", system-ui, sans-serif;
+  --rs-font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --rs-weight-display: 800;
+  --rs-text-display: clamp(2.75rem, 7vw, 5.5rem);
+  --rs-text-h1: clamp(2rem, 4.2vw, 3.25rem);
+  --rs-text-h2: clamp(1.375rem, 2.4vw, 1.875rem);
+  --rs-leading-display: 1.02; --rs-tracking-display: -0.01em;
+
+  --rs-dur: 200ms; --rs-ease: cubic-bezier(0.3, 1.4, 0.5, 1);
+  --rs-fx-p1: #ff6fa3; --rs-fx-p2: #ffc93c; --rs-fx-p3: #4fd8a8;
+}
+@media (prefers-reduced-motion: reduce) { :root { --rs-dur: 0.01ms; } }

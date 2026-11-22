@@ -255,3 +255,19 @@
 @media (prefers-reduced-motion: reduce) {
   .rs-btn:hover { transform: none; }
 }
+
+/* 13 · Presencia liquid glass (v2): escena sobre imagen, lente y reflejo especular ------------
+   Liquid glass SOLO luce sobre un fondo rico: pon una foto/gradiente intenso detrás (imagen del
+   brief, ver references/images.md) o la escena de los tokens. Receta de efectos:
+   data-rs-fx="particles reveal tilt spot glow"  data-rs-particles="orbs"  */
+:root { background-color: var(--rs-bg); background-image: var(--rs-scene); }
+.rs-app { background: transparent !important; }          /* único !important: el fondo viejo de .rs-app taparía la escena */
+.rs-display { font-family: var(--rs-font-display); font-size: var(--rs-text-display, clamp(2.75rem, 7vw, 5.5rem)); line-height: 1.02; letter-spacing: -0.04em; font-weight: 650; text-wrap: balance; }
+.rs-eyebrow { font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--rs-ink-muted); }
+.rs-hero { display: grid; gap: clamp(20px, 4vw, 48px); align-items: center; padding: clamp(24px, 6vw, 72px) 0; }
+@media (min-width: 900px) { .rs-hero--split { grid-template-columns: 1.1fr 0.9fr; } }
+.rs-media { position: relative; overflow: hidden; border-radius: var(--rs-radius-lg); box-shadow: var(--rs-shadow-2), inset 0 0 0 1px var(--rs-glass-border); }
+.rs-media > img, .rs-media > video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rs-media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 80% at 20% 0%, rgb(255 255 255 / 0.28), transparent 55%); pointer-events: none; mix-blend-mode: soft-light; }   /* brillo especular */
+[data-rs-tilt].rs-card { transform-style: preserve-3d; }
+.rs-btn--arrow::after { content: "→"; }

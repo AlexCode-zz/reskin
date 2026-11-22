@@ -1,0 +1,56 @@
+/* reskin · minimalism · firma: aire, una serif elegante para títulos, sombras casi invisibles,
+   pocos colores y un solo acento. Requiere _base.css + tokens/minimalism.css. */
+
+.rs-display, .rs-title { font-weight: 400; }
+.rs-display em, .rs-title em { font-style: italic; }
+.rs-eyebrow, .rs-label { font-size: 0.75rem; letter-spacing: 0.16em; font-weight: 600; }
+.rs-hero { padding-block: clamp(48px, 10vw, 140px); }
+.rs-divider { border-top-color: var(--rs-hairline); }
+
+/* Superficies: borde hairline, sin peso */
+.rs-card { padding: 32px; box-shadow: none; border: 1px solid var(--rs-border); }
+.rs-card.is-interactive:hover { box-shadow: var(--rs-shadow); transform: translateY(-2px); }
+.rs-card--strong { background: var(--rs-surface-2); box-shadow: none; }
+.rs-card--stat { padding: 24px 28px; }
+.rs-stat-value { font-family: var(--rs-font-display); font-weight: 400; font-size: 2.75rem; letter-spacing: -0.03em; }
+.rs-stat-label { font-size: 0.75rem; letter-spacing: 0.14em; }
+
+.rs-navbar { background: transparent; border: 0; border-bottom: 1px solid var(--rs-hairline); box-shadow: none; padding-inline: clamp(16px, 4vw, 48px); }
+.rs-sidebar { background: transparent; border: 0; border-right: 1px solid var(--rs-hairline); box-shadow: none; }
+.rs-brand { font-family: var(--rs-font-body); font-weight: 600; font-size: 0.9375rem; letter-spacing: 0.02em; }
+.rs-nav-item { font-weight: 500; border-radius: 10px; }
+.rs-nav-item:hover { background: var(--rs-accent-soft); }
+.rs-nav-item[aria-current="page"], .rs-nav-item.is-active { background: var(--rs-accent-soft); color: var(--rs-ink); font-weight: 600; box-shadow: none; }
+.rs-navbar .rs-nav-item[aria-current="page"] { background: transparent; border-radius: 0; box-shadow: inset 0 -2px 0 var(--rs-ink); }
+
+/* Botones: píldora sólida o enlace con flecha */
+.rs-btn { border-radius: 999px; padding: 12px 26px; font-weight: 500; box-shadow: none; }
+.rs-btn:hover { transform: none; background: #2a2a28; }
+[data-theme="dark"] .rs-btn:hover { background: #ffffff; }
+.rs-btn--secondary { background: var(--rs-surface); border: 1px solid var(--rs-border); }
+.rs-btn--ghost { border: 1px solid var(--rs-input-border); }
+.rs-btn--link { background: transparent; color: var(--rs-ink); padding-inline: 0; min-height: 0; border-radius: 0; box-shadow: inset 0 -1px 0 var(--rs-ink); }
+.rs-btn--link::after { content: "↗"; }
+
+.rs-field, .rs-select, .rs-textarea { border: 1px solid var(--rs-input-border); border-radius: 12px; background: var(--rs-surface); }
+.rs-field:focus-visible, .rs-select:focus-visible, .rs-textarea:focus-visible { box-shadow: 0 0 0 4px rgb(47 91 255 / 0.15); }
+
+.rs-tabs { background: transparent; padding: 0; gap: 24px; border-radius: 0; border-bottom: 1px solid var(--rs-hairline); }
+.rs-tab { border-radius: 0; padding: 10px 2px; min-height: 44px; background: transparent; }
+.rs-tab[aria-selected="true"], .rs-tab.is-active { background: transparent; color: var(--rs-ink); box-shadow: inset 0 -2px 0 var(--rs-ink); }
+.rs-badge { background: var(--rs-surface-2); font-weight: 500; }
+
+.rs-table th { border-bottom: 1px solid var(--rs-border); font-weight: 600; letter-spacing: 0.1em; }
+.rs-table td { border-bottom: 1px solid var(--rs-hairline); padding-block: 16px; }
+.rs-overlay { background: rgb(250 250 248 / 0.72); }
+[data-theme="dark"] .rs-overlay { background: rgb(12 12 11 / 0.72); }
+.rs-dialog { padding: 36px; }
+.rs-progress { height: 4px; background: var(--rs-border); }
+.rs-progress > * { background: var(--rs-ink); }
+
+/* Piezas de la referencia (NYT / Kuuro): mancha orgánica negra, puntos y foto con luz suave */
+.rs-media { border: 0; box-shadow: none; border-radius: var(--rs-radius-lg); }
+.rs-media > img { filter: saturate(0.85); }
+.rs-blob { aspect-ratio: 1; background: var(--rs-ink); border-radius: 58% 42% 61% 39% / 47% 55% 45% 53%; position: relative; }
+.rs-dots { background-image: radial-gradient(var(--rs-ink) 1px, transparent 1.3px); background-size: 12px 12px; opacity: 0.28; }
+@media (prefers-reduced-motion: reduce) { .rs-card.is-interactive:hover { transform: none; } }

@@ -1,0 +1,66 @@
+/* ============================================================
+   reskin · brutalism tokens  (brutalismo moderno)
+   Variantes:  (sin atributo) mono: blanco roto + negro + lima
+               [data-brutal="pop"]  neo-brutalismo de colores (violeta, lima, amarillo, coral)
+   Tema oscuro: [data-theme="dark"]
+   Fuentes (con aprobación del brief):
+   https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&display=swap
+   ============================================================ */
+:root {
+  --rs-scheme: light;
+  --rs-bg: #f3f2ec; --rs-surface: #ffffff; --rs-surface-2: #e9e8df;
+  --rs-ink: #0a0a0a; --rs-ink-muted: #4b4a44;
+  --rs-accent: #d7f20d; --rs-accent-ink: #0a0a0a; --rs-accent-text: #0a0a0a;
+  --rs-accent-2: #0a0a0a; --rs-accent-3: #ff4d2e; --rs-accent-soft: rgb(215 242 13 / 0.35);
+  --rs-danger: #c8230d; --rs-danger-ink: #ffffff; --rs-success: #0b6e3f; --rs-warning: #8a4f00;
+  --rs-scene:
+    linear-gradient(to right, rgb(10 10 10 / 0.05) 1px, transparent 1px) 0 0 / 56px 56px,
+    linear-gradient(to bottom, rgb(10 10 10 / 0.05) 1px, transparent 1px) 0 0 / 56px 56px;
+  --rs-chart-1: #0a0a0a; --rs-chart-2: #e0381a; --rs-chart-3: #2b50ff; --rs-chart-4: #0d8a52; --rs-chart-5: #9a1fe0;
+  --rs-chart-grid: rgb(10 10 10 / 0.28); --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #0a0a0a; --rs-tooltip-ink: #f3f2ec;
+
+  --rs-border: #0a0a0a; --rs-border-width: 3px; --rs-border-width-sm: 2px;
+  --rs-radius: 0px; --rs-radius-sm: 0px; --rs-radius-lg: 0px;
+  --rs-shadow: 6px 6px 0 var(--rs-border); --rs-shadow-lg: 10px 10px 0 var(--rs-border); --rs-shadow-btn: 4px 4px 0 var(--rs-border);
+  --rs-focus: #0a0a0a;
+
+  --rs-font-display: "Anton", "Archivo Black", Impact, "Arial Narrow", sans-serif;
+  --rs-font-body: "Archivo", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --rs-weight-display: 400;
+  --rs-text-display: clamp(3.25rem, 10vw, 9rem);
+  --rs-text-h1: clamp(2.25rem, 5.5vw, 4.25rem);
+  --rs-text-h2: clamp(1.5rem, 3vw, 2.25rem);
+  --rs-leading-display: 0.92; --rs-tracking-display: 0em;
+
+  --rs-dur: 110ms; --rs-ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --rs-fx-p1: #d7f20d; --rs-fx-p2: #0a0a0a; --rs-fx-p3: #ff4d2e;
+}
+/* Pop: neo-brutalismo de colores (referencia: apps lima/amarillo/coral sobre violeta) */
+[data-brutal="pop"] {
+  --rs-bg: #8a63ff; --rs-surface: #fffbea; --rs-surface-2: #ffe14d;
+  --rs-ink: #0a0a0a; --rs-ink-muted: #120a2a;
+  --rs-accent: #c6ff3d; --rs-accent-2: #ff6b4a; --rs-accent-3: #ffe14d; --rs-accent-soft: rgb(198 255 61 / 0.45);
+  --rs-scene:
+    radial-gradient(rgb(10 10 10 / 0.16) 1.5px, transparent 1.6px) 0 0 / 22px 22px,
+    linear-gradient(#8a63ff, #8a63ff);
+  --rs-radius: 22px; --rs-radius-sm: 14px; --rs-radius-lg: 32px;
+  --rs-font-display: "Space Grotesk", "Archivo", system-ui, sans-serif; --rs-weight-display: 800;
+  --rs-tracking-display: -0.02em; --rs-leading-display: 0.98;
+  --rs-fx-p1: #c6ff3d; --rs-fx-p2: #ffe14d; --rs-fx-p3: #ff6b4a;
+}
+[data-theme="dark"] {
+  --rs-scheme: dark;
+  --rs-bg: #0b0b0b; --rs-surface: #151515; --rs-surface-2: #202020;
+  --rs-ink: #f3f2ec; --rs-ink-muted: #b4b3aa;
+  --rs-accent: #d7f20d; --rs-accent-text: #d7f20d; --rs-accent-soft: rgb(215 242 13 / 0.16);
+  --rs-border: #f3f2ec; --rs-shadow: 6px 6px 0 #d7f20d; --rs-shadow-lg: 10px 10px 0 #d7f20d; --rs-shadow-btn: 4px 4px 0 #d7f20d;
+  --rs-focus: #d7f20d;
+  --rs-scene:
+    linear-gradient(to right, rgb(243 242 236 / 0.06) 1px, transparent 1px) 0 0 / 56px 56px,
+    linear-gradient(to bottom, rgb(243 242 236 / 0.06) 1px, transparent 1px) 0 0 / 56px 56px;
+  --rs-chart-1: #d7f20d; --rs-chart-2: #ff6b4a; --rs-chart-3: #7b9bff; --rs-chart-4: #3fe08f; --rs-chart-5: #d28bff;
+  --rs-chart-grid: rgb(243 242 236 / 0.3);
+  --rs-tooltip-bg: #f3f2ec; --rs-tooltip-ink: #0a0a0a; --rs-danger: #ff7b66; --rs-success: #3fe08f; --rs-warning: #ffc04d;
+}
+@media (prefers-reduced-motion: reduce) { :root { --rs-dur: 0.01ms; } }

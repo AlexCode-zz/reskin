@@ -1,0 +1,41 @@
+/* ============================================================
+   reskin · y2k tokens  (retro 2000: escritorio con ventanas biseladas)
+   Solo claro (pastel + beige de ventana). No es el "retro" arcade/CRT: ese es retro.css.
+   Referencia: escritorio rosa→lavanda con ventanas beige, barras azules y botones amarillos.
+   Fuentes: https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&display=swap
+   ============================================================ */
+:root {
+  --rs-scheme: light;
+  --rs-bg: #e6cff6; --rs-surface: #f4eedb; --rs-surface-2: #e3d9bd;
+  --rs-ink: #1c1738; --rs-ink-muted: #484068;
+  --rs-accent: #ffc22e; --rs-accent-ink: #1c1738; --rs-accent-text: #2a4fd0;
+  --rs-accent-2: #2f6bff; --rs-accent-3: #ff5fae; --rs-accent-soft: rgb(47 107 255 / 0.16);
+  --rs-danger: #b3152b; --rs-danger-ink: #ffffff; --rs-success: #0b7550; --rs-warning: #7d4d00;
+  --rs-scene:
+    radial-gradient(640px 420px at 8% 8%, #ffd1ec 0%, transparent 65%),
+    radial-gradient(720px 520px at 96% 92%, #b9d5ff 0%, transparent 65%),
+    linear-gradient(160deg, #f8d8ef 0%, #e2c9f8 55%, #cbbff6 100%);
+  --rs-chart-1: #2f6bff; --rs-chart-2: #d6338a; --rs-chart-3: #a86a00; --rs-chart-4: #0e8a5f; --rs-chart-5: #6a3fd0;
+  --rs-chart-grid: rgb(28 23 56 / 0.3); --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #1c1738; --rs-tooltip-ink: #ffffff;
+
+  --rs-border: #1c1738; --rs-border-width: 2px; --rs-border-width-sm: 2px; --rs-input-border: #1c1738;
+  --rs-radius: 4px; --rs-radius-sm: 2px; --rs-radius-lg: 8px;
+  --rs-bevel-out: inset 2px 2px 0 #ffffff, inset -2px -2px 0 #8c8266;
+  --rs-bevel-in: inset 2px 2px 0 #8c8266, inset -2px -2px 0 #ffffff;
+  --rs-shadow: 4px 4px 0 rgb(28 23 56 / 0.35); --rs-shadow-lg: 7px 7px 0 rgb(28 23 56 / 0.4); --rs-shadow-btn: var(--rs-bevel-out);
+  --rs-titlebar: linear-gradient(90deg, #2f6bff 0%, #7aa6ff 100%); --rs-titlebar-ink: #ffffff;
+  --rs-focus: #2f6bff;
+
+  --rs-font-display: "Pixelify Sans", Tahoma, "Trebuchet MS", sans-serif;
+  --rs-font-body: Tahoma, Verdana, "Segoe UI", system-ui, sans-serif;
+  --rs-weight-display: 700;
+  --rs-text-display: clamp(2.5rem, 6vw, 4.75rem);
+  --rs-text-h1: clamp(1.75rem, 3.6vw, 2.75rem);
+  --rs-text-h2: clamp(1.25rem, 2.2vw, 1.625rem);
+  --rs-leading-display: 1.05; --rs-tracking-display: 0em;
+
+  --rs-dur: 100ms; --rs-ease: steps(3, end);
+  --rs-fx-p1: #ff5fae; --rs-fx-p2: #2f6bff; --rs-fx-p3: #ffc22e;
+}
+@media (prefers-reduced-motion: reduce) { :root { --rs-dur: 0.01ms; } }

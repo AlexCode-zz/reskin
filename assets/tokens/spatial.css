@@ -1,0 +1,69 @@
+/* ============================================================
+   reskin · spatial tokens  (UI espacial / visionOS: profundidad, paneles flotantes)
+   Oscuro por defecto; claro con [data-theme="light"].
+   Los paneles son vidrio sobre un entorno con luz: --rs-surface es el FALLBACK opaco
+   (sin backdrop-filter) y la base de los cálculos de contraste.
+   Fuentes: https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
+   ============================================================ */
+:root {
+  --rs-scheme: dark;
+  --rs-bg: #0d1020; --rs-surface: #1a2036; --rs-surface-2: #242b49;
+  --rs-ink: #ffffff; --rs-ink-muted: #c3cae3;
+  --rs-accent: #8ab8ff; --rs-accent-ink: #07142e; --rs-accent-text: #a9ccff;
+  --rs-accent-2: #ff9fd0; --rs-accent-3: #ffd479; --rs-accent-soft: rgb(138 184 255 / 0.16);
+  --rs-danger: #ff9a9a; --rs-danger-ink: #2a0606; --rs-success: #6fe3b0; --rs-warning: #ffd479;
+  --rs-scene:
+    radial-gradient(1200px 700px at 18% -5%, #2d3f82 0%, transparent 60%),
+    radial-gradient(900px 600px at 92% 18%, #5b2f70 0%, transparent 60%),
+    radial-gradient(1100px 800px at 50% 115%, #1b4f63 0%, transparent 60%),
+    linear-gradient(#0d1020, #0a0d1a);
+
+  /* Vidrio espacial */
+  --rs-glass: rgb(255 255 255 / 0.10); --rs-glass-strong: rgb(255 255 255 / 0.17);
+  --rs-glass-border: rgb(255 255 255 / 0.28); --rs-glass-edge: rgb(255 255 255 / 0.55);
+  --rs-blur: 36px; --rs-saturate: 1.5;
+
+  --rs-chart-1: #8ab8ff; --rs-chart-2: #ff9fd0; --rs-chart-3: #ffd479; --rs-chart-4: #6fe3b0; --rs-chart-5: #c4a6ff;
+  --rs-chart-grid: rgb(195 202 227 / 0.28); --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #0a0e1d; --rs-tooltip-ink: #ffffff;
+
+  --rs-border: rgb(255 255 255 / 0.28); --rs-border-width: 1px; --rs-border-width-sm: 1px; --rs-input-border: rgb(255 255 255 / 0.6);
+  --rs-radius: 32px; --rs-radius-sm: 18px; --rs-radius-lg: 48px;
+  --rs-shadow: 0 30px 60px -24px rgb(0 0 0 / 0.6), 0 8px 18px -8px rgb(0 0 0 / 0.35);
+  --rs-shadow-lg: 0 50px 90px -30px rgb(0 0 0 / 0.7), 0 12px 24px -10px rgb(0 0 0 / 0.4);
+  --rs-focus: #ffffff;
+
+  --rs-font-display: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --rs-font-body: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --rs-weight-display: 600;
+  --rs-text-display: clamp(2.75rem, 6.5vw, 5.25rem);
+  --rs-text-h1: clamp(2rem, 3.8vw, 3rem);
+  --rs-text-h2: clamp(1.25rem, 2.2vw, 1.625rem);
+  --rs-leading-display: 1.04; --rs-tracking-display: -0.035em;
+
+  --rs-dur: 260ms; --rs-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --rs-fx-p1: #8ab8ff; --rs-fx-p2: #ff9fd0; --rs-fx-p3: #ffd479;
+}
+[data-theme="light"] {
+  --rs-scheme: light;
+  --rs-bg: #dfe7f5; --rs-surface: #f4f7fd; --rs-surface-2: #e6ecf8;
+  --rs-ink: #101528; --rs-ink-muted: #435070;
+  --rs-accent: #1d57d6; --rs-accent-ink: #ffffff; --rs-accent-text: #1a4fc4; --rs-accent-soft: rgb(29 87 214 / 0.12);
+  --rs-accent-2: #c2307f; --rs-accent-3: #8f5a00;
+  --rs-danger: #b42a2a; --rs-danger-ink: #ffffff; --rs-success: #0c7a53; --rs-warning: #8a5400;
+  --rs-scene:
+    radial-gradient(1100px 700px at 15% -10%, #ffffff 0%, transparent 60%),
+    radial-gradient(900px 600px at 95% 15%, #f3d9f0 0%, transparent 60%),
+    radial-gradient(1000px 700px at 50% 115%, #bcd6f0 0%, transparent 60%),
+    linear-gradient(#dfe7f5, #d3deef);
+  --rs-glass: rgb(255 255 255 / 0.55); --rs-glass-strong: rgb(255 255 255 / 0.75);
+  --rs-glass-border: rgb(255 255 255 / 0.9); --rs-glass-edge: rgb(255 255 255 / 1);
+  --rs-chart-1: #1d57d6; --rs-chart-2: #c2307f; --rs-chart-3: #a86a00; --rs-chart-4: #0c8a5d; --rs-chart-5: #6a3fd0;
+  --rs-chart-grid: rgb(67 80 112 / 0.3);
+  --rs-tooltip-bg: #101528; --rs-tooltip-ink: #ffffff;
+  --rs-border: rgb(16 21 40 / 0.14); --rs-input-border: rgb(16 21 40 / 0.55); --rs-focus: #1d57d6;
+  --rs-shadow: 0 24px 48px -22px rgb(40 60 110 / 0.35), 0 6px 14px -6px rgb(40 60 110 / 0.2);
+  --rs-shadow-lg: 0 40px 80px -28px rgb(40 60 110 / 0.45), 0 10px 22px -8px rgb(40 60 110 / 0.25);
+  --rs-fx-p1: #ffffff; --rs-fx-p2: #a9c4ff; --rs-fx-p3: #f3c3e6;
+}
+@media (prefers-reduced-motion: reduce) { :root { --rs-dur: 0.01ms; } }

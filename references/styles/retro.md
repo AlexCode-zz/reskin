@@ -274,3 +274,23 @@ contraste y marean.
 - [ ] Contraste AA verificado.
 - [ ] Foco visible y `prefers-reduced-motion`.
 - [ ] Sin blur ni transparencias tipo glass.
+
+## v2 · Ingredientes obligatorios (regla de los 6 de `design-depth.md`)
+
+Retro **no es** "fondo oscuro + fuente mono". Sin escena, textura y sombras duras se ve genérico.
+
+| # | Ingrediente | Receta |
+|---|---|---|
+| 1 | Tipografía | Press Start 2P solo en display (≥ 16px) + Space Mono en cuerpo. `<link>` aprobado en el brief. |
+| 2 | Forma | Radios 0 (arcade) / 2–6px (CRT). Bordes de 3px. |
+| 3 | Profundidad | Sombras de offset sólido; el botón se hunde al pulsar. |
+| 4 | Escena | `body::before/::after` (ya en `retro.css §13`): cielo de píxeles + suelo en perspectiva (arcade), sol a rayas + grid (synth), scanlines + viñeta (CRT). |
+| 5 | Material | Scanlines sobre imágenes (`.rs-media::after`), neón con moderación, tablas con bordes duros. |
+| 6 | Movimiento | Partículas `pixels` (arcade) o `stars` (synth); glitch de 260ms al hover del título; cursor `█` parpadeante. |
+| 7 | Firma | `.rs-display` con sombra dura + glow, `.rs-ticker`, `.rs-cursor`, `.rs-sticker--star`, imagen pixelada con scanlines. |
+
+- `data-retro` va en **`<html>`** para que la escena de página completa lo vea.
+- Efectos: `data-rs-fx="particles reveal"`; `data-rs-particles="pixels"`. CRT: sin partículas (la escena son scanlines).
+- Imágenes (nivel C): `image-rendering: pixelated` + scanlines; ver `references/images.md`.
+- Vista previa: `assets/preview.html?style=retro&v=synth`.
+- Errores nuevos: *escena invisible* → el wrapper tiene fondo opaco (`.rs-app{background:transparent}` ya viene en §13); *sol tapa el texto* → opacidad ≤ 0.4 (ya aplicada).

@@ -1,0 +1,53 @@
+/* reskin · neumorphism · firma: la superficie y el fondo son el MISMO color; el relieve sale de
+   dos sombras (oscura abajo-derecha, clara arriba-izquierda). Presionado = sombras internas.
+   Requiere _base.css + tokens/neumorphism.css. Claro y oscuro.
+   ACCESIBILIDAD: el relieve no comunica estado. Estado activo = color + marca de forma + peso. */
+
+.rs-app { --rs-field-bg: transparent; }
+.rs-card, .rs-sidebar, .rs-navbar, .rs-dialog, .rs-popover { background: var(--rs-surface); border: 0; box-shadow: var(--rs-shadow); }
+.rs-card--inset { box-shadow: var(--rs-shadow-in); }
+.rs-card--strong { background: var(--rs-surface); box-shadow: var(--rs-shadow-lg); }
+.rs-card.is-interactive:hover { transform: none; box-shadow: var(--rs-shadow-lg); }
+.rs-card.is-interactive:active { box-shadow: var(--rs-shadow-in); }
+.rs-stat-value { font-weight: 800; color: var(--rs-accent-text); }
+
+.rs-sidebar { border-radius: 0 var(--rs-radius) var(--rs-radius) 0; }
+.rs-navbar { border-radius: 0 0 var(--rs-radius) var(--rs-radius); }
+.rs-brand { color: var(--rs-accent-text); }
+.rs-nav-item { border-radius: var(--rs-radius-sm); font-weight: 600; }
+.rs-nav-item:hover { background: transparent; box-shadow: var(--rs-shadow-sm); color: var(--rs-ink); }
+.rs-nav-item[aria-current="page"], .rs-nav-item.is-active { background: transparent; box-shadow: var(--rs-shadow-in); color: var(--rs-accent-text); font-weight: 800; }
+.rs-nav-item[aria-current="page"]::before, .rs-nav-item.is-active::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rs-accent); flex: none; }   /* marca de forma */
+
+/* Botones: sobresalen; al pulsar se hunden */
+.rs-btn { border: 0; border-radius: var(--rs-radius-sm); box-shadow: var(--rs-shadow-sm); font-weight: 700; }
+.rs-btn:hover { transform: none; box-shadow: var(--rs-shadow); }
+.rs-btn:active { transform: none; box-shadow: inset 4px 4px 8px rgb(0 0 0 / 0.28), inset -3px -3px 6px rgb(255 255 255 / 0.18); }
+.rs-btn--secondary { background: var(--rs-surface); color: var(--rs-accent-text); }
+.rs-btn--secondary:active { box-shadow: var(--rs-shadow-in); }
+.rs-btn--ghost { background: var(--rs-surface); color: var(--rs-ink); border: 0; box-shadow: var(--rs-shadow-sm); }
+.rs-btn--round { width: 48px; height: 48px; padding: 0; border-radius: 50%; }
+.rs-btn[disabled], .rs-btn[aria-disabled="true"] { background: var(--rs-surface); box-shadow: var(--rs-shadow-in); }
+
+/* Inputs hundidos */
+.rs-field, .rs-select, .rs-textarea { border: 0; border-radius: var(--rs-radius-sm); background: var(--rs-surface); box-shadow: var(--rs-shadow-in); }
+.rs-field:hover, .rs-select:hover, .rs-textarea:hover { border: 0; }
+.rs-field:focus-visible, .rs-select:focus-visible, .rs-textarea:focus-visible { border: 0; outline: 3px solid var(--rs-focus); outline-offset: 3px; }
+.rs-field[aria-invalid="true"] { box-shadow: var(--rs-shadow-in), inset 0 0 0 2px var(--rs-danger); }
+
+.rs-tabs { background: transparent; padding: 6px; border-radius: var(--rs-radius-sm); box-shadow: var(--rs-shadow-in); }
+.rs-tab { border-radius: 12px; font-weight: 600; }
+.rs-tab[aria-selected="true"], .rs-tab.is-active { background: var(--rs-surface); color: var(--rs-accent-text); box-shadow: var(--rs-shadow-sm); font-weight: 800; }
+.rs-badge { background: var(--rs-surface); box-shadow: var(--rs-shadow-sm); font-weight: 700; color: var(--rs-ink); }
+.rs-table th { border-bottom: 0; } .rs-table td { border-bottom: 0; padding-block: 14px; }
+.rs-table tbody tr:hover { background: transparent; box-shadow: var(--rs-shadow-in); }
+.rs-overlay { background: rgb(231 234 243 / 0.78); }
+[data-theme="dark"] .rs-overlay { background: rgb(38 42 54 / 0.78); }
+.rs-tooltip { border: 0; box-shadow: 4px 4px 10px rgb(0 0 0 / 0.25); }
+.rs-toast { border: 0; box-shadow: var(--rs-shadow); }
+.rs-progress { height: 16px; background: var(--rs-surface); box-shadow: var(--rs-shadow-in); }
+.rs-progress > * { background: var(--rs-accent); box-shadow: 2px 2px 5px var(--rs-neu-dark); }
+.rs-empty { border: 0; box-shadow: var(--rs-shadow-in); }
+.rs-media { border: 0; box-shadow: var(--rs-shadow); border-radius: var(--rs-radius); }
+.rs-chart .recharts-tooltip-cursor { fill: transparent; }
+@media (prefers-reduced-motion: reduce) { .rs-btn:active { box-shadow: var(--rs-shadow-in); } }

@@ -69,7 +69,7 @@
 
   /* Tipografía ---------------------------------------------------- */
   --rs-font-display: "Press Start 2P", "Courier New", ui-monospace, monospace;
-  --rs-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas,
+  --rs-font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
   --rs-text-display: clamp(2.25rem, 4.5vw, 4rem);
   --rs-text-h1: clamp(1.75rem, 3vw, 2.75rem);
@@ -78,6 +78,7 @@
   --rs-tracking-display: 0.02em;
 
   /* Movimiento: corto y seco ------------------------------------- */
+  --rs-fx-p1: #05ffa1; --rs-fx-p2: #ff2e88; --rs-fx-p3: #ffe66d;
   --rs-dur-fast: 90ms;
   --rs-dur: 140ms;
   --rs-dur-slow: 220ms;

@@ -77,3 +77,5 @@ tooltip HTML externo, aplícale la clase `rs-tooltip`.
 - [ ] Rejilla visible pero sutil (`--rs-chart-grid`).
 - [ ] La información no depende solo del color: leyenda con texto o valores visibles.
 - [ ] Datos, props y lógica del gráfico intactos (`git diff` solo muestra colores/clases).
+
+> **Estilos nuevos:** los gráficos de los 8 estilos nuevos se restilizan desde `assets/components/_base.css §12` (Recharts) usando `--rs-chart-1..5`, `--rs-chart-grid`, `--rs-chart-axis` y `--rs-tooltip-*`. Los tokens ya cumplen 3:1 de las series contra la superficie.

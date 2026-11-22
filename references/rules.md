@@ -2,21 +2,46 @@
 
 Estas reglas mandan sobre el estilo elegido y sobre cualquier preferencia estética. Si el estilo pide algo que las viola, **el estilo se adapta; la regla no se rompe**.
 
+## 0. Niveles de intervención (se eligen en el brief)
+
+Un reskin que solo cambia colores se ve genérico. Por eso el skill trabaja por niveles; **la
+lógica queda intacta en los tres**. Cada nivel incluye al anterior.
+
+| Nivel | Qué añade | Por defecto en |
+|---|---|---|
+| **A · Piel** | Solo `className`/`class`/`style`, CSS y tokens | Cuando el usuario lo pide explícitamente o el proyecto es muy frágil |
+| **B · Escena** *(recomendado)* | Escena de fondo (`body::before/::after`), tipografía del estilo (`<link>` de fuentes), `reskin-fx.css/.js`, atributos `data-rs-*`, partículas, scroll reveal, parallax, tilt, hover con vida | Dashboards, apps, paneles |
+| **C · Completo** | B + piezas decorativas nuevas (hero, ticker, stickers, marcos) e **imágenes** (`references/images.md`) | Landings, portafolios, sitios de marca |
+
+Mínimo de impacto visual (ver `references/design-depth.md`): en B y C el resultado debe cambiar
+**tipografía, forma, profundidad, escena y movimiento**, no solo el color. Si el diff solo
+contiene colores, el reskin no está terminado.
+
 ## 1. Superficie, no comportamiento
 
-Un reskin cambia la piel. La lógica queda intacta.
+La lógica nunca se toca. Lo que cambia según el nivel es cuánta presentación se añade.
 
-| Permitido | Prohibido |
+| Permitido (según nivel) | Prohibido (siempre) |
 |---|---|
-| `className`, `class`, `style` con propiedades visuales | Estados, hooks, `useEffect`, refs, handlers, condiciones |
-| CSS, tokens, keyframes y media queries en el entrypoint existente | Props, API de componentes, rutas, fetching, validación, tests |
-| Colores, tipografía, radios, sombras, espaciado, movimiento | Textos, `key` de listas, `aria-*`, roles, orden de tabulación |
-| Overrides visuales de la librería de UI (tema, `sx`, variantes) | Dependencias, versiones, lockfiles, configuración de build (salvo tokens del theme de Tailwind: ver §2) |
-| Una capa decorativa fija si es imprescindible (ver abajo) | Reestructurar el DOM, añadir wrappers de layout, cambiar elementos semánticos |
+| `className`, `class`, `style` con propiedades visuales (A, B, C) | Estados, hooks, `useEffect`, refs, handlers, condiciones |
+| CSS, tokens, keyframes y media queries en el entrypoint existente (A, B, C) | Props, API de componentes, rutas, fetching, validación, tests |
+| Colores, tipografía, radios, sombras, espaciado, movimiento (A, B, C) | Textos existentes, `key` de listas, `aria-*`, roles, orden de tabulación |
+| Overrides visuales de la librería de UI (tema, `sx`, variantes) (A, B, C) | Dependencias npm, versiones, lockfiles, configuración de build (salvo tokens del theme de Tailwind: ver §2) |
+| Pseudo-elementos de `body`/`html` para la escena; atributos `data-rs-*`; archivos `reskin-fx.css/.js` copiados al proyecto (B, C) | Reestructurar el DOM existente, mover o envolver contenido, cambiar elementos semánticos |
+| **Añadir** elementos decorativos nuevos y hermanos (`aria-hidden="true"`, `pointer-events:none`) e imágenes con `alt=""` o `alt` descriptivo (C) | Quitar o reemplazar elementos existentes |
 
-**Capa decorativa:** solo si no hay otra forma de aplicar la escena. Una sola, en la raíz, `aria-hidden="true"`, `pointer-events: none`, `position: fixed`, sin afectar el flujo. Si hay que envolver contenido, no lo hagas: busca el fondo del shell existente.
+**Capa decorativa:** una escena fija en `body::before/::after` (preferida: no toca el DOM) o, si
+no hay otra forma, un elemento `aria-hidden` en la raíz. Nada de envolver contenido: busca el
+fondo del shell existente. El fondo vive en `<html>`; `body` y los wrappers (`#root`, `.app`)
+quedan transparentes, o las partículas y la escena quedan tapadas.
 
-**Textos:** no los reescribas para que "quepan". Si el nuevo estilo necesita menos palabras, señálalo en el brief y deja la decisión al usuario.
+**Textos:** no reescribas los existentes para que "quepan". Si el estilo necesita menos
+palabras, señálalo en el brief. Los textos decorativos nuevos (ticker, stickers) son
+opcionales, cortos y `aria-hidden`; nunca información que el usuario necesite.
+
+**Imágenes (nivel C):** primero como `background-image` CSS en un contenedor existente (cero
+DOM). Si hace falta un elemento, uno nuevo y hermano. Siempre con el protocolo de
+`references/images.md` (marcadas como provisionales y avisadas al final).
 
 ## 2. Respeta el sistema de estilos que ya existe
 
@@ -24,7 +49,7 @@ No introduzcas un segundo sistema. Si hay Tailwind, se usan utilidades de Tailwi
 
 | El proyecto usa | Haz esto | No hagas esto |
 |---|---|---|
-| Tailwind v3/v4 | Utilidades + tokens al theme (`@theme` v4 / `theme.extend` v3) | Crear otra hoja, styled-components, CSS Modules nuevos |
+| Tailwind v3/v4 | Utilidades + tokens al theme (`@theme` v4 / `theme.extend` v3) + `reskin-fx.*` (efectos) | Crear otra hoja de componentes, styled-components, CSS Modules nuevos |
 | CSS Modules | Edita el `.module.css` que ya usa el componente | Renombrar clases exportadas (el JS las referencia) |
 | CSS plano | Edita la hoja existente; tokens en `:root` | Añadir un framework CSS |
 | styled-components / Emotion | Tokens en el theme o en el template existente | Mezclar con una hoja CSS nueva |
@@ -40,8 +65,11 @@ No introduzcas un segundo sistema. Si hay Tailwind, se usan utilidades de Tailwi
 - `@apply` solo si el proyecto ya lo usa.
 - Lleva los tokens al theme: v4 → `@theme` en el CSS global existente; v3 → `theme.extend` en `tailwind.config.*`. Es la vía correcta para que existan `bg-rs-*`, `rounded-rs-*`, etc.
 - No añadas plugins ni presets ni cambies `content` o la estrategia de dark mode. El theme solo recibe tokens del estilo.
+- **Excepción de efectos (nivel B/C):** `reskin-fx.css` y `reskin-fx.js` son archivos de *efectos*, no un sistema de componentes. Se importan una vez (`@import` en el CSS global con v4; `import` en el entrypoint con v3). Los atributos `data-rs-*` se ponen con `className`/atributos, igual que cualquier clase.
 
 ## 2b. Widgets de terceros y tipografía
+
+- **Fuentes (nivel B/C):** cada estilo trae su pareja tipográfica. Se cargan con un `<link>` de Google Fonts (HTML), `next/font/google` (Next.js, es parte de Next) o `@import`/`<link>` en React. Es parte del brief aprobado: no necesita paquetes npm. Siempre con fallback del sistema. En nivel A, conserva la tipografía del proyecto.
 
 - **Gráficos, tooltips, selects, calendarios y toasts de librerías se restilizan siempre.**
   Si no, quedan con el aspecto por defecto (tooltip blanco, ejes grises) y rompen el estilo.
@@ -99,8 +127,8 @@ No es opcional y no se negocia por estética.
 ### Movimiento
 
 - Respeta `prefers-reduced-motion`. Los tokens ya ponen las duraciones a cero; añade `transform: none` en los hover que muevan.
-- Nada de movimiento infinito, parallax automático ni autoplay que no se pueda pausar.
-- No escondas contenido detrás de una animación de entrada.
+- Movimiento ambiental (partículas, flotación, marquee) permitido solo si es **decorativo, de baja intensidad, se pausa con la pestaña oculta y se apaga con `prefers-reduced-motion`** (reskin-fx ya lo hace). Nunca autoplay de contenido ni nada esencial que dependa de moverse.
+- Parallax y reveal vía `data-rs-*`: solo bajo `prefers-reduced-motion: no-preference`. El contenido **siempre** debe ser alcanzable: reveal se activa únicamente cuando el script arrancó bien y no oculta nada si falla.
 - `transition-all` está prohibido: anima solo las propiedades necesarias.
 
 ### Formularios y targets
@@ -116,7 +144,8 @@ No es opcional y no se negocia por estética.
 - Anima `color`, `background-color`, `border-color`, `opacity`, `transform`, `box-shadow`. No animes `width`, `height`, `top`, `left`, `filter` ni `backdrop-filter`.
 - Hover: 1–2px de elevación como máximo. No escales tarjetas enteras ni rotes iconos decorativos.
 - `will-change` solo durante una animación y retíralo después. Mejor no usarlo.
-- Sin librerías de animación nuevas.
+- Sin librerías de animación nuevas: usa `assets/effects/reskin-fx.js` (vanilla, 0 dependencias) y CSS. Nada de GSAP, Framer Motion, Lenis ni tsparticles salvo que el proyecto ya los tenga.
+- Hover de tarjeta: 1–2px (3px en brutalismo/doodle, que son más físicos). No escales ni roten tarjetas enteras salvo que el estilo lo defina (doodle, clay).
 
 ## 6. Responsive y layout
 
@@ -134,7 +163,8 @@ No es opcional y no se negocia por estética.
 - `backdrop-filter` crea un containing block: los hijos `position: fixed` se posicionan respecto al vidrio. Revisa modales y menús; si el proyecto usa un portal, no lo cambies.
 - Entrega siempre el fallback opaco (`@supports not (backdrop-filter: ...)`).
 - Evita `background-attachment: fixed` en iOS; usa una capa fija o deja el fondo en el body.
-- No uses imágenes gigantes para la escena: gradientes CSS pesan cero.
+- Escena con gradientes CSS (pesan cero). Imágenes (nivel C): ≤ 200 KB cada una, `loading="lazy"`, `width`/`height` o `aspect-ratio` para evitar saltos, y `fetchpriority="high"` solo en la del hero.
+- Partículas: ≤ 90 en escritorio, ≈ 55 en móvil; un solo canvas; DPR ≤ 2.
 
 ## 8. Disciplina de cambio
 
@@ -152,7 +182,7 @@ Detente si:
 - El estilo requiere mover o envolver DOM, cambiar props o añadir estado.
 - La librería de UI no permite estilizar sin cambiar su API.
 - El contraste AA es imposible sin cambiar textos, layout o tema.
-- Haría falta una dependencia, un paquete de fuentes o un plugin.
+- Haría falta una dependencia npm, un plugin o una librería de animación (las fuentes por `<link>`/`next/font` y `reskin-fx` NO cuentan: están permitidas en B/C).
 - El build falla por algo que ya fallaba antes y no puedes verificar tu cambio.
 - El usuario pide además cambiar copy, lógica o rutas: es otro trabajo, no un reskin.
 
@@ -166,4 +196,7 @@ Detente si:
 - [ ] 360 / 768 / 1280px sin scroll horizontal ni contenido cortado.
 - [ ] Build/lint/typecheck ejecutados (o baseline anotado si ya fallaban).
 - [ ] Fallback sin `backdrop-filter` comprobado.
+- [ ] El diff cambia más que colores (tipografía, forma, profundidad, escena, movimiento) según `design-depth.md`.
+- [ ] Efectos probados con y sin `prefers-reduced-motion`; contenido visible si el JS de efectos falla.
+- [ ] Nivel C: cada imagen listada en `RESKIN-IMAGES.md` y **aviso final de imágenes provisionales** incluido en el resumen.
 - [ ] Resumen final: archivos tocados, decisiones, checks y riesgos.

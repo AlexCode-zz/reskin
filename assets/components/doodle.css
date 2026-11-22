@@ -1,0 +1,55 @@
+/* reskin · doodle · firma: borde de tinta con esquinas que "tiemblan", sombra de lápiz,
+   papel con puntos, giros de ±1°, cinta washi, subrayado ondulado y tipografía manuscrita.
+   Requiere _base.css + tokens/doodle.css. Solo claro (papel). */
+
+body { font-size: 1.125rem; }                                  /* Patrick Hand se ve pequeña */
+.rs-display, .rs-title, .rs-subtitle, .rs-brand { text-transform: none; }
+.rs-title, .rs-display { color: var(--rs-ink); }
+.rs-squiggle::after { content: ""; display: block; width: min(100%, 220px); height: 8px; margin-top: 6px; background: var(--rs-squiggle) repeat-x left center / 24px 8px; }
+.rs-eyebrow, .rs-label { font-family: var(--rs-font-display); font-size: 1.125rem; letter-spacing: 0.02em; text-transform: none; font-weight: 400; color: var(--rs-accent-text); }
+
+/* Tarjetas: giro de papel pegado */
+.rs-card { border-radius: var(--rs-radius); box-shadow: var(--rs-shadow); rotate: var(--rs-tilt, 0deg); }
+.rs-card:nth-child(3n + 1) { --rs-tilt: -0.5deg; } .rs-card:nth-child(3n + 2) { --rs-tilt: 0.4deg; }
+.rs-card.is-interactive:hover { transform: translate(-2px, -3px); box-shadow: var(--rs-shadow-lg); }
+.rs-card--sun { background: #ffe9a8; } .rs-card--mint { background: #c8f2e6; } .rs-card--lilac { background: #e6dcff; } .rs-card--peach { background: #ffd9c2; }
+.rs-card--taped { position: relative; }
+.rs-card--taped::before { content: ""; position: absolute; top: -13px; left: 50%; width: 92px; height: 26px; translate: -50% 0; rotate: -3deg; background: rgb(255 201 60 / 0.75); border-inline: 2px dashed rgb(42 32 23 / 0.25); }
+.rs-stat-value { font-size: 3rem; line-height: 1; color: var(--rs-ink); }
+
+.rs-navbar { background: var(--rs-surface); border-width: 0 0 var(--rs-border-width) 0; border-radius: 0; box-shadow: none; }
+.rs-sidebar { background: var(--rs-surface); border-width: 0 var(--rs-border-width) 0 0; border-radius: 0; box-shadow: none; }
+.rs-brand { font-size: 1.75rem; color: var(--rs-ink); }
+.rs-nav-item { font-family: var(--rs-font-body); font-size: 1.125rem; border: 2px solid transparent; border-radius: var(--rs-radius-sm); }
+.rs-nav-item:hover { background: var(--rs-accent-soft); border-color: var(--rs-border); color: var(--rs-ink); }
+.rs-nav-item[aria-current="page"], .rs-nav-item.is-active { background: var(--rs-accent); color: var(--rs-accent-ink); border-color: var(--rs-border); box-shadow: 3px 3px 0 var(--rs-border); rotate: -1deg; }
+
+.rs-btn { --rs-btn-border: var(--rs-border); font-family: var(--rs-font-display); font-size: 1.375rem; font-weight: 400; padding: 8px 24px; border-radius: var(--rs-radius-sm); box-shadow: var(--rs-shadow-btn); rotate: -1deg; }
+.rs-btn:hover { rotate: 1deg; transform: translate(-1px, -2px); box-shadow: 5px 6px 0 var(--rs-border); }
+.rs-btn:active { transform: translate(3px, 4px); box-shadow: 0 0 0 var(--rs-border); }
+.rs-btn--secondary { background: var(--rs-surface); } .rs-btn--ghost { box-shadow: none; background: transparent; }
+.rs-btn--mint { background: var(--rs-accent-2); color: #04241d; } .rs-btn--sun { background: var(--rs-accent-3); color: #2a1a00; }
+
+.rs-field, .rs-select, .rs-textarea { border: 2.5px solid var(--rs-border); border-radius: var(--rs-radius-sm); background: var(--rs-surface); font-size: 1.125rem; }
+.rs-field:focus-visible, .rs-select:focus-visible, .rs-textarea:focus-visible { box-shadow: 4px 4px 0 var(--rs-accent-3); }
+.rs-tabs { background: transparent; padding: 0; gap: 8px; }
+.rs-tab { border: 2.5px solid var(--rs-border); border-radius: var(--rs-radius-sm); background: var(--rs-surface); font-size: 1.125rem; }
+.rs-tab[aria-selected="true"], .rs-tab.is-active { background: var(--rs-accent-3); color: #2a1a00; box-shadow: 3px 3px 0 var(--rs-border); rotate: -1.5deg; }
+.rs-badge { border: 2px solid var(--rs-border); border-radius: 12px 6px 12px 7px / 7px 12px 6px 12px; background: var(--rs-accent-3); color: #2a1a00; font-weight: 400; font-size: 1rem; }
+.rs-badge--success { background: #c8f2e6; color: #04241d; } .rs-badge--danger { background: #ffd0c8; color: #4a0d00; }
+
+.rs-table th { font-family: var(--rs-font-display); font-size: 1.375rem; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--rs-ink); border-bottom: 3px solid var(--rs-border); }
+.rs-table td { border-bottom: 2px dashed rgb(42 32 23 / 0.35); }
+.rs-table tbody tr:hover { background: rgb(255 201 60 / 0.25); }
+.rs-overlay { background: rgb(42 32 23 / 0.55); }
+.rs-dialog { border-radius: var(--rs-radius-lg); box-shadow: var(--rs-shadow-lg); }
+.rs-tooltip { border-color: var(--rs-bg); font-size: 1rem; }
+.rs-progress { height: 20px; background: var(--rs-surface); border: 2.5px solid var(--rs-border); border-radius: 12px 6px 12px 7px / 7px 12px 6px 12px; }
+.rs-progress > * { border-radius: 0; background: repeating-linear-gradient(45deg, var(--rs-accent) 0 10px, #ffa56e 10px 20px); }
+.rs-empty { border: 3px dashed var(--rs-border); background: rgb(255 255 255 / 0.5); border-radius: var(--rs-radius); }
+.rs-media { border-width: 2.5px; border-radius: var(--rs-radius-lg); box-shadow: var(--rs-shadow); }
+.rs-media--polaroid { padding: 12px 12px 44px; background: #ffffff; rotate: -2deg; border-radius: 6px; }
+.rs-media--polaroid > img { border: 2px solid var(--rs-border); }
+.rs-sticker--star::before { content: "★"; font-size: 3rem; color: var(--rs-accent-3); -webkit-text-stroke: 2px var(--rs-border); }
+.rs-sticker--arrow::before { content: "↷"; font-family: var(--rs-font-display); font-size: 3.5rem; color: var(--rs-accent-text); }
+@media (prefers-reduced-motion: reduce) { .rs-btn, .rs-btn:hover, .rs-card.is-interactive:hover { rotate: none; transform: none; } }

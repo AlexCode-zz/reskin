@@ -44,25 +44,48 @@ Un campo por pregunta:
 
 ## Llamadas
 
-- Si la herramienta admite varias preguntas: **una sola llamada** con las 3.
-- Si exige una por llamada: 3 llamadas seguidas, sin pedir permiso entre ellas.
+- Si la herramienta admite varias preguntas: **una sola llamada** con las 4.
+- Si exige una por llamada: 4 llamadas seguidas, sin pedir permiso entre ellas.
 - Nunca cambies a plan B porque haya que hacer varias llamadas.
 
-## Las 3 preguntas
+## Las 4 preguntas
 
 | # | Tema | Pregunta | Opciones | Recomendación |
 |---|---|---|---|---|
-| 1 | Estilo | ¿Qué estilo visual aplicamos? | Glassmorphism / Liquid Glass / Retro | Panel, dashboard o SaaS → Glassmorphism. Producto de consumo, chrome premium o marca fuerte → Liquid Glass. Portafolio, landing creativa, juego o terminal → Retro. |
-| 2 | Tono | ¿Tono claro u oscuro? | Claro / Oscuro / Según la app | Datos, herramientas, terminal o uso nocturno → Oscuro. Contenido, docs, marketing o comercio → Claro. Si ya existe toggle de tema → Según la app, que lo respeta. |
-| 3 | Alcance | ¿Hasta dónde llega el reskin? | Toda la app / Solo los componentes principales / Una página o ruta específica | Toda la app: un reskin a medias se ve incoherente. Componentes principales = nav, botones, cards y formularios. Página/ruta solo si el resto se rediseña aparte. |
+| 1 | Estilo | ¿Qué estilo visual aplicamos? | Las 4 mejores para el proyecto (ver abajo); el usuario puede escribir **cualquiera de los 11** en la respuesta libre | Ver la guía de recomendación |
+| 2 | Tono | ¿Tono claro u oscuro? | Claro / Oscuro / Según la app | Datos, herramientas, terminal o uso nocturno → Oscuro. Contenido, docs, marketing o comercio → Claro. Si ya existe toggle de tema → Según la app. Estilos de un solo tono (retro, claymorphism, doodle, y2k) no preguntan: se anotan en el resumen. |
+| 3 | Intensidad | ¿Cuánto cambiamos? | Piel + escena + efectos (nivel B) / Completo con imágenes (nivel C) / Solo piel (nivel A) | **B** para apps y dashboards; **C** para landings, portafolios y sitios de marca; **A** solo si el usuario lo pide o el proyecto es frágil. Aquí se aprueban fuentes, efectos e imágenes. |
+| 4 | Alcance | ¿Hasta dónde llega el reskin? | Toda la app / Solo los componentes principales / Una página o ruta específica | Toda la app: un reskin a medias se ve incoherente. |
+
+**Los 11 estilos** (para la respuesta libre): glassmorphism, liquid-glass, retro (arcade/CRT/synthwave),
+brutalism (mono/pop), minimalism, claymorphism, neumorphism, spatial, doodle, y2k, aurora.
+`assets/preview.html?style=<id>` los muestra: ofrécelo si el usuario duda.
+
+**Guía de recomendación del estilo (las 4 opciones):**
+
+| Proyecto | Recomendado | Alternativas |
+|---|---|---|
+| Dashboard / SaaS / datos | Glassmorphism o Aurora | Minimalism, Brutalism |
+| App de estudio / productividad personal | Doodle o Claymorphism | Y2K, Minimalism |
+| Portafolio / agencia / marca creativa | Brutalism | Minimalism, Aurora |
+| Landing tech / fintech | Aurora | Spatial, Glassmorphism |
+| Juego / demo / nostalgia | Retro o Y2K | Brutalism (pop) |
+| Premium, multimedia | Spatial o Liquid Glass | Aurora |
+| Panel de control / ajustes | Neumorphism (con aviso de accesibilidad) | Minimalism |
+
+La pregunta de intensidad **decide si hay efectos, fuentes e imágenes**: el brief las lista
+(efectos: máximo 3 por `effects.md`; fuentes: pareja del estilo; imágenes: protocolo de `images.md`
+con aviso final). Sin esa aprobación no se añaden.
 
 Qué hace la respuesta de **tono** con los tokens: *Oscuro* → solo el bloque base (o
 `data-theme="dark"` en `<html>`); *Claro* → los valores `[data-theme="light"]` como base;
 *Según la app* → ambos. Si el usuario elige Oscuro y su sistema está en claro, el reskin debe
 verse oscuro igual: no dejes activo el `@media (prefers-color-scheme: light)`.
 
-**Retro solo existe en oscuro.** No tiene bloque claro ni le afecta la respuesta de tono;
-si el usuario elige Claro con Retro, anótalo como "Retro oscuro (por diseño)" en el resumen.
+**Estilos de un solo tono.** Retro (oscuro), Claymorphism, Doodle y Y2K (claros) no tienen par: no
+les afecta la respuesta de tono; si el usuario pide el otro, anótalo en el resumen
+("Retro oscuro (por diseño)"). Con dos temas: glassmorphism, liquid-glass, brutalism, minimalism,
+neumorphism, spatial y aurora.
 
 Sin solapamientos: el tono cubre la paleta y el alcance cubre la extensión. La identidad no
 tiene pregunta propia: por defecto se conservan paleta y tipografía y solo cambian
@@ -96,15 +119,17 @@ selector interactivo. Nunca por defecto ni por comodidad.
 - Tono: oscuro
 - Alcance: toda la app
 - Identidad: conservar paleta y tipografía; solo cambian materiales y superficies
-- Implementación: tokens → @theme → utilidades (sin hojas nuevas)
-- No se toca: lógica, estado, props, textos, rutas, dependencias
+- Intensidad: B · escena + efectos (partículas orbs, reveal, spot) · fuentes: Plus Jakarta Sans
+- Imágenes: no (nivel B) · o: sí, provisionales de internet; se avisará al final (nivel C)
+- Implementación: tokens → @theme → utilidades; efectos con reskin-fx (sin hojas de componentes nuevas)
+- No se toca: lógica, estado, props, textos, rutas, dependencias npm
 ```
 
 Confirma con la **misma herramienta**, no escribiendo "responde sí" en el chat:
 
 - `header`: `Confirmar`
 - Opciones, en este orden:
-  1. `Aplicar` (Recomendado) — "Aplico el brief: solo clases, CSS y tokens".
+  1. `Aplicar` (Recomendado) — "Aplico el brief: clases, CSS, tokens, escena y efectos; sin tocar lógica".
   2. `Cambiar algo` — "Ajustamos estilo, tono o alcance antes de editar".
 
 Si la herramienta no está disponible, pregunta en el chat: "¿Aplico este brief?".

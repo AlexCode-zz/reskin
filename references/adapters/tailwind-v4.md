@@ -96,3 +96,10 @@ mapea lo necesario. **No crees una hoja nueva.**
 | Blur en botones/inputs | Solo en superficies; controles con relleno y borde |
 | Crear `tailwind.config.js` en v4 | No hace falta; tokens en `@theme` |
 | Mapear todos los tokens "por si acaso" | Solo los usados; menos ruido |
+
+## Efectos, fuentes y escena (nivel B/C)
+
+- `reskin-fx.css`/`.js` son archivos de **efectos** (excepción a "sin hoja nueva"; ver `rules.md §2`). Se importan una vez; los componentes siguen en utilidades.
+- Tokens de escena y tipografía van al theme; las fuentes con `<link>`/`next/font`.
+- La escena (`body::before/::after`) va en el CSS global existente; es la única CSS de "capas" permitida junto a los keyframes de los efectos.
+- Valores arbitrarios para los `data-rs-*`: `data-[rs-in]:opacity-100` es opcional; lo normal es que el script gestione el estado.

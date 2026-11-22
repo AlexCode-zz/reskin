@@ -1,12 +1,15 @@
 ---
 name: reskin
 description: >-
-  Aplica un estilo visual completo (glassmorphism, liquid-glass, retro) a un
-  frontend existente sin cambiar su lógica. Detecta el framework (React, Next.js,
-  HTML/CSS) y la capa de estilos (Tailwind v4/v3, CSS Modules, CSS puro),
-  entrevista con un brief corto, pide confirmación y aplica tokens, clases y
-  estilos. Úsala cuando el usuario pida "reskin", rediseñar, modernizar o dar un
-  look nuevo a un proyecto frontend que ya funciona. No para greenfield, bugs de
+  Aplica un estilo visual completo a un frontend existente sin cambiar su lógica:
+  glassmorphism, liquid-glass, retro (arcade/CRT/synthwave), brutalismo moderno,
+  minimalismo, claymorfismo, neumorfismo, UI espacial, doodle, Y2K y aurora UI.
+  No solo cambia colores: añade tipografía, forma, profundidad, escena de fondo,
+  efectos (partículas, scroll reveal, parallax, tilt) e imágenes provisionales.
+  Detecta el framework (React, Next.js, HTML/CSS) y la capa de estilos (Tailwind
+  v4/v3, CSS Modules, CSS puro), entrevista con un brief corto, pide confirmación y
+  aplica. Úsala cuando el usuario pida "reskin", rediseñar, modernizar o dar un look
+  nuevo a un proyecto frontend que ya funciona. No para greenfield, bugs de
   comportamiento, migraciones de librería ni features nuevas.
 ---
 
@@ -15,18 +18,20 @@ description: >-
 Cambia la piel visual de un frontend existente. Nunca toca estados, funciones, props ni
 lógica. El producto cambia de cara; su comportamiento queda intacto.
 
+**Un reskin que solo cambia colores es un reskin fallido.** El estilo vive en la tipografía, la
+forma, la profundidad, la escena de fondo, la textura y el movimiento. Por eso el skill trabaja
+por **niveles** (A piel · B escena + efectos · C completo con imágenes) y pasa una **puerta
+anti-genérico** (`references/design-depth.md`) antes de dar algo por terminado.
+
 ## Cuándo se usa
 
 - El usuario ya tiene un frontend y quiere una identidad visual nueva.
-- Quiere probar un estilo (glassmorphism, liquid-glass, retro) sin refactorizar.
-- El brief viene de un diseñador, un cliente, un pitch o una preferencia personal.
+- Quiere probar un estilo sin refactorizar. El brief viene de un diseñador, cliente, pitch o gusto personal.
 
 ## Cuándo NO se usa
 
-- Proyecto nuevo desde cero.
-- Bugs de comportamiento, crashes o rendimiento funcional.
-- Migración de librería, framework o arquitectura.
-- Features nuevos mezclados con el rediseño: primero el feature.
+- Proyecto nuevo desde cero · bugs de comportamiento, crashes o rendimiento funcional.
+- Migración de librería, framework o arquitectura · features nuevos mezclados con el rediseño.
 
 ## Dos ejes, no uno
 
@@ -35,59 +40,55 @@ lógica. El producto cambia de cara; su comportamiento queda intacto.
 - **Framework:** `react` | `nextjs` | `html-puro`
 - **Capa de estilos:** `tailwind-v4` | `tailwind-v3` | `css-modules` | `css-puro`
 
-No confundas "Next.js + Tailwind" con "framework Tailwind". La detección los separa.
-
 ## Flujo
 
-1. **Detectar** (`references/detection.md`).
-   - Lee `package.json`, configs y estructura; usa `scripts/detect-stack.sh` si está.
-   - Si no puedes determinar framework o capa de estilos: pregunta una vez. **No adivines.**
+1. **Detectar** (`references/detection.md`; `scripts/detect-stack.sh` si está).
+   Si no puedes determinar framework o capa de estilos: pregunta una vez. **No adivines.**
 2. **Entrevistar** (`references/interview.md`).
    - **Siempre primero la herramienta nativa de preguntas:** `question` (OpenCode) o
-     `AskUserQuestion` (Claude Code). Entrevista en vivo, no números escritos en el chat.
-   - Un campo por pregunta: texto, header corto (máx. 30 caracteres) y opciones con
-     label + description. La recomendada primero con "(Recomendado)" y una razón corta.
-   - No agregues una opción "Otro" manual: la herramienta ya acepta respuesta libre; solo
-     si esa variante no la trae, va como última opción.
-   - 3 preguntas: estilo, tono/paleta y alcance. Sin solapamientos.
-   - Si la herramienta admite varias preguntas, mándalas en una sola llamada; si exige una
-     por llamada, haz 3 llamadas seguidas.
-   - No preguntes lo ya detectado: anúncialo en una línea.
-3. **Resumen + confirmación.** Muestra el brief (stack, estilo, tono, alcance y qué no se
-   toca) y confirma con la misma herramienta: `Aplicar` / `Cambiar algo`.
-   **No edites código hasta un "Aplicar" o un "sí" explícito.**
-4. **Aplicar** (`references/rules.md` + estilo + adapter).
-   - Orden: tokens → base/escena → superficies → controles → estados → gráficos y widgets
-     de terceros → responsive.
-   - **Recetas completas de componentes:** `assets/components/<estilo>.css` (navbar, sidebar,
-     card, stat, botones, inputs, tabs, badges, tabla, modal, tooltip, toast, gráficos). Los
-     nombres de clase (`.rs-card`, `.rs-btn`, `.rs-table`...) son iguales en los tres estilos.
-     Copia solo los bloques que el proyecto usa y asigna las clases a los elementos que ya
-     existen. Con Tailwind, tradúcelos a utilidades. Con CSS Modules, usa `:global(.rs-*)` o
-     una hoja global.
-   - **Tema:** si el brief dice Oscuro, pega solo el bloque base de tokens (sin el bloque
-     claro ni el `@media (prefers-color-scheme: light)`), o fija `data-theme="dark"`. Si dice
-     Claro, usa los valores claros como base. Solo con "Según la app" van ambos. **Retro no
-     tiene tema claro: es oscuro por diseño.**
-   - Diff revisable: solo clases, CSS y tokens.
-5. **Verificar.** Build/lint/typecheck si existen; contraste AA (si cambiaste colores:
-   `node scripts/check-contrast.js assets/tokens/<estilo>.css`); foco; reduced motion; 360/768/1280;
-   tooltips y ejes de gráficos restilizados; diff sin lógica.
+     `AskUserQuestion` (Claude Code). Entrevista en vivo, no números en el chat.
+   - **4 preguntas:** estilo (11 disponibles), tono, **intensidad** (A/B/C) y alcance.
+     La intensidad aprueba también fuentes, efectos e imágenes.
+   - Un campo por pregunta; la recomendada primero con "(Recomendado)". No agregues "Otro" manual.
+   - No preguntes lo ya detectado ni lo que el usuario ya dijo en el prompt.
+3. **Resumen + confirmación.** Brief con stack, estilo, tono, nivel, efectos (máx. 3), fuentes,
+   imágenes (sí/no), alcance y qué no se toca. Confirma con la misma herramienta:
+   `Aplicar` / `Cambiar algo`. **No edites código hasta un "Aplicar" o un "sí" explícito.**
+4. **Aplicar** (`rules.md` + `design-depth.md` + estilo + adapter + `effects.md` + `images.md` según nivel).
+   - Orden: tokens → escena y tipografía → superficies → controles → estados → piezas firma →
+     efectos → imágenes (nivel C) → gráficos y widgets de terceros → responsive.
+   - **Biblioteca de componentes:** `assets/components/<estilo>.css` (+ `_base.css` en los 8 estilos nuevos).
+     Los nombres de clase (`.rs-card`, `.rs-btn`, `.rs-table`…) son iguales en todos. Copia solo lo que
+     el proyecto usa y asigna las clases a los elementos que ya existen. Con Tailwind, tradúcelos a
+     utilidades; con CSS Modules, `:global(.rs-*)`.
+   - **Tema:** Oscuro → solo el bloque base (o `data-theme="dark"`); Claro → valores claros como base;
+     "Según la app" → ambos. Estilos de un solo tono se anotan en el resumen.
+   - **Efectos** (nivel B/C): copia `assets/effects/reskin-fx.{css,js}` y activa con atributos `data-rs-*`.
+     Máximo 3 por estilo (receta en `effects.md`).
+   - **Imágenes** (nivel C): protocolo de `images.md` (provisionales, registradas en `RESKIN-IMAGES.md`).
+5. **Verificar.** Build/lint/typecheck si existen; `node scripts/check-contrast.js` (todos los tokens
+   pasan AA); `assets/preview.html?style=<id>` como referencia visual; foco; reduced motion y JS de
+   efectos desactivado; 360/768/1280; tooltips y ejes de gráficos restilizados; diff sin lógica.
+   Pasa la **regla de los 6** de `design-depth.md`.
+6. **Entregar.** Resumen: archivos tocados, decisiones, tabla de los 7 ingredientes, checks y riesgos.
+   **Si hubo imágenes, termina con el aviso obligatorio de `images.md`** (son provisionales, de
+   internet, el usuario debe cambiarlas por propias; lista en `RESKIN-IMAGES.md`).
+
+## Niveles
+
+| Nivel | Qué se permite además de clases/CSS/tokens |
+|---|---|
+| **A · Piel** | Nada más. |
+| **B · Escena** (recomendado en apps) | Escena (`body::before/::after`), fuentes por `<link>`/`next/font`, `reskin-fx`, `data-rs-*`, partículas, reveal, parallax, tilt. |
+| **C · Completo** (landings) | B + piezas decorativas nuevas (`aria-hidden`) e imágenes provisionales. |
 
 ## Regla de capas (no negociable)
 
-**Si hay Tailwind:**
+**Si hay Tailwind:** estilo con utilidades; tokens al theme (v4 `@theme`, v3 `theme.extend`); sin
+CSS de componentes aparte. Excepciones: `reskin-fx.css/js` (efectos) y las capas de escena.
 
-- Aplica el estilo con **clases utilitarias**.
-- Lleva los tokens al theme: v4 → `@theme` en el CSS global existente; v3 →
-  `theme.extend` en `tailwind.config.*`.
-- **No agregues archivos CSS aparte** ni CSS de componentes. Nada de un segundo sistema.
-
-**Si no hay Tailwind:**
-
-- Usa CSS normal con las variables de `assets/tokens/<estilo>.css`.
-- Tokens en `:root` del CSS existente; clases semánticas en el CSS global o module.
-- No introduzcas un framework CSS nuevo.
+**Si no hay Tailwind:** CSS normal con las variables de `assets/tokens/<estilo>.css`; tokens en `:root`
+del CSS existente; clases semánticas en el CSS global o module. No introduzcas un framework CSS nuevo.
 
 ## Cargar solo lo necesario
 
@@ -95,37 +96,43 @@ No confundas "Next.js + Tailwind" con "framework Tailwind". La detección los se
 |---|---|
 | Detectar framework y capa de estilos | `references/detection.md` |
 | Preguntas, brief y confirmación | `references/interview.md` |
-| Reglas antes de editar código | `references/rules.md` |
-| Estilo elegido | `references/styles/<estilo>.md` + `assets/tokens/<estilo>.css` + `assets/components/<estilo>.css` |
+| Reglas antes de editar código (niveles, límites, a11y) | `references/rules.md` |
+| Qué hace que no se vea genérico (puerta de calidad) | `references/design-depth.md` |
+| Estilo elegido | `references/styles/<estilo>.md` + `assets/tokens/<estilo>.css` + `assets/components/<estilo>.css` (+ `_base.css` en los nuevos) |
+| Partículas, scroll, parallax, tilt | `references/effects.md` + `assets/effects/reskin-fx.{js,css}` |
+| Imágenes provisionales y aviso final | `references/images.md` + `assets/placeholders/*.svg` |
 | Gráficos, tooltips, selects o librerías de UI de terceros | `references/charts-and-widgets.md` |
-| Framework React | `references/adapters/react.md` |
-| Framework Next.js | `references/adapters/nextjs.md` |
-| Framework HTML puro | `references/adapters/html-css.md` |
-| Capa Tailwind v4 | `references/adapters/tailwind-v4.md` |
-| Capa Tailwind v3 | `references/adapters/tailwind-v3.md` |
+| Framework | `references/adapters/{react,nextjs,html-css}.md` |
+| Capa Tailwind | `references/adapters/tailwind-v4.md` o `tailwind-v3.md` |
+| Ver los estilos renderizados | `assets/preview.html?style=<id>` |
 
-Combinaciones: Next + Tailwind → `nextjs` + `tailwind-*`; React + Tailwind → `react` +
-`tailwind-*`; HTML/CSS puro → solo `html-css`. No cargues el adaptador de otro framework ni
-estilos que no se eligieron.
+Combinaciones: Next + Tailwind → `nextjs` + `tailwind-*`; React + Tailwind → `react` + `tailwind-*`;
+HTML/CSS puro → `html-css`. No cargues el adaptador de otro framework ni estilos que no se eligieron.
 
 ## Estilos disponibles
 
-- **Glassmorphism** — vidrio suave sobre escena. `references/styles/glassmorphism.md` +
-  `assets/tokens/glassmorphism.css`.
-- **Liquid Glass** — blur alto, borde especular, sombras internas.
-  `references/styles/liquid-glass.md` + `assets/tokens/liquid-glass.css`.
-- **Retro** — arcade, CRT o synthwave. `references/styles/retro.md` +
-  `assets/tokens/retro.css`.
+| Estilo | Una frase | Temas |
+|---|---|---|
+| **Glassmorphism** | Vidrio suave sobre escena con luz | oscuro · claro |
+| **Liquid Glass** | Blur alto, borde especular, reflejo | oscuro · claro |
+| **Retro** | Arcade, CRT o synthwave con escena propia | oscuro |
+| **Brutalism** | Tipografía gigante, bloques planos, sombras duras (mono/pop) | claro · oscuro |
+| **Minimalism** | Aire, serif elegante, un acento | claro · oscuro |
+| **Claymorphism** | Plastilina: volumen inflado y pasteles | claro |
+| **Neumorphism** | Relieve suave en la misma superficie | claro · oscuro |
+| **Spatial** | Paneles de vidrio flotando con profundidad 3D | oscuro · claro |
+| **Doodle** | Hecho a mano: tinta, papel, cinta | claro |
+| **Y2K** | Escritorio pastel con ventanas biseladas | claro |
+| **Aurora** | Gradientes borrosos tipo aurora, estilo Stripe | claro · oscuro |
 
-Cada estilo define sus componentes, errores comunes, WCAG AA y reduced motion.
+Cada estilo define ingredientes, pieza firma, errores comunes, WCAG AA y reduced motion.
 
 ## Límites duros
 
-- Solo estilos: clases, CSS, tokens, tipografía, color, movimiento.
-- No tocar: estado, hooks, handlers, props, rutas, fetching, textos, tests, dependencias
-  ni lockfiles.
-- No agregar paquetes ni fuentes por npm. Un `<link>` de fuente solo si el brief lo aprueba.
-- Si el estilo exige lógica, props o reestructurar el DOM: **para y pregunta**.
-- La entrevista va por la herramienta nativa de preguntas. Las opciones numeradas en el
-  chat son solo el plan B: si la herramienta no existe o falló.
+- **Nunca:** estado, hooks, handlers, props, rutas, fetching, textos existentes, `key`, `aria-*`, tests,
+  dependencias npm ni lockfiles. Si el estilo exige lógica, props o reestructurar el DOM: **para y pregunta**.
+- Sin paquetes de animación o de partículas: `reskin-fx` (0 dependencias) o lo que el proyecto ya tenga.
+- Fuentes solo por `<link>`/`next/font`, aprobadas en el brief; siempre con fallback.
+- Imágenes solo en nivel C, registradas y avisadas. Sin personas identificables ni marcas ajenas.
+- La entrevista va por la herramienta nativa de preguntas; las opciones numeradas son plan B.
 - Si no hay confirmación del brief, no hay código.

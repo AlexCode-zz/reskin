@@ -1,0 +1,50 @@
+/* ============================================================
+   reskin · minimalism tokens
+   Tema claro por defecto; oscuro con [data-theme="dark"].
+   Fuentes: https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap
+   ============================================================ */
+:root {
+  --rs-scheme: light;
+  --rs-bg: #fafaf8; --rs-surface: #ffffff; --rs-surface-2: #f1f1ed;
+  --rs-ink: #111111; --rs-ink-muted: #5c5c56;
+  --rs-accent: #111111; --rs-accent-ink: #ffffff; --rs-accent-text: #111111;
+  --rs-accent-2: #2f5bff; --rs-accent-3: #d9480f; --rs-accent-soft: rgb(17 17 17 / 0.06);
+  --rs-danger: #b42a14; --rs-danger-ink: #ffffff; --rs-success: #12724a; --rs-warning: #8a5300;
+  --rs-scene: none;
+  --rs-chart-1: #111111; --rs-chart-2: #2f5bff; --rs-chart-3: #767670; --rs-chart-4: #d9480f; --rs-chart-5: #12804f;
+  --rs-chart-grid: #e4e4de; --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #111111; --rs-tooltip-ink: #fafaf8;
+
+  --rs-border: #e2e2dc; --rs-hairline: #ececE6; --rs-border-width: 1px; --rs-border-width-sm: 1px;
+  --rs-input-border: #85857e;
+  --rs-radius: 16px; --rs-radius-sm: 10px; --rs-radius-lg: 24px;
+  --rs-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 12px 32px -16px rgb(0 0 0 / 0.14);
+  --rs-shadow-lg: 0 2px 4px rgb(0 0 0 / 0.04), 0 24px 48px -20px rgb(0 0 0 / 0.2);
+  --rs-focus: #2f5bff;
+
+  --rs-font-display: "Instrument Serif", "Playfair Display", Georgia, serif;
+  --rs-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --rs-weight-display: 400;
+  --rs-text-display: clamp(2.75rem, 7.5vw, 6.25rem);
+  --rs-text-h1: clamp(2rem, 4vw, 3.25rem);
+  --rs-text-h2: clamp(1.375rem, 2.2vw, 1.75rem);
+  --rs-leading-display: 1.02; --rs-tracking-display: -0.025em;
+
+  --rs-dur: 220ms; --rs-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --rs-fx-p1: #111111;
+}
+[data-theme="dark"] {
+  --rs-scheme: dark;
+  --rs-bg: #0c0c0b; --rs-surface: #151514; --rs-surface-2: #1f1f1d;
+  --rs-ink: #f4f4f0; --rs-ink-muted: #a8a8a0;
+  --rs-accent: #f4f4f0; --rs-accent-ink: #111111; --rs-accent-text: #f4f4f0; --rs-accent-soft: rgb(244 244 240 / 0.08);
+  --rs-accent-2: #7f9bff;
+  --rs-border: #2a2a27; --rs-hairline: #232321; --rs-input-border: #7d7d76;
+  --rs-focus: #7f9bff;
+  --rs-chart-1: #f4f4f0; --rs-chart-2: #7f9bff; --rs-chart-3: #9a9a92; --rs-chart-4: #ff8a5c; --rs-chart-5: #4fd49a;
+  --rs-chart-grid: #2e2e2a; --rs-tooltip-bg: #f4f4f0; --rs-tooltip-ink: #111111;
+  --rs-danger: #ff8d78; --rs-success: #4fd49a; --rs-warning: #f0b45a;
+  --rs-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -16px rgb(0 0 0 / 0.6);
+  --rs-shadow-lg: 0 2px 4px rgb(0 0 0 / 0.4), 0 24px 48px -20px rgb(0 0 0 / 0.7);
+}
+@media (prefers-reduced-motion: reduce) { :root { --rs-dur: 0.01ms; } }

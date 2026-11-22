@@ -1,0 +1,54 @@
+/* ============================================================
+   reskin · neumorphism tokens  (relieve suave en la misma superficie)
+   Claro por defecto; oscuro con [data-theme="dark"].
+   OJO: neumorfismo tiene el contraste más frágil de todos. El relieve NO es un
+   indicador: el texto, los iconos y el estado activo llevan color propio.
+   Fuentes: https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap
+   ============================================================ */
+:root {
+  --rs-scheme: light;
+  --rs-bg: #e7eaf3; --rs-surface: #e7eaf3; --rs-surface-2: #dbe0ee;
+  --rs-ink: #262c4a; --rs-ink-muted: #50587b;
+  --rs-accent: #5a3ed4; --rs-accent-ink: #ffffff; --rs-accent-text: #4a30c0;
+  --rs-accent-2: #d93a78; --rs-accent-3: #b86e00; --rs-accent-soft: rgb(90 62 212 / 0.12);
+  --rs-danger: #c01f45; --rs-danger-ink: #ffffff; --rs-success: #0b7a52; --rs-warning: #8a5200;
+  --rs-scene: linear-gradient(145deg, #eceff8 0%, #e2e6f1 100%);
+  --rs-neu-dark: #bfc5d9; --rs-neu-light: #ffffff;
+  --rs-chart-1: #5a3ed4; --rs-chart-2: #d93a78; --rs-chart-3: #0b8a62; --rs-chart-4: #b86e00; --rs-chart-5: #2468d8;
+  --rs-chart-grid: rgb(80 88 123 / 0.35); --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #262c4a; --rs-tooltip-ink: #ffffff;
+
+  --rs-border: transparent; --rs-border-width: 0px; --rs-border-width-sm: 0px; --rs-input-border: transparent;
+  --rs-radius: 24px; --rs-radius-sm: 16px; --rs-radius-lg: 32px;
+  --rs-shadow: 9px 9px 18px var(--rs-neu-dark), -9px -9px 18px var(--rs-neu-light);
+  --rs-shadow-lg: 14px 14px 28px var(--rs-neu-dark), -14px -14px 28px var(--rs-neu-light);
+  --rs-shadow-sm: 5px 5px 10px var(--rs-neu-dark), -5px -5px 10px var(--rs-neu-light);
+  --rs-shadow-in: inset 6px 6px 12px var(--rs-neu-dark), inset -6px -6px 12px var(--rs-neu-light);
+  --rs-shadow-btn: var(--rs-shadow-sm);
+  --rs-focus: #4a30c0;
+
+  --rs-font-display: "Montserrat", system-ui, sans-serif;
+  --rs-font-body: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --rs-weight-display: 800;
+  --rs-text-display: clamp(2.5rem, 6vw, 4.75rem);
+  --rs-text-h1: clamp(1.875rem, 3.6vw, 2.75rem);
+  --rs-text-h2: clamp(1.25rem, 2.2vw, 1.625rem);
+  --rs-leading-display: 1.05; --rs-tracking-display: -0.02em;
+
+  --rs-dur: 180ms; --rs-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --rs-fx-p1: #ffffff; --rs-fx-p2: #5a3ed4;
+}
+[data-theme="dark"] {
+  --rs-scheme: dark;
+  --rs-bg: #262a36; --rs-surface: #262a36; --rs-surface-2: #1e212b;
+  --rs-ink: #eceff9; --rs-ink-muted: #a7aec8;
+  --rs-accent: #9a85ff; --rs-accent-ink: #14102e; --rs-accent-text: #b3a3ff; --rs-accent-soft: rgb(154 133 255 / 0.16);
+  --rs-accent-2: #ff7fae; --rs-accent-3: #ffc266;
+  --rs-scene: linear-gradient(145deg, #2a2e3b 0%, #222530 100%);
+  --rs-neu-dark: #181b23; --rs-neu-light: #343948;
+  --rs-focus: #b3a3ff; --rs-tooltip-bg: #eceff9; --rs-tooltip-ink: #1b1e27;
+  --rs-chart-1: #9a85ff; --rs-chart-2: #ff7fae; --rs-chart-3: #4fd8a8; --rs-chart-4: #ffc266; --rs-chart-5: #6aa6ff;
+  --rs-chart-grid: rgb(167 174 200 / 0.3);
+  --rs-danger: #ff8aa3; --rs-success: #4fd8a8; --rs-warning: #ffc266;
+}
+@media (prefers-reduced-motion: reduce) { :root { --rs-dur: 0.01ms; } }

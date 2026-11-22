@@ -277,3 +277,21 @@ Un `feTurbulence` + `feDisplacementMap` puede dar refracción. Reglas:
 - [ ] Contraste AA en el peor caso.
 - [ ] Foco visible y `prefers-reduced-motion`.
 - [ ] Sin filtros SVG sobre contenido.
+
+## v2 · Ingredientes obligatorios (regla de los 6 de `design-depth.md`)
+
+El vidrio solo luce si hay **algo que desenfocar detrás**. Antes de aplicarlo, revisa que exista escena.
+
+| # | Ingrediente | Receta |
+|---|---|---|
+| 1 | Tipografía | Display grande y apretado (`.rs-display`, tracking −0.04em) en Plus Jakarta Sans / Inter. |
+| 2 | Forma | Radios 16–32px; chrome flotante en píldora. |
+| 3 | Profundidad | Borde de luz + sombra larga; superficies con blur (≤ 6, ≤ 4 en liquid). |
+| 4 | Escena | `--rs-scene` en `:root` (ya en la hoja, §13) + luces de color; en liquid, mejor sobre una foto o gradiente intenso. |
+| 5 | Material | Vidrio con fallback opaco; controles pequeños sin blur. |
+| 6 | Movimiento | Partículas `orbs`, spotlight que sigue al cursor, reveal escalonado. |
+| 7 | Firma | brillo especular en `.rs-media`, tilt en 2–3 tarjetas; imagen detrás del vidrio (nivel C). |
+
+- Efectos: `data-rs-fx="particles reveal spot"`, `data-rs-particles="orbs"` (máximo 3).
+- Imágenes (nivel C): una foto/gradiente intenso detrás del cristal; ver `references/images.md`.
+- Vista previa: `assets/preview.html?style=liquid-glass`.

@@ -95,3 +95,12 @@ Next.
 | Crear un `ThemeProvider` nuevo | Usar el mecanismo existente o tokens estáticos |
 | Cambiar `_document.tsx` sin necesidad | Fondo desde el CSS global |
 | Editar el focus trap del modal | Dejarlo como está; solo cambiar clases |
+
+## Efectos, fuentes y escena (nivel B/C)
+
+1. Copia `reskin-fx.css` a `app/reskin/` (importa en `app/layout.tsx`) y `reskin-fx.js` a `public/reskin/`.
+2. En `layout.tsx`: `import Script from "next/script"` y `<Script src="/reskin/reskin-fx.js" strategy="afterInteractive" />` al final del `<body>`. `next/script` es parte de Next (no es dependencia nueva).
+3. Atributos en `<html lang="…" data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">`.
+4. Fuentes con `next/font/google` (Anton, Inter, etc.): asigna la variable CSS a `--rs-font-display`/`--rs-font-body`. Es parte de Next; no `npm install`.
+5. Server Components: los efectos son vanilla y corren en el cliente; no conviertas componentes a `"use client"` por esto.
+6. `reskin-fx.js` es un script clásico (IIFE); no lo importes como módulo de React.

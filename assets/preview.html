@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reskin · vista previa de estilos</title>
+<!--
+  Abre este archivo en el navegador (doble clic o `npx serve assets`).
+  Cambia de estilo con el selector o con la URL:  preview.html?style=aurora&theme=dark
+  Estilos: glassmorphism liquid-glass retro brutalism minimalism claymorphism neumorphism spatial doodle y2k aurora
+  Sirve para comparar estilos ANTES de aplicarlos y como referencia de marcado (las clases son las mismas en todos).
+-->
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var S = {
+    "glassmorphism": { own: 1, fx: "reveal spot", p: "", theme: "dark", auto: ".rs-card, .rs-hero > *" },
+    "liquid-glass":  { own: 1, fx: "reveal spot", p: "", theme: "dark", auto: ".rs-card, .rs-hero > *" },
+    "retro":         { own: 1, fx: "particles reveal", p: "pixels", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "brutalism":     { fx: "reveal", p: "", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "minimalism":    { fx: "reveal parallax", p: "", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "claymorphism":  { fx: "particles reveal", p: "bubbles", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "neumorphism":   { fx: "reveal", p: "", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "spatial":       { fx: "particles reveal tilt glow", p: "stars", theme: "dark", auto: ".rs-card, .rs-hero > *" },
+    "doodle":        { fx: "particles reveal", p: "dust", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "y2k":           { fx: "particles reveal", p: "stars", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "aurora":        { fx: "particles reveal spot glow", p: "orbs", theme: "", auto: ".rs-card, .rs-hero > *" }
+  };
+  var id = q.get("style") || "aurora"; if (!S[id]) id = "aurora";
+  var c = S[id], theme = q.get("theme") || c.theme, r = document.documentElement;
+  var fonts = {
+    "brutalism": "Anton&family=Archivo:wght@400;600;800", "minimalism": "Instrument+Serif&family=Inter:wght@400;500;600",
+    "claymorphism": "Baloo+2:wght@600;800&family=Nunito:wght@500;700;800", "neumorphism": "Montserrat:wght@500;600;700;800",
+    "spatial": "Inter:wght@400;500;600;700", "doodle": "Caveat+Brush&family=Patrick+Hand", "y2k": "Pixelify+Sans:wght@500;700&family=VT323",
+    "aurora": "Plus+Jakarta+Sans:wght@500;600;800", "retro": "Press+Start+2P&family=Space+Mono:wght@400;700"
+  };
+  var L = function (h) { document.write('<link rel="stylesheet" href="' + h + '">'); };
+  if (fonts[id]) L("https://fonts.googleapis.com/css2?family=" + fonts[id] + "&display=swap");
+  L("tokens/" + id + ".css");
+  if (!c.own) L("components/_base.css");
+  L("components/" + id + ".css"); L("effects/reskin-fx.css");
+  if (theme) r.setAttribute("data-theme", theme);
+  if (id === "brutalism" && q.get("v")) r.setAttribute("data-brutal", q.get("v"));
+  if (id === "retro" && q.get("v")) r.setAttribute("data-retro", q.get("v"));
+  r.setAttribute("data-rs-fx", q.get("fx") === "off" ? "" : c.fx);
+  if (c.p) r.setAttribute("data-rs-particles", c.p);
+  r.setAttribute("data-rs-reveal-auto", c.auto);
+  window.__id = id;
+})();
+</script>
+<style>
+  /* Solo de la página de demo (no es parte del skill) */
+  body { margin: 0; }
+  .demo-switch { position: fixed; z-index: 80; right: 12px; bottom: 12px; padding: 8px 10px; background: #111; color: #fff; font: 600 13px system-ui; border-radius: 10px; display: flex; gap: 8px; align-items: center; }
+  .demo-switch select { font: inherit; }
+  .demo-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 64px); }
+  .demo-main { padding: clamp(16px, 3vw, 40px); display: grid; gap: 24px; align-content: start; min-width: 0; }
+  .demo-grid3 { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .demo-grid2 { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .demo-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .rs-media svg { display: block; width: 100%; height: 100%; min-height: 280px; }
+  @media (max-width: 800px) { .demo-layout { grid-template-columns: 1fr; } .demo-side { display: none; } }
+</style>
+</head>
+<body>
+<div class="rs-app">
+  <header class="rs-navbar">
+    <span class="rs-brand">TaskFlow</span>
+    <nav class="demo-row" style="margin-left:auto">
+      <a class="rs-nav-item" href="#">Inicio</a><a class="rs-nav-item" href="#" aria-current="page">Mi semana</a><a class="rs-nav-item" href="#">Materias</a>
+      <button class="rs-btn rs-btn--pill">+ Nueva tarea</button>
+    </nav>
+  </header>
+
+  <div class="demo-layout">
+    <aside class="rs-sidebar demo-side">
+      <p class="rs-eyebrow" style="padding:8px 14px">Planificación</p>
+      <a class="rs-nav-item" href="#" aria-current="page">Inicio</a>
+      <a class="rs-nav-item" href="#">Mi semana</a>
+      <p class="rs-eyebrow" style="padding:16px 14px 8px">Académico</p>
+      <a class="rs-nav-item" href="#">Materias</a><a class="rs-nav-item" href="#">Horarios</a><a class="rs-nav-item" href="#">Laboratorios</a>
+    </aside>
+
+    <main class="demo-main">
+      <section class="rs-hero rs-hero--split">
+        <div>
+          <p class="rs-eyebrow">Resumen de hoy</p>
+          <h1 class="rs-display">Tu semana, <em>sin ruido</em>.</h1>
+          <p class="rs-muted" style="max-width:46ch;margin:16px 0 24px">Clases, tareas que vencen y próximos exámenes en un solo lugar. Todo lo que importa, ordenado.</p>
+          <div class="demo-row"><button class="rs-btn rs-btn--arrow">Ver tareas</button><button class="rs-btn rs-btn--secondary">Importar horario</button><button class="rs-btn rs-btn--ghost">Más tarde</button></div>
+        </div>
+        <div class="rs-media" data-rs-parallax="0.08">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Imagen de ejemplo (placeholder)" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="300" fill="var(--rs-bg)"/>
+            <circle cx="290" cy="90" r="70" fill="var(--rs-accent)"/>
+            <rect x="40" y="120" width="170" height="150" fill="var(--rs-accent-2, #888)"/>
+            <rect x="120" y="60" width="110" height="110" fill="var(--rs-accent-3, #bbb)" opacity=".9"/>
+            <path d="M0 300 L400 220 L400 300 Z" fill="var(--rs-ink)" opacity=".85"/>
+          </svg>
+        </div>
+      </section>
+
+      <section class="demo-grid3">
+        <article class="rs-card rs-card--stat" data-rs-spot><p class="rs-stat-label">Clases hoy</p><p class="rs-stat-value">4</p></article>
+        <article class="rs-card rs-card--stat" data-rs-spot><p class="rs-stat-label">Tareas pendientes</p><p class="rs-stat-value rs-stat-value--positive">12</p></article>
+        <article class="rs-card rs-card--stat" data-rs-spot><p class="rs-stat-label">Exámenes próximos</p><p class="rs-stat-value">2</p></article>
+      </section>
+
+      <section class="demo-grid2">
+        <article class="rs-card" data-rs-spot data-rs-tilt="4">
+          <h2 class="rs-subtitle">Tareas que requieren atención</h2>
+          <div class="rs-tabs" role="tablist" style="margin:14px 0"><button class="rs-tab" role="tab" aria-selected="true">Hoy</button><button class="rs-tab" role="tab" aria-selected="false">Semana</button><button class="rs-tab" role="tab" aria-selected="false">Todas</button></div>
+          <div class="rs-table-wrap"><table class="rs-table"><thead><tr><th>Tarea</th><th>Materia</th><th data-num>Entrega</th></tr></thead>
+            <tbody><tr><td>Informe de laboratorio</td><td><span class="rs-badge rs-badge--c1">Física</span></td><td data-num>Hoy</td></tr>
+            <tr><td>Diseño de red</td><td><span class="rs-badge rs-badge--c2">Redes</span></td><td data-num>Mañana</td></tr>
+            <tr><td>Ensayo</td><td><span class="rs-badge rs-badge--c3">Lenguaje</span></td><td data-num>Vie</td></tr></tbody></table></div>
+        </article>
+        <article class="rs-card" data-rs-spot>
+          <h2 class="rs-subtitle">Nueva tarea</h2>
+          <form onsubmit="return false" style="display:grid;gap:12px;margin-top:14px">
+            <label class="rs-label" for="t">Título</label><input id="t" class="rs-field" placeholder="Ej. Leer capítulo 4">
+            <label class="rs-label" for="m">Materia</label><select id="m" class="rs-select"><option>Física</option><option>Redes</option></select>
+            <label class="rs-label" for="d">Notas</label><textarea id="d" class="rs-textarea" rows="2" placeholder="Opcional"></textarea>
+            <div class="demo-row"><button class="rs-btn">Guardar</button><button class="rs-btn rs-btn--danger" type="button">Eliminar</button><button class="rs-btn" disabled>Deshabilitado</button></div>
+          </form>
+        </article>
+      </section>
+
+      <section class="demo-grid2">
+        <article class="rs-card"><h2 class="rs-subtitle">Progreso del parcial</h2><div class="rs-progress" style="margin:16px 0"><span style="width:64%"></span></div>
+          <div class="demo-row"><span class="rs-badge">Neutral</span><span class="rs-badge rs-badge--success">Listo</span><span class="rs-badge rs-badge--danger">Atrasado</span><span class="rs-badge rs-badge--warning">Pendiente</span></div></article>
+        <article class="rs-card"><h2 class="rs-subtitle">Avisos</h2><div class="rs-toast rs-toast--success" style="margin:14px 0">✔ Tarea guardada</div><div class="rs-empty">Sin exámenes programados.</div></article>
+      </section>
+    </main>
+  </div>
+</div>
+<label class="demo-switch">Estilo
+  <select id="sel" aria-label="Estilo"></select>
+  <select id="th" aria-label="Tema"><option value="">auto</option><option value="dark">oscuro</option><option value="light">claro</option></select>
+</label>
+<script>
+  var ids = ["glassmorphism","liquid-glass","retro","brutalism","minimalism","claymorphism","neumorphism","spatial","doodle","y2k","aurora"];
+  var sel = document.getElementById("sel"), th = document.getElementById("th");
+  ids.forEach(function (i) { var o = document.createElement("option"); o.value = i; o.textContent = i; if (i === window.__id) o.selected = true; sel.appendChild(o); });
+  th.value = new URLSearchParams(location.search).get("theme") || "";
+  function go() { var p = new URLSearchParams(location.search); p.set("style", sel.value); th.value ? p.set("theme", th.value) : p.delete("theme"); location.search = p.toString(); }
+  sel.onchange = go; th.onchange = go;
+</script>
+<script src="effects/reskin-fx.js" defer></script>
+</body>
+</html>

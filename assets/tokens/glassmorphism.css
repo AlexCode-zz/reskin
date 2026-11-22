@@ -91,6 +91,7 @@
   --rs-tracking-display: -0.035em;
 
   /* Movimiento ---------------------------------------------------- */
+  --rs-fx-p1: #7fe8d0; --rs-fx-p2: #9aa8ff; --rs-fx-p3: #f6c177;
   --rs-dur-fast: 140ms;
   --rs-dur: 200ms;
   --rs-dur-slow: 320ms;

@@ -116,3 +116,16 @@ es una dependencia.**
 - Si hay señales contradictorias (config v3 + `@import "tailwindcss"`), gana la señal del
   CSS y anótalo en el brief.
 - Si no hay evidencia suficiente, pregunta una sola vez. No rellenes con suposiciones.
+
+## Detección extra para efectos y escena (nivel B/C)
+
+Anota también, para decidir dónde van los efectos y la escena:
+
+| Dato | Cómo | Para qué |
+|---|---|---|
+| Entrypoint de CSS global | `src/index.css`, `src/App.css`, `app/globals.css`, `styles/globals.css` | Dónde pegar tokens y `@import` de `reskin-fx.css` |
+| Entrypoint de JS | `src/main.jsx\|tsx`, `src/index.js`, `app/layout.tsx`, `pages/_app.*` | Dónde importar `reskin-fx.js` |
+| Elemento `<html>` | `index.html`, `app/layout.tsx` | Dónde poner `data-rs-fx`, `data-rs-particles`, `data-theme` |
+| Wrappers con fondo opaco | `#root`, `.app`, `main`, `body` con `background` | Hay que dejarlos transparentes para ver escena y partículas |
+| Librerías de animación ya presentes | `gsap`, `framer-motion`, `lenis`, `tsparticles` | Si existen, se usan en vez de `reskin-fx` |
+| Páginas tipo landing vs. dashboard | Rutas, hero, secciones | Sugerir nivel B (apps) o C (landings) |

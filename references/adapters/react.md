@@ -107,3 +107,12 @@ Solo cambia la composición de clases; `onSelect`, `active` y `label` no se toca
 | Duplicar la receta en cada tarjeta | Estilizar el componente compartido |
 | Crear una hoja CSS nueva con Tailwind | Tokens al `@theme` / config y utilidades |
 | Cambiar textos para que quepan | Ajustar tipografía/espaciado o preguntar |
+
+## Efectos, fuentes y escena (nivel B/C)
+
+1. Copia `assets/effects/reskin-fx.css` y `reskin-fx.js` a `src/reskin/`.
+2. En `main.jsx|tsx` (entrypoint), solo imports: `import "./reskin/reskin-fx.css"; import "./reskin/reskin-fx.js";`
+3. En `index.html`: `<html data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">` y el `<link>` de fuentes del estilo. Es el único lugar que no es JSX.
+4. Deja `#root`, `.App` y `main` sin fondo opaco: la escena vive en `<html>`/`body::before`.
+5. Elementos que React re-renderiza: los `data-rs-*` los pone el script (no se pierden) o, si los añades en JSX, van como atributos estáticos; no cambies condiciones ni props.
+6. Imágenes (nivel C): `background-image` CSS o `<img alt="">` hermano nuevo; ver `images.md`.

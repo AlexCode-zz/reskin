@@ -90,3 +90,11 @@ El CSS sale de las recetas del estilo; no dupliques aquí los valores. La escena
 | Vidrio sin scrim | `background-image: var(--rs-scrim)` |
 | Retro con radios grandes | Radios 0–6px y sombras duras |
 | Scanlines encima del texto | Capa decorativa detrás, opacidad ≤ 0.10 |
+
+## Efectos, fuentes y escena (nivel B/C)
+
+1. Crea `reskin/` junto al HTML con `reskin-fx.css` y `reskin-fx.js`.
+2. En `<head>`: `<link>` de fuentes del estilo y `<link rel="stylesheet" href="reskin/reskin-fx.css">`; antes de `</body>`: `<script src="reskin/reskin-fx.js" defer></script>`.
+3. `<html data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">`.
+4. Sin build: nada que compilar; abre con `npx serve` o doble clic.
+5. Imágenes: carpeta `reskin/placeholders/` y `RESKIN-IMAGES.md` en la raíz (ver `images.md`).
