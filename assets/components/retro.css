@@ -1,0 +1,231 @@
+/* ============================================================
+   reskin · retro · biblioteca de componentes
+   Requiere: assets/tokens/retro.css (variables --rs-*).
+   Direcciones: arcade (default) · [data-retro="crt"] · [data-retro="synth"]
+   Pon el atributo data-retro en .rs-app (o en <html>) según el brief.
+
+   CÓMO USARLO
+   - Sin Tailwind: copia SOLO los bloques necesarios al CSS existente
+     y asigna estas clases a los elementos actuales (solo class/className).
+   - Con Tailwind: traduce cada bloque a utilidades con valores
+     arbitrarios (border-[var(--rs-border)], shadow-[var(--rs-shadow-hard)]).
+   - Con CSS Modules: usa :global(.rs-*) o la hoja global; no los
+     metas como clases locales (el hash rompe los nombres).
+   - Nombres de clase idénticos en los tres estilos.
+
+   MATERIAL: sólido y duro. Bordes 2–3px, sombras de offset SIN blur,
+   radios 0–6px, neón como acento (nunca como único indicador).
+   Sin blur ni transparencias tipo glass.
+   ============================================================ */
+
+/* 0 · Base y escena ------------------------------------------- */
+.rs-app {
+  min-height: 100vh;
+  color: var(--rs-ink);
+  font-family: var(--rs-font-mono);
+  font-size: 0.9375rem;                         /* 15px mono legible */
+  background-color: var(--rs-bg);
+  background-image: var(--rs-scene);
+}
+/* Scanlines: solo CRT, DETRÁS del contenido (capa extra del fondo) */
+[data-retro="crt"].rs-app, [data-retro="crt"] .rs-app {
+  background-image: var(--rs-scanline), var(--rs-scene);
+}
+.rs-app ::selection { background: var(--rs-accent); color: var(--rs-accent-ink); }
+.rs-app :focus-visible { outline: 3px solid var(--rs-focus); outline-offset: 3px; box-shadow: none; }
+.rs-title {
+  font-family: var(--rs-font-display);
+  font-size: var(--rs-text-h1);
+  line-height: var(--rs-leading-display);
+  letter-spacing: var(--rs-tracking-display);
+  font-weight: 700;
+  text-transform: uppercase;                   /* uppercase, NUNCA capitalize (rompe "de", "del"...) */
+  color: var(--rs-ink);
+  text-shadow: 3px 3px 0 #000, var(--rs-glow-text);
+}
+.rs-subtitle { font-family: var(--rs-font-display); font-size: var(--rs-text-h2); text-transform: uppercase; letter-spacing: 0.04em; text-shadow: 2px 2px 0 #000; }
+.rs-muted { color: var(--rs-ink-muted); }
+.rs-label { font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rs-ink-muted); }
+.rs-app a:not([class*="rs-"]) { color: var(--rs-accent); text-underline-offset: 4px; text-decoration-thickness: 2px; }
+.rs-divider { border: 0; border-top: var(--rs-border-width) dashed var(--rs-border); }
+
+/* 1 · Superficies sólidas ------------------------------------- */
+.rs-card,
+.rs-sidebar,
+.rs-navbar,
+.rs-dialog,
+.rs-popover {
+  background: var(--rs-surface);
+  border: var(--rs-border-width) solid var(--rs-border);
+  border-radius: var(--rs-radius);
+  color: var(--rs-ink);
+}
+.rs-card { padding: 20px 22px; box-shadow: var(--rs-shadow-hard); }
+.rs-card--strong { background: var(--rs-surface-2); box-shadow: var(--rs-shadow-hard-lg); }
+.rs-card--flat, .rs-card .rs-card { box-shadow: none; background: var(--rs-surface-2); border-width: 2px; }
+/* Tarjeta de métrica: barra de color arriba para identificar el tipo */
+.rs-card--stat { padding: 16px 20px; border-top-width: 6px; border-top-color: var(--rs-accent); }
+.rs-card--stat[data-tone="negative"] { border-top-color: var(--rs-danger); }
+.rs-card--stat[data-tone="2"] { border-top-color: var(--rs-accent-2); }
+.rs-card--stat[data-tone="3"] { border-top-color: var(--rs-accent-3); }
+.rs-card.is-interactive { transition: transform var(--rs-dur-fast) var(--rs-ease), box-shadow var(--rs-dur-fast) var(--rs-ease); }
+.rs-card.is-interactive:hover { transform: translate(-2px, -2px); box-shadow: var(--rs-shadow-hard-lg); }
+
+/* 2 · Navegación ---------------------------------------------- */
+.rs-sidebar { padding: 18px 12px; border-width: 0 var(--rs-border-width) 0 0; background: var(--rs-bg); }
+.rs-navbar {
+  display: flex; align-items: center; gap: 18px; padding: 12px 20px;
+  border-width: 0 0 var(--rs-border-width) 0; background: var(--rs-bg);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.rs-brand { font-family: var(--rs-font-display); font-size: 0.9rem; color: var(--rs-accent); text-shadow: var(--rs-glow-text); text-transform: uppercase; letter-spacing: 0.06em; }
+.rs-nav-item {
+  display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 14px;
+  border: 2px solid transparent; border-radius: var(--rs-radius);
+  background: transparent; color: var(--rs-ink-muted);
+  font: inherit; font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; text-align: left; text-decoration: none; cursor: pointer;
+  transition: background-color var(--rs-dur-fast) var(--rs-ease), color var(--rs-dur-fast) var(--rs-ease);
+}
+.rs-nav-item:hover { color: var(--rs-ink); border-color: var(--rs-border); }
+.rs-nav-item:hover::before { content: "▸"; }
+.rs-nav-item[aria-current="page"], .rs-nav-item.is-active {
+  background: var(--rs-accent); color: var(--rs-accent-ink); border-color: #000; font-weight: 700;
+  box-shadow: var(--rs-shadow-hard);
+}
+.rs-nav-item[aria-current="page"]::before, .rs-nav-item.is-active::before { content: "▶"; }   /* marcador de forma: no solo color */
+
+/* 3 · Métricas ------------------------------------------------ */
+.rs-stat-label { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rs-ink-muted); }
+.rs-stat-value { margin-top: 8px; font-family: var(--rs-font-display); font-size: 1.5rem; line-height: 1.2; font-variant-numeric: tabular-nums; text-shadow: 2px 2px 0 #000; }
+.rs-stat-value--positive { color: var(--rs-success); text-shadow: 2px 2px 0 #000, var(--rs-glow-text); }
+.rs-stat-value--negative { color: var(--rs-danger); }
+
+/* 4 · Botones ------------------------------------------------- */
+.rs-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 12px 18px;
+  border: var(--rs-border-width) solid #000; border-radius: var(--rs-radius);
+  background: var(--rs-accent); color: var(--rs-accent-ink);
+  font-family: var(--rs-font-display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer;
+  box-shadow: var(--rs-shadow-hard);
+  transition: transform var(--rs-dur-fast) var(--rs-ease), box-shadow var(--rs-dur-fast) var(--rs-ease);
+}
+.rs-btn:hover { transform: translate(-2px, -2px); box-shadow: var(--rs-shadow-hard-lg); }
+.rs-btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #000; }
+.rs-btn--secondary { background: var(--rs-surface-2); color: var(--rs-ink); border-color: var(--rs-border); }
+.rs-btn--ghost { background: transparent; color: var(--rs-accent); border-color: var(--rs-accent); box-shadow: none; }
+.rs-btn--ghost:hover { background: var(--rs-accent-soft); box-shadow: none; }
+.rs-btn--danger { background: var(--rs-danger); color: #1a0400; }
+.rs-btn[disabled], .rs-btn[aria-disabled="true"] { background: var(--rs-surface-2); color: var(--rs-ink-muted); border-style: dashed; box-shadow: none; transform: none; cursor: not-allowed; }
+
+/* 5 · Formularios --------------------------------------------- */
+.rs-field, .rs-select, .rs-textarea {
+  width: 100%; min-height: 44px; padding: 10px 14px;
+  border: 2px solid var(--rs-border); border-radius: var(--rs-radius-sm);
+  background: #000; color: var(--rs-ink); font: inherit;
+  transition: box-shadow var(--rs-dur-fast) var(--rs-ease), border-color var(--rs-dur-fast) var(--rs-ease);
+}
+.rs-field::placeholder, .rs-textarea::placeholder { color: var(--rs-ink-muted); opacity: 1; }
+.rs-field:hover, .rs-select:hover, .rs-textarea:hover { border-color: var(--rs-accent); }
+.rs-field:focus-visible, .rs-select:focus-visible, .rs-textarea:focus-visible {
+  border-color: var(--rs-focus); outline: 3px solid var(--rs-focus); outline-offset: 2px; box-shadow: var(--rs-glow);
+}
+.rs-field[aria-invalid="true"], .rs-field:user-invalid { border-color: var(--rs-danger); border-style: dashed; }
+.rs-select { color-scheme: dark; border-width: var(--rs-border-width); font-weight: 600; text-transform: lowercase; }
+.rs-select option { background: #000; color: var(--rs-ink); }
+.rs-app input[type="checkbox"], .rs-app input[type="radio"], .rs-app input[type="range"] { accent-color: var(--rs-accent); }
+.rs-help { font-size: 0.8125rem; color: var(--rs-ink-muted); }
+.rs-error { font-size: 0.875rem; color: var(--rs-danger); }
+.rs-error::before { content: "✖ "; }
+
+/* 6 · Pestañas ------------------------------------------------ */
+.rs-tabs { display: inline-flex; gap: 0; border: 2px solid var(--rs-border); background: #000; }
+.rs-tab {
+  min-height: 40px; padding: 8px 16px; border: 0; border-right: 2px solid var(--rs-border);
+  background: transparent; color: var(--rs-ink-muted); font: inherit; font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+}
+.rs-tab:last-child { border-right: 0; }
+.rs-tab:hover { color: var(--rs-ink); background: var(--rs-accent-soft); }
+.rs-tab[aria-selected="true"], .rs-tab.is-active { background: var(--rs-accent); color: var(--rs-accent-ink); font-weight: 700; }
+
+/* 7 · Badges -------------------------------------------------- */
+.rs-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px;
+  border: 2px solid currentColor; border-radius: var(--rs-radius);
+  background: #000; color: var(--rs-ink);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.5;
+}
+.rs-badge--accent  { color: var(--rs-accent); }
+.rs-badge--success { color: var(--rs-success); }
+.rs-badge--danger  { color: var(--rs-danger); }
+.rs-badge--warning { color: var(--rs-warning); }
+/* Categorías: mismo color que su serie en el gráfico (c1..c5) */
+.rs-badge--c1 { color: var(--rs-chart-1); }
+.rs-badge--c2 { color: var(--rs-chart-2); }
+.rs-badge--c3 { color: var(--rs-chart-3); }
+.rs-badge--c4 { color: var(--rs-chart-4); }
+.rs-badge--c5 { color: var(--rs-chart-5); }
+
+/* 8 · Tablas -------------------------------------------------- */
+.rs-table { width: 100%; border-collapse: collapse; color: var(--rs-ink); font-variant-numeric: tabular-nums; }
+.rs-table th {
+  padding: 10px 12px; text-align: left; white-space: nowrap;
+  border: 2px solid var(--rs-border); background: var(--rs-surface-2);
+  color: var(--rs-accent); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.rs-table td { padding: 10px 12px; border: 1px solid var(--rs-border); }
+.rs-table tbody tr:nth-child(even) { background: rgb(255 255 255 / 0.04); }
+.rs-table tbody tr:hover { background: var(--rs-accent-soft); }
+.rs-table .is-num, .rs-table td[data-num], .rs-table th[data-num] { text-align: right; }
+.rs-table-wrap { overflow-x: auto; }
+
+/* 9 · Modal, popover, tooltip, toast -------------------------- */
+.rs-overlay { background: rgb(0 0 0 / 0.80); }               /* sin blur */
+.rs-dialog { padding: 24px; border-color: var(--rs-accent); box-shadow: var(--rs-shadow-hard-lg); }
+.rs-popover { padding: 8px; box-shadow: var(--rs-shadow-hard); }
+.rs-tooltip {
+  padding: 8px 12px; border: 2px solid var(--rs-accent); border-radius: var(--rs-radius);
+  background: var(--rs-tooltip-bg); color: var(--rs-ink); font-size: 0.8125rem; box-shadow: var(--rs-shadow-hard);
+}
+.rs-toast {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  border: var(--rs-border-width) solid var(--rs-accent); border-radius: var(--rs-radius);
+  background: var(--rs-surface); color: var(--rs-ink); box-shadow: var(--rs-shadow-hard);
+}
+.rs-toast--danger { border-color: var(--rs-danger); }
+.rs-toast--success { border-color: var(--rs-success); }
+
+/* 10 · Progreso y vacíos -------------------------------------- */
+.rs-progress { height: 16px; border: 2px solid var(--rs-border); background: #000; border-radius: var(--rs-radius); overflow: hidden; }
+.rs-progress > * {
+  display: block; height: 100%; background: repeating-linear-gradient(90deg, var(--rs-accent) 0 10px, transparent 10px 12px);  /* barra por segmentos */
+}
+.rs-empty { padding: 32px; text-align: center; color: var(--rs-ink-muted); border: var(--rs-border-width) dashed var(--rs-border); }
+
+/* 11 · Gráficos de terceros (ver references/charts-and-widgets.md) */
+.rs-chart .recharts-cartesian-axis-tick-value,
+.rs-chart .recharts-legend-item-text,
+.rs-chart .recharts-polar-angle-axis-tick-value { fill: var(--rs-chart-axis); color: var(--rs-chart-axis); font-family: var(--rs-font-mono); font-size: 0.8125rem; }
+.rs-chart .recharts-cartesian-grid line, .rs-chart .recharts-polar-grid-concentric-polygon { stroke: var(--rs-chart-grid); stroke-dasharray: 3 4; }
+.rs-chart .recharts-cartesian-axis-line, .rs-chart .recharts-cartesian-axis-tick-line { stroke: var(--rs-border); }
+.rs-chart .recharts-tooltip-cursor { fill: var(--rs-accent-soft); stroke: none; }
+.rs-chart .recharts-bar-rectangle path, .rs-chart .recharts-rectangle { stroke: #000; stroke-width: 2px; }   /* barras con contorno duro */
+.rs-chart .recharts-sector, .rs-chart .recharts-pie-sector path { stroke: #000; stroke-width: 3px; }
+.recharts-default-tooltip, .rs-chart .recharts-default-tooltip {
+  background: var(--rs-tooltip-bg) !important;            /* único !important permitido: recharts usa style inline */
+  border: 2px solid var(--rs-accent) !important;
+  border-radius: var(--rs-radius) !important;
+  box-shadow: var(--rs-shadow-hard);
+  color: var(--rs-ink) !important;
+  font-family: var(--rs-font-mono);
+}
+.recharts-default-tooltip .recharts-tooltip-label, .recharts-default-tooltip .recharts-tooltip-item { color: var(--rs-ink) !important; }
+
+/* 12 · Movimiento --------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .rs-btn:hover, .rs-btn:active, .rs-card.is-interactive:hover { transform: none; }
+}
+@media (max-width: 640px) {
+  .rs-title { font-size: clamp(1.25rem, 6vw, 1.75rem); }
+  .rs-card { padding: 16px; }
+}

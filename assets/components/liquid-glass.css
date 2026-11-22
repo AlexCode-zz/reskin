@@ -1,0 +1,257 @@
+/* ============================================================
+   reskin · liquid glass · biblioteca de componentes
+   Requiere: assets/tokens/liquid-glass.css (variables --rs-*).
+
+   CÓMO USARLO
+   - Sin Tailwind: copia SOLO los bloques necesarios al CSS existente
+     y asigna estas clases a los elementos actuales (solo class/className).
+   - Con Tailwind: traduce cada bloque a utilidades con valores
+     arbitrarios (bg-[var(--rs-glass)]). No crees una hoja nueva.
+   - Con CSS Modules: usa :global(.rs-*) o la hoja global; no los
+     metas como clases locales (el hash rompe los nombres).
+   - Nombres de clase idénticos en los tres estilos.
+
+   MATERIAL: blur 40–60px + saturate alto + borde de luz (specular) como
+   inner shadow. Chrome flotante (navbar, dock, popovers) = vidrio.
+   Controles pequeños, filas y badges = tinte sólido, SIN blur.
+   Máximo 3–4 superficies con blur visibles.
+   ============================================================ */
+
+/* 0 · Base y escena ------------------------------------------- */
+.rs-app {
+  min-height: 100vh;
+  color: var(--rs-ink);
+  font-family: var(--rs-font-sans);
+  background-color: var(--rs-bg);
+  background-image: var(--rs-scene);
+  background-attachment: scroll;
+}
+.rs-app ::selection { background: var(--rs-accent-soft); color: var(--rs-ink); }
+.rs-app :focus-visible { outline: 2px solid var(--rs-focus); outline-offset: 2px; box-shadow: var(--rs-focus-ring); }
+.rs-title {
+  font-family: var(--rs-font-display);
+  font-size: var(--rs-text-h1);
+  line-height: var(--rs-leading-display);
+  letter-spacing: var(--rs-tracking-display);
+  font-weight: 650;
+  text-transform: none;
+  color: var(--rs-ink);
+}
+.rs-subtitle { font-size: var(--rs-text-h2); font-weight: 600; letter-spacing: -0.02em; }
+.rs-muted { color: var(--rs-ink-muted); }
+.rs-label { font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rs-ink-muted); }
+.rs-app a:not([class*="rs-"]) { color: var(--rs-accent); text-underline-offset: 3px; }
+.rs-divider { border: 0; border-top: 1px solid var(--rs-glass-border); }
+
+/* 1 · Superficies de vidrio líquido --------------------------- */
+.rs-card,
+.rs-sidebar,
+.rs-navbar,
+.rs-dialog,
+.rs-popover {
+  position: relative;
+  background-color: var(--rs-glass);
+  background-image: var(--rs-scrim);          /* obligatorio con texto encima */
+  border: 1px solid var(--rs-glass-border);
+  border-radius: var(--rs-radius-lg);
+  -webkit-backdrop-filter: var(--rs-glass-filter);
+  backdrop-filter: var(--rs-glass-filter);
+  box-shadow: var(--rs-shadow-1);             /* incluye el brillo specular interno */
+  color: var(--rs-ink);
+}
+.rs-card { padding: 22px 24px; }
+.rs-card--strong { background-color: var(--rs-glass-strong); box-shadow: var(--rs-shadow-2); }
+/* Reflejo curvo superior: decoración pura, no captura eventos */
+.rs-card::after, .rs-navbar::after, .rs-dialog::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.10), transparent 38%);
+}
+
+/* No anides vidrio dentro de vidrio: tinte sólido, sin blur. */
+.rs-card--flat,
+.rs-card .rs-card,
+.rs-card--stat {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background-color: var(--rs-glass-fallback);  /* sin scrim: opaco para no perder contraste */
+  background-image: none;
+  box-shadow: inset 0 1px 0 var(--rs-specular);
+  border-radius: var(--rs-radius-md);
+}
+.rs-card--flat::after, .rs-card .rs-card::after, .rs-card--stat::after { display: none; }
+
+/* 2 · Navegación ---------------------------------------------- */
+.rs-sidebar { padding: 18px 12px; border-radius: var(--rs-radius-lg); }
+.rs-navbar {
+  position: sticky; top: 12px; z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px; border-radius: var(--rs-radius-pill);
+}
+.rs-brand { font-weight: 700; letter-spacing: -0.02em; }
+.rs-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 44px; padding: 10px 16px;
+  border: 1px solid transparent; border-radius: var(--rs-radius-pill);
+  background: transparent; color: var(--rs-ink-muted);
+  font: inherit; font-weight: 500; text-align: left; text-decoration: none; cursor: pointer;
+  transition: background-color var(--rs-dur-fast) var(--rs-ease), color var(--rs-dur-fast) var(--rs-ease);
+}
+.rs-nav-item:hover { background: var(--rs-glass); color: var(--rs-ink); }
+.rs-nav-item[aria-current="page"], .rs-nav-item.is-active {
+  background: var(--rs-glass-strong); color: var(--rs-ink);
+  border-color: var(--rs-glass-border);
+  box-shadow: inset 0 1px 0 var(--rs-specular), inset 0 0 0 1px rgb(255 255 255 / 0.05);
+}
+
+/* 3 · Métricas ------------------------------------------------ */
+.rs-stat-label { font-size: 0.8125rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rs-ink-muted); }
+.rs-stat-value { margin-top: 6px; font-size: 1.875rem; font-weight: 650; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.rs-stat-value--positive { color: var(--rs-success); }
+.rs-stat-value--negative { color: var(--rs-danger); }
+
+/* 4 · Botones (tinte sólido, sin blur) ------------------------ */
+.rs-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 10px 20px;
+  border: 1px solid rgb(255 255 255 / 0.25); border-radius: var(--rs-radius-pill);
+  background: linear-gradient(180deg, var(--rs-accent-strong), var(--rs-accent));
+  color: var(--rs-accent-ink);
+  font: inherit; font-weight: 600; cursor: pointer;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.55), 0 10px 26px -12px var(--rs-accent);
+  transition: transform var(--rs-dur-fast) var(--rs-ease), box-shadow var(--rs-dur-fast) var(--rs-ease);
+}
+.rs-btn:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 14px 30px -12px var(--rs-accent); }
+.rs-btn:active { transform: translateY(0); }
+.rs-btn--secondary {
+  background: var(--rs-glass); color: var(--rs-ink); border-color: var(--rs-glass-border);
+  box-shadow: inset 0 1px 0 var(--rs-specular);
+}
+.rs-btn--secondary:hover { background: var(--rs-glass-strong); }
+.rs-btn--ghost { background: transparent; color: var(--rs-ink); border-color: transparent; box-shadow: none; }
+.rs-btn--ghost:hover { background: var(--rs-glass); }
+.rs-btn--danger { background: transparent; color: var(--rs-danger); border-color: var(--rs-danger); box-shadow: none; }
+.rs-btn--danger:hover { background: var(--rs-glass); }
+.rs-btn[disabled], .rs-btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+/* 5 · Formularios --------------------------------------------- */
+.rs-field, .rs-select, .rs-textarea {
+  width: 100%; min-height: 44px; padding: 10px 16px;
+  border: 1px solid var(--rs-glass-border); border-radius: var(--rs-radius-md);
+  background-color: var(--rs-glass); color: var(--rs-ink); font: inherit;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.18);
+  transition: border-color var(--rs-dur-fast) var(--rs-ease), box-shadow var(--rs-dur-fast) var(--rs-ease);
+}
+.rs-field::placeholder, .rs-textarea::placeholder { color: var(--rs-ink-muted); opacity: 1; }
+.rs-field:hover, .rs-select:hover, .rs-textarea:hover { border-color: var(--rs-accent); }
+.rs-field:focus-visible, .rs-select:focus-visible, .rs-textarea:focus-visible {
+  border-color: var(--rs-focus); outline: 2px solid var(--rs-focus); outline-offset: 2px; box-shadow: var(--rs-focus-ring);
+}
+.rs-field[aria-invalid="true"], .rs-field:user-invalid { border-color: var(--rs-danger); }
+.rs-select option { background: var(--rs-bg-elevated); color: var(--rs-ink); }
+.rs-app input[type="checkbox"], .rs-app input[type="radio"], .rs-app input[type="range"] { accent-color: var(--rs-accent); }
+.rs-help { font-size: 0.8125rem; color: var(--rs-ink-muted); }
+.rs-error { font-size: 0.875rem; color: var(--rs-danger); }
+
+/* 6 · Control segmentado / pestañas --------------------------- */
+.rs-tabs {
+  display: inline-flex; gap: 4px; padding: 4px;
+  border: 1px solid var(--rs-glass-border); border-radius: var(--rs-radius-pill);
+  background: var(--rs-glass); box-shadow: inset 0 1px 0 var(--rs-specular);
+}
+.rs-tab {
+  min-height: 40px; padding: 8px 18px; border: 0; border-radius: var(--rs-radius-pill);
+  background: transparent; color: var(--rs-ink-muted); font: inherit; font-weight: 500; cursor: pointer;
+  transition: background-color var(--rs-dur-fast) var(--rs-ease), color var(--rs-dur-fast) var(--rs-ease);
+}
+.rs-tab:hover { color: var(--rs-ink); }
+.rs-tab[aria-selected="true"], .rs-tab.is-active {
+  background: var(--rs-glass-strong); color: var(--rs-ink);
+  box-shadow: inset 0 1px 0 var(--rs-specular), 0 6px 16px -10px rgb(0 0 0 / 0.6);
+}
+
+/* 7 · Badges -------------------------------------------------- */
+.rs-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 3px 11px;
+  border: 1px solid var(--rs-glass-border); border-radius: var(--rs-radius-pill);
+  background: var(--rs-glass); color: var(--rs-ink);
+  font-size: 0.8125rem; font-weight: 500; line-height: 1.4; box-shadow: inset 0 1px 0 var(--rs-specular);
+}
+.rs-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.rs-badge--accent  { color: var(--rs-accent); }
+.rs-badge--success { color: var(--rs-success); }
+.rs-badge--danger  { color: var(--rs-danger); }
+.rs-badge--warning { color: var(--rs-warning); }
+/* Categorías: mismo color que su serie en el gráfico (c1..c5) */
+.rs-badge--c1 { color: var(--rs-chart-1); }
+.rs-badge--c2 { color: var(--rs-chart-2); }
+.rs-badge--c3 { color: var(--rs-chart-3); }
+.rs-badge--c4 { color: var(--rs-chart-4); }
+.rs-badge--c5 { color: var(--rs-chart-5); }
+
+/* 8 · Tablas (liquid glass no es para tablas densas: filas sin blur) */
+.rs-table { width: 100%; border-collapse: separate; border-spacing: 0; color: var(--rs-ink); font-variant-numeric: tabular-nums; }
+.rs-table th {
+  padding: 12px 14px; text-align: left; white-space: nowrap;
+  font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--rs-ink-muted); border-bottom: 1px solid var(--rs-glass-border);
+}
+.rs-table td { padding: 12px 14px; border-bottom: 1px solid var(--rs-glass-border); }
+.rs-table tbody tr:hover { background: var(--rs-glass); }
+.rs-table tbody tr:last-child td { border-bottom: 0; }
+.rs-table .is-num, .rs-table td[data-num], .rs-table th[data-num] { text-align: right; }
+.rs-table-wrap { overflow-x: auto; }
+
+/* 9 · Modal, popover, tooltip, toast -------------------------- */
+.rs-overlay { background: rgb(2 8 14 / 0.50); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.rs-dialog { padding: 26px; border-radius: var(--rs-radius-lg); box-shadow: var(--rs-shadow-2); }
+.rs-popover { padding: 8px; border-radius: var(--rs-radius-md); }
+.rs-tooltip {
+  padding: 8px 12px; border: 1px solid var(--rs-glass-border); border-radius: var(--rs-radius-sm);
+  background: var(--rs-tooltip-bg); color: var(--rs-ink); font-size: 0.875rem;
+  box-shadow: inset 0 1px 0 var(--rs-specular), var(--rs-shadow-2);
+}
+.rs-toast {
+  display: flex; align-items: center; gap: 12px; padding: 12px 18px;
+  border: 1px solid var(--rs-glass-border); border-radius: var(--rs-radius-pill);
+  background: var(--rs-bg-elevated); color: var(--rs-ink); box-shadow: inset 0 1px 0 var(--rs-specular), var(--rs-shadow-2);
+}
+.rs-toast--danger { border-color: var(--rs-danger); }
+.rs-toast--success { border-color: var(--rs-success); }
+
+/* 10 · Progreso y vacíos -------------------------------------- */
+.rs-progress { height: 10px; border-radius: var(--rs-radius-pill); background: var(--rs-glass); border: 1px solid var(--rs-glass-border); overflow: hidden; box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.2); }
+.rs-progress > * { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--rs-accent), var(--rs-accent-strong)); }
+.rs-empty { padding: 32px; text-align: center; color: var(--rs-ink-muted); border: 1px dashed var(--rs-glass-border); border-radius: var(--rs-radius-md); }
+
+/* 11 · Gráficos de terceros (ver references/charts-and-widgets.md) */
+.rs-chart .recharts-cartesian-axis-tick-value,
+.rs-chart .recharts-legend-item-text,
+.rs-chart .recharts-polar-angle-axis-tick-value { fill: var(--rs-chart-axis); color: var(--rs-chart-axis); font-size: 0.8125rem; }
+.rs-chart .recharts-cartesian-grid line, .rs-chart .recharts-polar-grid-concentric-polygon { stroke: var(--rs-chart-grid); }
+.rs-chart .recharts-cartesian-axis-line, .rs-chart .recharts-cartesian-axis-tick-line { stroke: var(--rs-chart-grid); }
+.rs-chart .recharts-tooltip-cursor { fill: var(--rs-glass); stroke: var(--rs-glass-border); }
+.rs-chart .recharts-sector, .rs-chart .recharts-pie-sector path { stroke: var(--rs-bg); stroke-width: 2px; }
+.recharts-default-tooltip, .rs-chart .recharts-default-tooltip {
+  background: var(--rs-tooltip-bg) !important;            /* único !important permitido: recharts usa style inline */
+  border: 1px solid var(--rs-glass-border) !important;
+  border-radius: var(--rs-radius-sm) !important;
+  box-shadow: inset 0 1px 0 var(--rs-specular), var(--rs-shadow-2);
+  color: var(--rs-ink) !important;
+}
+.recharts-default-tooltip .recharts-tooltip-label, .recharts-default-tooltip .recharts-tooltip-item { color: var(--rs-ink) !important; }
+
+/* 12 · Fallbacks y movimiento --------------------------------- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .rs-card, .rs-sidebar, .rs-navbar, .rs-dialog, .rs-popover { background-color: var(--rs-glass-fallback); background-image: none; }
+  .rs-overlay { background: rgb(2 8 14 / 0.78); }
+}
+@media (max-width: 640px) {  /* antes que reduced-transparency: ese ajuste debe ganar */
+  .rs-card, .rs-sidebar, .rs-navbar, .rs-dialog, .rs-popover { -webkit-backdrop-filter: blur(20px) saturate(var(--rs-glass-saturate)); backdrop-filter: blur(20px) saturate(var(--rs-glass-saturate)); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .rs-card, .rs-sidebar, .rs-navbar, .rs-dialog, .rs-popover { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: var(--rs-glass-fallback); background-image: none; }
+  .rs-overlay { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgb(2 8 14 / 0.78); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rs-btn:hover { transform: none; }
+}
