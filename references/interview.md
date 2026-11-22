@@ -56,6 +56,14 @@ Un campo por pregunta:
 | 2 | Tono | ¿Tono claro u oscuro? | Claro / Oscuro / Según la app | Datos, herramientas, terminal o uso nocturno → Oscuro. Contenido, docs, marketing o comercio → Claro. Si ya existe toggle de tema → Según la app, que lo respeta. |
 | 3 | Alcance | ¿Hasta dónde llega el reskin? | Toda la app / Solo los componentes principales / Una página o ruta específica | Toda la app: un reskin a medias se ve incoherente. Componentes principales = nav, botones, cards y formularios. Página/ruta solo si el resto se rediseña aparte. |
 
+Qué hace la respuesta de **tono** con los tokens: *Oscuro* → solo el bloque base (o
+`data-theme="dark"` en `<html>`); *Claro* → los valores `[data-theme="light"]` como base;
+*Según la app* → ambos. Si el usuario elige Oscuro y su sistema está en claro, el reskin debe
+verse oscuro igual: no dejes activo el `@media (prefers-color-scheme: light)`.
+
+**Retro solo existe en oscuro.** No tiene bloque claro ni le afecta la respuesta de tono;
+si el usuario elige Claro con Retro, anótalo como "Retro oscuro (por diseño)" en el resumen.
+
 Sin solapamientos: el tono cubre la paleta y el alcance cubre la extensión. La identidad no
 tiene pregunta propia: por defecto se conservan paleta y tipografía y solo cambian
 materiales y superficies. Si el usuario quiere otra cosa, lo dirá con "Cambiar algo" o en

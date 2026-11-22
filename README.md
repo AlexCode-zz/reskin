@@ -12,8 +12,11 @@ aplica el estilo con los tokens y el sistema de estilos que el proyecto ya usa.
 - **Entrevista en vivo:** 3 preguntas con el selector nativo del agente (`question` en
   OpenCode, `AskUserQuestion` en Claude Code), recomendación basada en el stack,
   respuesta libre y confirmación antes de editar.
-- **Aplica el estilo:** tokens, escena, navbar, cards, botones, inputs, modales y tablas,
-  con WCAG AA y `prefers-reduced-motion`.
+- **Aplica el estilo con una biblioteca completa por estilo:** escena, navbar, sidebar, cards,
+  métricas, botones, inputs, select, tabs, badges, tablas, modales, tooltips y toasts, con
+  WCAG AA y `prefers-reduced-motion`.
+- **Restiliza los gráficos de terceros** (Recharts, Chart.js...): tooltips, ejes, rejilla y
+  series, para que nada quede con el aspecto por defecto.
 - **Respeta el sistema:** con Tailwind, tokens al theme y utilidades; sin Tailwind,
   variables CSS en la hoja existente. Sin dependencias nuevas.
 
@@ -66,7 +69,9 @@ proyecto.
 | **Liquid Glass** | Chrome flotante premium, nav, docks, modales sobre imagen o video. |
 | **Retro** | Portafolios, landings, juegos y demos. Variantes arcade, CRT y synthwave. |
 
-Cada estilo trae tokens, recetas de componentes, errores comunes y checklist AA.
+Cada estilo trae tokens, una biblioteca de componentes (`assets/components/`), errores
+comunes y checklist AA. Los nombres de clase son iguales en los tres (`.rs-card`, `.rs-btn`,
+`.rs-table`...), así que cambiar de estilo no cambia el marcado.
 
 ## Tecnologías
 
@@ -89,10 +94,13 @@ references/
   detection.md                 framework, capa de estilos, router, TypeScript
   interview.md                 preguntas y confirmación del brief
   rules.md                     límites y accesibilidad
+  charts-and-widgets.md        gráficos, tooltips y widgets de terceros
   styles/                      glassmorphism, liquid-glass, retro
   adapters/                    react, nextjs, html-css, tailwind-v4, tailwind-v3
-assets/tokens/                 variables CSS por estilo
+assets/tokens/                 variables CSS por estilo (incluye colores de gráficos)
+assets/components/             biblioteca de componentes por estilo
 scripts/detect-stack.sh        detección opcional (bash, sin dependencias)
+scripts/check-contrast.js      verificador WCAG de tokens (Node, sin dependencias)
 ```
 
 ## Verificación
@@ -102,7 +110,15 @@ bash -n scripts/detect-stack.sh
 bash scripts/detect-stack.sh /ruta/al/proyecto
 ```
 
-El script imprime `framework`, `styling`, `router` y `typescript`. Si no puede ejecutarse,
+```bash
+node scripts/check-contrast.js                      # los tres estilos
+node scripts/check-contrast.js assets/tokens/retro.css
+```
+
+El verificador de contraste calcula la relación WCAG de cada par (texto, acento, peligro,
+aviso, tooltip, foco y series de gráficos) en cada tema y falla si alguno baja de AA.
+
+El script de detección imprime `framework`, `styling`, `router` y `typescript`. Si no puede ejecutarse,
 la skill detecta leyendo `package.json`, los configs y la estructura.
 
 ## Licencia

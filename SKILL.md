@@ -57,10 +57,22 @@ No confundas "Next.js + Tailwind" con "framework Tailwind". La detección los se
    toca) y confirma con la misma herramienta: `Aplicar` / `Cambiar algo`.
    **No edites código hasta un "Aplicar" o un "sí" explícito.**
 4. **Aplicar** (`references/rules.md` + estilo + adapter).
-   - Orden: tokens → base/escena → superficies → controles → estados → responsive.
+   - Orden: tokens → base/escena → superficies → controles → estados → gráficos y widgets
+     de terceros → responsive.
+   - **Recetas completas de componentes:** `assets/components/<estilo>.css` (navbar, sidebar,
+     card, stat, botones, inputs, tabs, badges, tabla, modal, tooltip, toast, gráficos). Los
+     nombres de clase (`.rs-card`, `.rs-btn`, `.rs-table`...) son iguales en los tres estilos.
+     Copia solo los bloques que el proyecto usa y asigna las clases a los elementos que ya
+     existen. Con Tailwind, tradúcelos a utilidades. Con CSS Modules, usa `:global(.rs-*)` o
+     una hoja global.
+   - **Tema:** si el brief dice Oscuro, pega solo el bloque base de tokens (sin el bloque
+     claro ni el `@media (prefers-color-scheme: light)`), o fija `data-theme="dark"`. Si dice
+     Claro, usa los valores claros como base. Solo con "Según la app" van ambos. **Retro no
+     tiene tema claro: es oscuro por diseño.**
    - Diff revisable: solo clases, CSS y tokens.
-5. **Verificar.** Build/lint/typecheck si existen; contraste AA; foco; reduced motion;
-   360/768/1280; diff sin lógica.
+5. **Verificar.** Build/lint/typecheck si existen; contraste AA (si cambiaste colores:
+   `node scripts/check-contrast.js assets/tokens/<estilo>.css`); foco; reduced motion; 360/768/1280;
+   tooltips y ejes de gráficos restilizados; diff sin lógica.
 
 ## Regla de capas (no negociable)
 
@@ -84,7 +96,8 @@ No confundas "Next.js + Tailwind" con "framework Tailwind". La detección los se
 | Detectar framework y capa de estilos | `references/detection.md` |
 | Preguntas, brief y confirmación | `references/interview.md` |
 | Reglas antes de editar código | `references/rules.md` |
-| Estilo elegido | `references/styles/<estilo>.md` + `assets/tokens/<estilo>.css` |
+| Estilo elegido | `references/styles/<estilo>.md` + `assets/tokens/<estilo>.css` + `assets/components/<estilo>.css` |
+| Gráficos, tooltips, selects o librerías de UI de terceros | `references/charts-and-widgets.md` |
 | Framework React | `references/adapters/react.md` |
 | Framework Next.js | `references/adapters/nextjs.md` |
 | Framework HTML puro | `references/adapters/html-css.md` |

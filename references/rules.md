@@ -36,10 +36,21 @@ No introduzcas un segundo sistema. Si hay Tailwind, se usan utilidades de Tailwi
 
 - Usa valores arbitrarios con tokens: `bg-[var(--rs-glass)]`, `border-[var(--rs-glass-border)]`, `[backdrop-filter:var(--rs-glass-filter)]`.
 - No borres clases funcionales: `sr-only`, `hidden`, `print:*`, `dark:*`, `motion-reduce:*`, `group`, `peer`, variantes `data-*`.
-- No uses `!important` para resolver conflictos. Ajusta la utilidad o usa `tailwind-merge` **solo si ya está en el proyecto**.
+- No uses `!important` para resolver conflictos. Ajusta la utilidad o usa `tailwind-merge` **solo si ya está en el proyecto**. Única excepción: pisar `style` inline de una librería de terceros (tooltip de Recharts, etc.); ver `charts-and-widgets.md`.
 - `@apply` solo si el proyecto ya lo usa.
 - Lleva los tokens al theme: v4 → `@theme` en el CSS global existente; v3 → `theme.extend` en `tailwind.config.*`. Es la vía correcta para que existan `bg-rs-*`, `rounded-rs-*`, etc.
 - No añadas plugins ni presets ni cambies `content` o la estrategia de dark mode. El theme solo recibe tokens del estilo.
+
+## 2b. Widgets de terceros y tipografía
+
+- **Gráficos, tooltips, selects, calendarios y toasts de librerías se restilizan siempre.**
+  Si no, quedan con el aspecto por defecto (tooltip blanco, ejes grises) y rompen el estilo.
+  Ver `references/charts-and-widgets.md`.
+- **Nunca `text-transform: capitalize` ni la clase `capitalize` en títulos en español**: pone
+  en mayúscula "De", "Del", "Y". Usa `uppercase`, `normal-case` o respeta el texto original.
+- Los colores de serie de un gráfico salen de `--rs-chart-1..5`; el mismo concepto (gastos,
+  ingresos) usa siempre el mismo token en barras, montos y badges. No mezcles tonos.
+- La categoría que tiene color en un gráfico lo conserva en su badge (`.rs-badge--c1..c5`).
 
 ## 3. Clases condicionales y props
 
@@ -73,6 +84,7 @@ No es opcional y no se negocia por estética.
 ### Contraste
 
 - Texto normal: **4.5:1** mínimo. Texto grande (≥ 24px, o ≥ 18.66px bold) y UI: **3:1**.
+- Ejes, leyendas y etiquetas de gráficos son texto: usan `--rs-chart-axis` (= `--rs-ink-muted`), nunca un gris fijo.
 - Sobre vidrio, comprueba el peor caso: la zona **más clara** y la **más oscura** de la escena. No midas solo contra el fondo base.
 - No uses opacidad en el texto. `--rs-ink-muted` está calculado para AA; `text-white/50` no.
 - El placeholder es texto: también necesita contraste.

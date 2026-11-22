@@ -3,6 +3,10 @@
 Traduce el estilo elegido al proyecto React. No repite las recetas del estilo: las aplica
 con el sistema de estilos que ya existe.
 
+> **Componentes:** las recetas completas del estilo están en `assets/components/<estilo>.css`
+> (mismos nombres de clase en los tres estilos). Gráficos y widgets de terceros:
+> `references/charts-and-widgets.md`.
+
 ## Detección
 
 - `framework: react`

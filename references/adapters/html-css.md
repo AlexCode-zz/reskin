@@ -3,6 +3,10 @@
 Para proyectos sin framework JS: `index.html` + una o varias hojas CSS, con o sin JS
 propio. Sin build: solo se usa lo que ya existe.
 
+> **Componentes:** las recetas completas del estilo están en `assets/components/<estilo>.css`
+> (mismos nombres de clase en los tres estilos). Gráficos y widgets de terceros:
+> `references/charts-and-widgets.md`.
+
 ## Detección
 
 - `framework: html-puro`.

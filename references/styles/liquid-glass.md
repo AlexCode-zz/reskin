@@ -50,6 +50,11 @@ semánticas. En ambos casos: **no agregues una hoja CSS aparte**.
 
 ## Componentes
 
+> **Fuente de verdad:** `assets/components/liquid-glass.css` trae la biblioteca completa (app/escena,
+> navbar, sidebar, card, métrica, botones, inputs, select, tabs, badges, tabla, modal,
+> tooltip, toast, progreso, gráficos de terceros, fallbacks y movimiento). Los fragmentos de
+> abajo son un resumen ilustrativo: si difieren, manda el archivo.
+
 ### Navbar flotante
 
 ```css

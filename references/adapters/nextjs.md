@@ -3,6 +3,10 @@
 Next.js ya incluye React: este archivo cubre ambos. No cargues `react.md` en un proyecto
 Next.
 
+> **Componentes:** las recetas completas del estilo están en `assets/components/<estilo>.css`
+> (mismos nombres de clase en los tres estilos). Gráficos y widgets de terceros:
+> `references/charts-and-widgets.md`.
+
 ## Detección
 
 - `framework: nextjs`; `router: app | pages`; `styling` y `typescript` según el script.

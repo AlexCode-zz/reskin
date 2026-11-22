@@ -55,6 +55,11 @@ Archivo: `assets/tokens/retro.css`. Default arcade + variantes CRT y synthwave.
 
 ## Componentes
 
+> **Fuente de verdad:** `assets/components/retro.css` trae la biblioteca completa (app/escena,
+> navbar, sidebar, card, métrica, botones, inputs, select, tabs, badges, tabla, modal,
+> tooltip, toast, progreso, gráficos de terceros, fallbacks y movimiento). Los fragmentos de
+> abajo son un resumen ilustrativo: si difieren, manda el archivo.
+
 ### Navbar
 
 ```css
