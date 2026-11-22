@@ -7,10 +7,15 @@
  *   tilt       inclinación 3D al puntero → [data-rs-tilt]
  *   spot       foco de luz que sigue el puntero dentro de una tarjeta → [data-rs-spot]
  *   glow       variables --rs-cx / --rs-cy con la posición del puntero (en <html>)
+ *   magnet     botón/icono que se acerca al cursor → [data-rs-magnet="8"]
+ *   scroll     expone --rs-scroll (0–1) en <html> para escenas que cambian de luz
  *   progress   barra de progreso de lectura (aria-hidden)
  *
+ * Imágenes con vida: Ken Burns, zoom y sheen son CSS puro; .rs-img-reveal usa el observer de
+ * scroll de este script. Ver reskin-fx.css y references/images.md.
+ *
  * Config (elige UNA vía):
- *   A) <html data-rs-fx="particles reveal parallax tilt spot progress"
+ *   A) <html data-rs-fx="particles reveal parallax tilt spot magnet progress"
  *            data-rs-particles="stars"
  *            data-rs-reveal-auto=".rs-card, .rs-stat, .rs-hero > *">
  *   B) window.RESKIN_FX = { fx:"particles reveal", particles:"dust", revealAuto:".rs-card" }
@@ -61,8 +66,16 @@
       if (io) io.observe(els[i]); else els[i].setAttribute("data-rs-in", "");
     }
   }
+  function observeImages() {
+    var imgs = document.querySelectorAll(".rs-img-reveal:not([data-rs-seen])");
+    for (var i = 0; i < imgs.length; i++) {
+      imgs[i].setAttribute("data-rs-seen", "");
+      if (io) io.observe(imgs[i]); else imgs[i].setAttribute("data-rs-in", "");
+    }
+  }
   function initReveal() {
-    if (reduce || !(has("reveal") || revealAuto)) return;
+    var imgReveal = document.querySelector(".rs-img-reveal");
+    if (reduce || !(has("reveal") || revealAuto || imgReveal)) return;
     if ("IntersectionObserver" in window) {
       io = new IntersectionObserver(function (entries) {
         for (var i = 0; i < entries.length; i++) {
@@ -71,7 +84,7 @@
       }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
     }
     root.classList.add("rs-fx-on");
-    markAuto(); observeReveal();
+    markAuto(); observeReveal(); observeImages();
   }
 
   /* ---------- parallax ---------- */
@@ -94,26 +107,29 @@
     tick();
   }
 
-  /* ---------- progress ---------- */
-  function initProgress() {
-    if (reduce || !has("progress")) return;
-    var bar = document.createElement("div");
-    bar.className = "rs-fx-progress"; bar.setAttribute("aria-hidden", "true");
-    bar.appendChild(document.createElement("i"));
-    document.body.appendChild(bar);
+  /* ---------- scroll (variable) y progress (barra) ---------- */
+  function initScroll() {
+    if (reduce || !(has("scroll") || has("progress"))) return;
+    if (has("progress")) {
+      var bar = document.createElement("div");
+      bar.className = "rs-fx-progress"; bar.setAttribute("aria-hidden", "true");
+      bar.appendChild(document.createElement("i"));
+      document.body.appendChild(bar);
+    }
     var upd = function () {
       var h = root.scrollHeight - window.innerHeight;
       root.style.setProperty("--rs-scroll", h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)).toFixed(4) : "0");
     };
     window.addEventListener("scroll", function () { later(upd); }, { passive: true });
+    window.addEventListener("resize", function () { later(upd); });
     upd();
   }
 
   /* ---------- puntero: tilt, spot, glow ---------- */
   function initPointer() {
     if (reduce || !finePointer) return;
-    var wantTilt = has("tilt"), wantSpot = has("spot"), wantGlow = has("glow");
-    if (!wantTilt && !wantSpot && !wantGlow) return;
+    var wantTilt = has("tilt"), wantSpot = has("spot"), wantGlow = has("glow"), wantMagnet = has("magnet");
+    if (!wantTilt && !wantSpot && !wantGlow && !wantMagnet) return;
     document.addEventListener("pointermove", function (e) {
       var x = e.clientX, y = e.clientY, t = e.target;
       later(function () {
@@ -134,16 +150,29 @@
             el.setAttribute("data-rs-tilting", "");
           }
         }
-      });
-    }, { passive: true });
-    if (wantTilt) {
-      document.addEventListener("pointerout", function (e) {
-        var el = e.target && e.target.closest && e.target.closest("[data-rs-tilt]");
-        if (el && !el.contains(e.relatedTarget)) {
-          el.style.setProperty("--rs-rx", "0deg"); el.style.setProperty("--rs-ry", "0deg"); el.removeAttribute("data-rs-tilting");
+        if (wantMagnet) {
+          var mg = t.closest("[data-rs-magnet]");
+          if (mg) {
+            var mr = mg.getBoundingClientRect();
+            var pull = parseFloat(mg.getAttribute("data-rs-magnet")) || 8;
+            var mxp = ((x - mr.left) / mr.width - 0.5) * pull * 2;
+            var myp = ((y - mr.top) / mr.height - 0.5) * pull * 2;
+            mg.style.setProperty("--rs-mtx", mxp.toFixed(1) + "px");
+            mg.style.setProperty("--rs-mty", myp.toFixed(1) + "px");
+          }
         }
       });
-    }
+    }, { passive: true });
+    document.addEventListener("pointerout", function (e) {
+      var el = wantTilt && e.target && e.target.closest && e.target.closest("[data-rs-tilt]");
+      if (el && !el.contains(e.relatedTarget)) {
+        el.style.setProperty("--rs-rx", "0deg"); el.style.setProperty("--rs-ry", "0deg"); el.removeAttribute("data-rs-tilting");
+      }
+      var mg = wantMagnet && e.target && e.target.closest && e.target.closest("[data-rs-magnet]");
+      if (mg && !mg.contains(e.relatedTarget)) {
+        mg.style.setProperty("--rs-mtx", "0px"); mg.style.setProperty("--rs-mty", "0px");
+      }
+    });
   }
 
   /* ---------- partículas ---------- */
@@ -222,13 +251,13 @@
   /* ---------- arranque ---------- */
   function boot() {
     try {
-      initReveal(); initParallax(); initProgress(); initPointer(); initParticles();
-      if (document.body && "MutationObserver" in window && (revealAuto || has("reveal") || has("parallax"))) {
-        new MutationObserver(function () { later(function () { markAuto(); if (io || !reduce) observeReveal(); if (has("parallax")) runParallax(); }); })
+      initReveal(); initParallax(); initScroll(); initPointer(); initParticles();
+      if (document.body && "MutationObserver" in window && (revealAuto || has("reveal") || has("parallax") || document.querySelector(".rs-img-reveal"))) {
+        new MutationObserver(function () { later(function () { markAuto(); if (io || !reduce) { observeReveal(); observeImages(); } if (has("parallax")) runParallax(); }); })
           .observe(document.body, { childList: true, subtree: true });
       }
     } catch (err) { root.classList.remove("rs-fx-on"); if (window.console) console.warn("[reskin-fx]", err); }
   }
-  window.RSFX = { refresh: function () { markAuto(); observeReveal(); runParallax(); } };
+  window.RSFX = { refresh: function () { markAuto(); observeReveal(); observeImages(); runParallax(); } };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
 })();

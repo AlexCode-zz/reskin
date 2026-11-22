@@ -14,7 +14,7 @@ paleta: está en cómo se ve la **forma**, la **luz**, la **textura**, la **tipo
 | 4 | **Escena** | ¿El fondo dejó de ser plano (grid, aurora, papel, escritorio, estrellas)? | `--rs-scene` + `body::before/::after` |
 | 5 | **Textura / material** | ¿El material se siente (grano, bisel, scanlines, puntos, gloss)? | componentes del estilo |
 | 6 | **Movimiento** | ¿Hay al menos un efecto de entrada y uno de interacción con identidad del estilo? | `reskin-fx` (ver `effects.md`) |
-| 7 | **Pieza firma + imagen** | ¿Hay una pieza que solo existe en este estilo (ticker, ventana, polaroid, blob) y, en nivel C, una imagen tratada? | `.rs-*` del estilo + `images.md` |
+| 7 | **Pieza firma + imagen** | ¿Hay una pieza nueva que solo existe en este estilo (ticker, ventana, polaroid, sticker, botón imantado) y, en nivel C, una imagen tratada y animada? | `.rs-*` del estilo + `effects.md § Momentos firma` + `images.md` |
 
 **Regla de los 6:** si el diff cambia menos de 6 de los 7, no está terminado. Nivel A (solo piel)
 cambia 1–5 y se declara así en el brief.
@@ -28,7 +28,8 @@ cambia 1–5 y se declara así en el brief.
 - Sin estados: hover, active y foco sin carácter propio del estilo.
 - Retro = "fondo oscuro + fuente mono". Retro necesita escena (grid, sol, scanlines, píxeles) y sombras duras.
 - Glass sin nada detrás: el vidrio necesita luz y color que desenfocar.
-- Efectos pegados sin criterio (partículas + tilt + parallax + marquee a la vez). **Máximo 3 efectos por estilo.**
+- Efectos pegados sin criterio (partículas + tilt + parallax + marquee a la vez). **Máximo 3 efectos ambientales + 2 momentos firma por página.**
+- Reskin "bonito pero quieto": mismo marcado, cero piezas nuevas. Si en B/C no hay al menos un momento firma (ticker, capa 3D, imagen animada, imán), falta trabajo.
 
 ## Jerarquía: no todo grita
 

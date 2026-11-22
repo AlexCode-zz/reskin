@@ -98,9 +98,10 @@ Next.
 
 ## Efectos, fuentes y escena (nivel B/C)
 
-1. Copia `reskin-fx.css` a `app/reskin/` (importa en `app/layout.tsx`) y `reskin-fx.js` a `public/reskin/`.
+1. Copia `reskin-fx.css` a `src/reskin/` (o `app/reskin/` si el proyecto no usa `src/`) e importa desde `layout.tsx`. Copia `reskin-fx.js` a `public/reskin/`: es la única excepción, porque `next/script` lo sirve por URL. No pongas el CSS en `public/` ni nada en la raíz del repo.
 2. En `layout.tsx`: `import Script from "next/script"` y `<Script src="/reskin/reskin-fx.js" strategy="afterInteractive" />` al final del `<body>`. `next/script` es parte de Next (no es dependencia nueva).
 3. Atributos en `<html lang="…" data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">`.
 4. Fuentes con `next/font/google` (Anton, Inter, etc.): asigna la variable CSS a `--rs-font-display`/`--rs-font-body`. Es parte de Next; no `npm install`.
 5. Server Components: los efectos son vanilla y corren en el cliente; no conviertas componentes a `"use client"` por esto.
 6. `reskin-fx.js` es un script clásico (IIFE); no lo importes como módulo de React.
+7. Imágenes (nivel C): `src/reskin/images/` + registro `src/reskin/RESKIN-IMAGES.md`; con `next/image` conserva el componente y solo añade clases (`.rs-img-kb`, `.rs-media--zoom`). Ver `images.md`.

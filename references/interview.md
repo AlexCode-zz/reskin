@@ -44,18 +44,19 @@ Un campo por pregunta:
 
 ## Llamadas
 
-- Si la herramienta admite varias preguntas: **una sola llamada** con las 4.
-- Si exige una por llamada: 4 llamadas seguidas, sin pedir permiso entre ellas.
+- Si la herramienta admite varias preguntas: **una sola llamada** con las 5.
+- Si exige una por llamada: 5 llamadas seguidas, sin pedir permiso entre ellas.
 - Nunca cambies a plan B porque haya que hacer varias llamadas.
 
-## Las 4 preguntas
+## Las 5 preguntas
 
 | # | Tema | Pregunta | Opciones | Recomendación |
 |---|---|---|---|---|
 | 1 | Estilo | ¿Qué estilo visual aplicamos? | Las 4 mejores para el proyecto (ver abajo); el usuario puede escribir **cualquiera de los 11** en la respuesta libre | Ver la guía de recomendación |
 | 2 | Tono | ¿Tono claro u oscuro? | Claro / Oscuro / Según la app | Datos, herramientas, terminal o uso nocturno → Oscuro. Contenido, docs, marketing o comercio → Claro. Si ya existe toggle de tema → Según la app. Estilos de un solo tono (retro, claymorphism, doodle, y2k) no preguntan: se anotan en el resumen. |
-| 3 | Intensidad | ¿Cuánto cambiamos? | Piel + escena + efectos (nivel B) / Completo con imágenes (nivel C) / Solo piel (nivel A) | **B** para apps y dashboards; **C** para landings, portafolios y sitios de marca; **A** solo si el usuario lo pide o el proyecto es frágil. Aquí se aprueban fuentes, efectos e imágenes. |
-| 4 | Alcance | ¿Hasta dónde llega el reskin? | Toda la app / Solo los componentes principales / Una página o ruta específica | Toda la app: un reskin a medias se ve incoherente. |
+| 3 | **Paleta** | **¿Qué paleta de colores usamos?** | Conservar la actual / Paleta del estilo / Neutra + un acento | **Conservar** si el proyecto ya tiene marca o variables propias; **Paleta del estilo** si los colores son de plantilla (azul índigo, slate por defecto); **Neutra + un acento** si el usuario no tiene marca y quiere algo sobrio. En la respuesta libre puede pegar hex o el nombre de su marca. **Nunca se omite.** |
+| 4 | Intensidad | ¿Cuánto cambiamos? | Piel + escena + efectos + piezas (nivel B) / Completo con imágenes animadas (nivel C) / Solo piel (nivel A) | **B** para apps y dashboards; **C** para landings, portafolios y sitios de marca; **A** solo si el usuario lo pide o el proyecto es frágil. Aquí se aprueban fuentes, efectos, momentos firma e imágenes. |
+| 5 | Alcance | ¿Hasta dónde llega el reskin? | Toda la app / Solo los componentes principales / Una página o ruta específica | Toda la app: un reskin a medias se ve incoherente. |
 
 **Los 11 estilos** (para la respuesta libre): glassmorphism, liquid-glass, retro (arcade/CRT/synthwave),
 brutalism (mono/pop), minimalism, claymorphism, neumorphism, spatial, doodle, y2k, aurora.
@@ -73,9 +74,41 @@ brutalism (mono/pop), minimalism, claymorphism, neumorphism, spatial, doodle, y2
 | Premium, multimedia | Spatial o Liquid Glass | Aurora |
 | Panel de control / ajustes | Neumorphism (con aviso de accesibilidad) | Minimalism |
 
-La pregunta de intensidad **decide si hay efectos, fuentes e imágenes**: el brief las lista
-(efectos: máximo 3 por `effects.md`; fuentes: pareja del estilo; imágenes: protocolo de `images.md`
-con aviso final). Sin esa aprobación no se añaden.
+### Paleta: la pregunta obligatoria
+
+Se pregunta **siempre**, aunque el prompt ya diga el estilo, el tono o "haz lo que quieras": la
+paleta es independiente del estilo y es lo que el usuario más nota. Opciones (recomendada primero):
+
+1. **Conservar la actual (Recomendado)** — no toca `--rs-accent` ni los colores de datos; el estilo
+   cambia materiales, forma, profundidad y movimiento.
+2. **Paleta del estilo** — usa los valores de `assets/tokens/<estilo>.css` del tema elegido. Es lo
+   correcto cuando el proyecto tiene colores de plantilla.
+3. **Neutra + un acento** — `--rs-bg`, `--rs-surface` y `--rs-ink` neutros del estilo y un solo
+   `--rs-accent` (deriva `--rs-accent-soft`, `--rs-focus` y `--rs-chart-1`).
+
+Si responde con hex, marca o una captura descrita, mapea así:
+
+| Dato del usuario | Token |
+|---|---|
+| color de fondo | `--rs-bg` (+ `--rs-scene` con la escena del estilo encima) |
+| superficie de tarjetas | `--rs-surface`, `--rs-surface-2` |
+| color de texto | `--rs-ink`; deriva `--rs-ink-muted` con menos contraste pero **nunca por debajo de AA** |
+| color de marca | `--rs-accent` |
+| texto sobre la marca | `--rs-accent-ink` (blanco o negro, el que dé AA) |
+| marca como texto sobre el fondo | `--rs-accent-text` (oscurece/aclara hasta pasar 4.5:1) |
+| bordes y foco | `--rs-border`, `--rs-focus` |
+
+Después de aplicar la paleta ejecuta el verificador de la skill sobre el archivo que contiene los
+tokens (`node <ruta-de-la-skill>/scripts/check-contrast.js <archivo-con-tokens>`); si algún par falla,
+ajusta luminosidad (no el matiz) y vuelve a comprobar. Anota en el resumen la paleta final con sus
+hex. Los 5 colores de gráfico se derivan del acento y de `--rs-accent-2/3`; no inventes series.
+
+Cuando la paleta sea "Conservar la actual", no cambies los tokens de color: solo los de forma,
+profundidad, tipografía y movimiento.
+
+La pregunta de intensidad **decide si hay efectos, momentos, fuentes e imágenes**: el brief los lista
+(efectos: máximo 3 + 2 momentos por `effects.md`; fuentes: pareja del estilo; imágenes: protocolo de
+`images.md` con aviso final). Sin esa aprobación no se añaden.
 
 Qué hace la respuesta de **tono** con los tokens: *Oscuro* → solo el bloque base (o
 `data-theme="dark"` en `<html>`); *Claro* → los valores `[data-theme="light"]` como base;
@@ -87,10 +120,10 @@ les afecta la respuesta de tono; si el usuario pide el otro, anótalo en el resu
 ("Retro oscuro (por diseño)"). Con dos temas: glassmorphism, liquid-glass, brutalism, minimalism,
 neumorphism, spatial y aurora.
 
-Sin solapamientos: el tono cubre la paleta y el alcance cubre la extensión. La identidad no
-tiene pregunta propia: por defecto se conservan paleta y tipografía y solo cambian
-materiales y superficies. Si el usuario quiere otra cosa, lo dirá con "Cambiar algo" o en
-la respuesta libre.
+Sin solapamientos: el **tono** cubre la luminosidad (claro/oscuro), la **paleta** cubre los
+matices y el acento, la **intensidad** decide cuánto se añade y el **alcance** la extensión. La
+tipografía no tiene pregunta propia: la trae el estilo aprobado. Si el usuario quiere otra cosa,
+lo dirá con "Cambiar algo" o en la respuesta libre.
 
 Adapta las descripciones al stack: en Next.js puedes mencionar Server Components; en HTML
 puro, la ausencia de build. Nunca preguntes "¿usas Tailwind?" si la detección ya lo respondió.
@@ -117,10 +150,12 @@ selector interactivo. Nunca por defecto ni por comodidad.
 - Stack: Next.js (App Router) + Tailwind v4 + TypeScript
 - Estilo: Liquid Glass
 - Tono: oscuro
+- Paleta: conservar la actual (--rs-accent #5a4ef0) · o: paleta del estilo · o: neutra + acento #e05a2b
 - Alcance: toda la app
-- Identidad: conservar paleta y tipografía; solo cambian materiales y superficies
-- Intensidad: B · escena + efectos (partículas orbs, reveal, spot) · fuentes: Plus Jakarta Sans
-- Imágenes: no (nivel B) · o: sí, provisionales de internet; se avisará al final (nivel C)
+- Intensidad: B · escena + efectos (partículas orbs, reveal, magnet) · momento firma: tarjeta héroe con tilt
+- Fuentes: Plus Jakarta Sans
+- Imágenes: no (nivel B) · o: sí, 1 héroe + 4 apoyo descargadas de bancos libres; aviso final (nivel C)
+- Destino: src/reskin/ (reskin-fx.css, reskin-fx.js, images/, RESKIN-IMAGES.md)
 - Implementación: tokens → @theme → utilidades; efectos con reskin-fx (sin hojas de componentes nuevas)
 - No se toca: lógica, estado, props, textos, rutas, dependencias npm
 ```
@@ -130,7 +165,7 @@ Confirma con la **misma herramienta**, no escribiendo "responde sí" en el chat:
 - `header`: `Confirmar`
 - Opciones, en este orden:
   1. `Aplicar` (Recomendado) — "Aplico el brief: clases, CSS, tokens, escena y efectos; sin tocar lógica".
-  2. `Cambiar algo` — "Ajustamos estilo, tono o alcance antes de editar".
+  2. `Cambiar algo` — "Ajustamos estilo, tono, paleta o alcance antes de editar".
 
 Si la herramienta no está disponible, pregunta en el chat: "¿Aplico este brief?".
 **No edites código hasta un "Aplicar" o un "sí" explícito.** Si el usuario elige "Cambiar
@@ -143,3 +178,5 @@ preguntas que no cambiaron.
 - Funcionalidad nueva, copy, rutas o bugs: no es un reskin.
 - Logo o branding si el usuario no pidió cambiarlo.
 - "¿Qué framework usas?" cuando el script o los archivos ya lo dicen.
+- **Nunca omitas la paleta** por creer que ya la conoces: aunque detectes colores en el CSS, la
+  pregunta es si el usuario quiere conservarlos. Ofrécelos como recomendación, no los des por hechos.

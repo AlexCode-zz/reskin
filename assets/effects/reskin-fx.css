@@ -65,10 +65,37 @@
   .rs-marquee { overflow: hidden; }
   .rs-marquee__track { display: flex; width: max-content; gap: var(--rs-marquee-gap, 2rem); animation: rs-marquee 28s linear infinite; }
   .rs-marquee:hover .rs-marquee__track { animation-play-state: paused; }
+
+  /* ---- Imágenes con vida (nivel B/C) — se apagan solas con reduced motion ---- */
+  .rs-img-kb > img, img.rs-img-kb { animation: rs-kb 20s ease-in-out infinite alternate; }
+  .rs-media:hover .rs-img-kb > img, .rs-media:hover img.rs-img-kb,
+  .rs-media:focus-within .rs-img-kb > img, .rs-media:focus-within img.rs-img-kb { animation-play-state: paused; }
+  /* El reveal se activa cuando el observer de scroll marca [data-rs-in]; sin JS no oculta nada. */
+  .rs-fx-on .rs-img-reveal { clip-path: inset(0 0 0 0); transition: clip-path 1.1s var(--rs-fx-ease); transition-delay: calc(var(--rs-i, 0) * 90ms); }
+  .rs-fx-on .rs-img-reveal:not([data-rs-in]) { clip-path: inset(0 0 100% 0); }
+  .rs-media--zoom > img { transition: scale 900ms var(--rs-fx-ease); }
+  .rs-media--zoom:hover > img, .rs-media--zoom:focus-within > img { scale: 1.06; }
+
+  /* ---- Momentos firma ---- */
+  /* Barrido de luz diagonal al hover (no interactúa, no tapa contenido) */
+  .rs-sheen { position: relative; overflow: hidden; }
+  .rs-sheen::after {
+    content: ""; position: absolute; inset: -60% -20%; z-index: 1; pointer-events: none;
+    background: linear-gradient(105deg, transparent 42%, rgb(255 255 255 / 0.16) 50%, transparent 58%);
+    translate: -70% 0; transition: translate 700ms var(--rs-fx-ease);
+  }
+  .rs-sheen:hover::after, .rs-sheen:focus-within::after { translate: 70% 0; }
+
+  /* Botón imantado: reskin-fx.js escribe --rs-mtx / --rs-mty */
+  [data-rs-magnet] { translate: var(--rs-mtx, 0px) var(--rs-mty, 0px); transition: translate 180ms var(--rs-fx-ease); }
 }
 @keyframes rs-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
 @keyframes rs-spin { to { rotate: 360deg; } }
 @keyframes rs-marquee { to { transform: translateX(calc(-50% - var(--rs-marquee-gap, 2rem) / 2)); } }   /* el contenido va duplicado, 2 copias */
+@keyframes rs-kb {
+  from { scale: 1; translate: 0 0; }
+  to   { scale: 1.09; translate: 0 -1.5%; }
+}
 
 /* Spotlight que sigue al puntero dentro de una tarjeta ---------------- */
 [data-rs-spot] { position: relative; }
@@ -86,7 +113,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-rs-reveal], [data-rs-parallax], [data-rs-tilt] { opacity: 1 !important; translate: none !important; scale: none !important; transform: none; transition: none; }
-  .rs-float, .rs-spin-slow, .rs-marquee__track { animation: none; }
+  [data-rs-reveal], [data-rs-parallax], [data-rs-tilt], [data-rs-magnet] { opacity: 1 !important; translate: none !important; scale: none !important; transform: none; transition: none; }
+  .rs-float, .rs-spin-slow, .rs-marquee__track,
+  .rs-img-kb > img, img.rs-img-kb { animation: none; }
+  .rs-img-kb > img, img.rs-img-kb { scale: none; translate: none; }
+  .rs-img-reveal { clip-path: none !important; transition: none !important; }
+  .rs-media--zoom > img, .rs-media--zoom:hover > img { scale: none; transition: none; }
+  .rs-sheen::after { display: none; }
   .rs-fx-progress { display: none; }
 }

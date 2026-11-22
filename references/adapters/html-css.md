@@ -93,8 +93,8 @@ El CSS sale de las recetas del estilo; no dupliques aquí los valores. La escena
 
 ## Efectos, fuentes y escena (nivel B/C)
 
-1. Crea `reskin/` junto al HTML con `reskin-fx.css` y `reskin-fx.js`.
+1. Crea `reskin/` junto al HTML (ahí sí es la carpeta de código) con `reskin-fx.css` y `reskin-fx.js`. Si el sitio vive en `src/` o `public/`, créala dentro de esa carpeta y ajusta el `href`.
 2. En `<head>`: `<link>` de fuentes del estilo y `<link rel="stylesheet" href="reskin/reskin-fx.css">`; antes de `</body>`: `<script src="reskin/reskin-fx.js" defer></script>`.
 3. `<html data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">`.
 4. Sin build: nada que compilar; abre con `npx serve` o doble clic.
-5. Imágenes: carpeta `reskin/placeholders/` y `RESKIN-IMAGES.md` en la raíz (ver `images.md`).
+5. Imágenes: carpeta `reskin/images/` y registro `reskin/RESKIN-IMAGES.md`, todo dentro de `reskin/` (ver `images.md`).

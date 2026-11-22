@@ -110,9 +110,10 @@ Solo cambia la composición de clases; `onSelect`, `active` y `label` no se toca
 
 ## Efectos, fuentes y escena (nivel B/C)
 
-1. Copia `assets/effects/reskin-fx.css` y `reskin-fx.js` a `src/reskin/`.
+1. Copia `assets/effects/reskin-fx.css` y `reskin-fx.js` a `src/reskin/` (si el proyecto es CRA/Vite con `src/`, nunca al lado de `package.json`).
 2. En `main.jsx|tsx` (entrypoint), solo imports: `import "./reskin/reskin-fx.css"; import "./reskin/reskin-fx.js";`
 3. En `index.html`: `<html data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">` y el `<link>` de fuentes del estilo. Es el único lugar que no es JSX.
 4. Deja `#root`, `.App` y `main` sin fondo opaco: la escena vive en `<html>`/`body::before`.
 5. Elementos que React re-renderiza: los `data-rs-*` los pone el script (no se pierden) o, si los añades en JSX, van como atributos estáticos; no cambies condiciones ni props.
-6. Imágenes (nivel C): `background-image` CSS o `<img alt="">` hermano nuevo; ver `images.md`.
+6. Imágenes (nivel C): `background-image` CSS o `<img alt="">` hermano nuevo, descargadas a `src/reskin/images/` y registradas en `src/reskin/RESKIN-IMAGES.md`; ver `images.md`.
+7. Imágenes con vida: añade `.rs-img-kb`, `.rs-img-reveal`, `.rs-media--zoom` o `.rs-sheen` a los elementos existentes; el JS no interviene.

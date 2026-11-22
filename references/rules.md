@@ -10,8 +10,8 @@ lógica queda intacta en los tres**. Cada nivel incluye al anterior.
 | Nivel | Qué añade | Por defecto en |
 |---|---|---|
 | **A · Piel** | Solo `className`/`class`/`style`, CSS y tokens | Cuando el usuario lo pide explícitamente o el proyecto es muy frágil |
-| **B · Escena** *(recomendado)* | Escena de fondo (`body::before/::after`), tipografía del estilo (`<link>` de fuentes), `reskin-fx.css/.js`, atributos `data-rs-*`, partículas, scroll reveal, parallax, tilt, hover con vida | Dashboards, apps, paneles |
-| **C · Completo** | B + piezas decorativas nuevas (hero, ticker, stickers, marcos) e **imágenes** (`references/images.md`) | Landings, portafolios, sitios de marca |
+| **B · Escena** *(recomendado)* | Escena de fondo (`body::before/::after`), tipografía del estilo (`<link>` de fuentes), `reskin-fx.css/.js`, atributos `data-rs-*`, partículas, scroll reveal, parallax, tilt, botones imantados, animación de imágenes existentes (Ken Burns, zoom) y hover con vida | Dashboards, apps, paneles |
+| **C · Completo** | B + piezas decorativas nuevas (hero, ticker, stickers, marcos), **momentos firma** e **imágenes** nuevas, también animadas (`references/images.md`) | Landings, portafolios, sitios de marca |
 
 Mínimo de impacto visual (ver `references/design-depth.md`): en B y C el resultado debe cambiar
 **tipografía, forma, profundidad, escena y movimiento**, no solo el color. Si el diff solo
@@ -28,7 +28,13 @@ La lógica nunca se toca. Lo que cambia según el nivel es cuánta presentación
 | Colores, tipografía, radios, sombras, espaciado, movimiento (A, B, C) | Textos existentes, `key` de listas, `aria-*`, roles, orden de tabulación |
 | Overrides visuales de la librería de UI (tema, `sx`, variantes) (A, B, C) | Dependencias npm, versiones, lockfiles, configuración de build (salvo tokens del theme de Tailwind: ver §2) |
 | Pseudo-elementos de `body`/`html` para la escena; atributos `data-rs-*`; archivos `reskin-fx.css/.js` copiados al proyecto (B, C) | Reestructurar el DOM existente, mover o envolver contenido, cambiar elementos semánticos |
-| **Añadir** elementos decorativos nuevos y hermanos (`aria-hidden="true"`, `pointer-events:none`) e imágenes con `alt=""` o `alt` descriptivo (C) | Quitar o reemplazar elementos existentes |
+| **Añadir** elementos decorativos nuevos y hermanos (`aria-hidden="true"`, `pointer-events:none`), momentos firma e imágenes con `alt=""` o `alt` descriptivo (C) | Quitar o reemplazar elementos existentes |
+
+**Destino (no negociable):** todo archivo nuevo del reskin (efectos, imágenes, registro) vive en
+`<src>/reskin/` **dentro del proyecto**: `src/reskin/` si existe `src/`, si no `app/reskin/` o
+`pages/reskin/`, y en HTML puro `reskin/` junto al `index.html`. Excepción única: el script de
+efectos de Next en `public/reskin/`. Nunca en la carpeta de la skill (`assets/`) ni suelto en la raíz
+del repo. Ver `effects.md § Destino de los archivos`.
 
 **Capa decorativa:** una escena fija en `body::before/::after` (preferida: no toca el DOM) o, si
 no hay otra forma, un elemento `aria-hidden` en la raíz. Nada de envolver contenido: busca el
@@ -128,6 +134,8 @@ No es opcional y no se negocia por estética.
 
 - Respeta `prefers-reduced-motion`. Los tokens ya ponen las duraciones a cero; añade `transform: none` en los hover que muevan.
 - Movimiento ambiental (partículas, flotación, marquee) permitido solo si es **decorativo, de baja intensidad, se pausa con la pestaña oculta y se apaga con `prefers-reduced-motion`** (reskin-fx ya lo hace). Nunca autoplay de contenido ni nada esencial que dependa de moverse.
+- Imágenes animadas (`.rs-img-kb`, `.rs-img-reveal`, `.rs-media--zoom`, `.rs-sheen`): solo `scale`/`translate`/`clip-path`/`opacity`, se pausan al hover cuando son ambientales y no impiden leer una imagen informativa.
+- Imán (`data-rs-magnet`): solo en punteros finos, máximo 2 por vista; el elemento vuelve solo a su sitio y no cambia de tamaño.
 - Parallax y reveal vía `data-rs-*`: solo bajo `prefers-reduced-motion: no-preference`. El contenido **siempre** debe ser alcanzable: reveal se activa únicamente cuando el script arrancó bien y no oculta nada si falla.
 - `transition-all` está prohibido: anima solo las propiedades necesarias.
 
@@ -146,6 +154,7 @@ No es opcional y no se negocia por estética.
 - `will-change` solo durante una animación y retíralo después. Mejor no usarlo.
 - Sin librerías de animación nuevas: usa `assets/effects/reskin-fx.js` (vanilla, 0 dependencias) y CSS. Nada de GSAP, Framer Motion, Lenis ni tsparticles salvo que el proyecto ya los tenga.
 - Hover de tarjeta: 1–2px (3px en brutalismo/doodle, que son más físicos). No escales ni roten tarjetas enteras salvo que el estilo lo defina (doodle, clay).
+- Presupuesto de movimiento: **máximo 3 efectos ambientales + 2 momentos firma por página**, uno por viewport. Si dos compiten, sobra uno.
 
 ## 6. Responsive y layout
 
@@ -164,6 +173,7 @@ No es opcional y no se negocia por estética.
 - Entrega siempre el fallback opaco (`@supports not (backdrop-filter: ...)`).
 - Evita `background-attachment: fixed` en iOS; usa una capa fija o deja el fondo en el body.
 - Escena con gradientes CSS (pesan cero). Imágenes (nivel C): ≤ 200 KB cada una, `loading="lazy"`, `width`/`height` o `aspect-ratio` para evitar saltos, y `fetchpriority="high"` solo en la del hero.
+- Imágenes animadas: `will-change` no permanente; Ken Burns con `scale ≤ 1.1`; como máximo una `.rs-img-kb` y una `.rs-img-reveal` visible a la vez.
 - Partículas: ≤ 90 en escritorio, ≈ 55 en móvil; un solo canvas; DPR ≤ 2.
 
 ## 8. Disciplina de cambio
@@ -181,15 +191,18 @@ Detente si:
 
 - El estilo requiere mover o envolver DOM, cambiar props o añadir estado.
 - La librería de UI no permite estilizar sin cambiar su API.
-- El contraste AA es imposible sin cambiar textos, layout o tema.
+- El contraste AA es imposible sin cambiar textos, layout o tema, **incluida la paleta elegida**:
+  si el color de marca no pasa AA como texto, propone un tono más claro/oscuro de la misma familia
+  antes de seguir.
 - Haría falta una dependencia npm, un plugin o una librería de animación (las fuentes por `<link>`/`next/font` y `reskin-fx` NO cuentan: están permitidas en B/C).
 - El build falla por algo que ya fallaba antes y no puedes verificar tu cambio.
 - El usuario pide además cambiar copy, lógica o rutas: es otro trabajo, no un reskin.
 
 ## 10. Definición de terminado
 
-- [ ] El brief aprobado está implementado.
+- [ ] El brief aprobado está implementado, incluida la **paleta** aprobada.
 - [ ] El diff no contiene lógica, props, estado, textos, rutas ni dependencias.
+- [ ] Todo lo nuevo está en `<src>/reskin/` del proyecto (efectos, imágenes, registro), no en la raíz ni en la skill.
 - [ ] Contraste AA verificado en el peor caso (texto y UI).
 - [ ] Foco visible y navegación por teclado intacta.
 - [ ] `prefers-reduced-motion` respetado y probado.
@@ -197,6 +210,7 @@ Detente si:
 - [ ] Build/lint/typecheck ejecutados (o baseline anotado si ya fallaban).
 - [ ] Fallback sin `backdrop-filter` comprobado.
 - [ ] El diff cambia más que colores (tipografía, forma, profundidad, escena, movimiento) según `design-depth.md`.
-- [ ] Efectos probados con y sin `prefers-reduced-motion`; contenido visible si el JS de efectos falla.
-- [ ] Nivel C: cada imagen listada en `RESKIN-IMAGES.md` y **aviso final de imágenes provisionales** incluido en el resumen.
+- [ ] En B/C hay al menos un **momento firma nuevo** y no solo lo que ya existía reestilizado.
+- [ ] Efectos y animaciones probados con y sin `prefers-reduced-motion`; contenido visible si el JS de efectos falla.
+- [ ] Nivel C: cada imagen listada en `<src>/reskin/RESKIN-IMAGES.md`, con aviso final de provisionales e instrucciones de reemplazo.
 - [ ] Resumen final: archivos tocados, decisiones, checks y riesgos.

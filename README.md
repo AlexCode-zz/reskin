@@ -1,23 +1,32 @@
 # reskin
 
 Skill de Agent Skills que cambia la piel visual de un frontend que **ya funciona** sin
-tocar su lógica. Detecta el stack, hace un brief de 3 preguntas, pide confirmación y
-aplica el estilo con los tokens y el sistema de estilos que el proyecto ya usa.
+tocar su lógica. Detecta el stack, hace un brief de 5 preguntas (incluida la paleta de
+colores), pide confirmación y aplica el estilo con los tokens y el sistema de estilos que el
+proyecto ya usa. Todo lo que instala vive en `src/reskin/`, dentro del proyecto.
 
 ## Qué hace
 
 - **Detecta dos ejes:** framework (React, Next.js, HTML puro) y capa de estilos (Tailwind v4/v3,
   CSS Modules, CSS puro), más router, TypeScript, entrypoints y librerías de animación.
-- **Entrevista en vivo:** 4 preguntas con el selector nativo del agente (estilo, tono, intensidad y
-  alcance), recomendación según el tipo de proyecto y confirmación antes de editar.
+- **Entrevista en vivo:** 5 preguntas con el selector nativo del agente (estilo, tono, **paleta de
+  colores**, intensidad y alcance), recomendación según el tipo de proyecto y confirmación antes de
+  editar. La paleta se pregunta siempre: conservar la actual, la del estilo, neutra + acento o tus
+  propios hex.
 - **No solo cambia colores.** Cada estilo trae tipografía, forma, sistema de sombras, escena de
   fondo, textura, una pieza firma y movimiento propio. Una puerta de calidad
   (`references/design-depth.md`) exige cambiar al menos 6 de 7 ingredientes.
 - **Efectos sin dependencias** (`assets/effects/reskin-fx.js` + `.css`): partículas (estrellas,
   polvo, burbujas, píxeles, confeti, orbes), scroll reveal, parallax, tilt 3D, spotlight,
-  luz que sigue al cursor y barra de progreso. Respetan `prefers-reduced-motion`.
-- **Imágenes provisionales** (nivel C): se buscan en internet, se registran en `RESKIN-IMAGES.md` y el
-  skill **avisa al final** de que son de Google/bancos de imágenes y hay que cambiarlas por propias.
+  botones imantados, luz que sigue al cursor y barra de progreso. Respetan `prefers-reduced-motion`.
+- **Piezas nuevas, no solo color:** el skill añade al menos un *momento firma* (ticker, capa 3D,
+  sticker, ventana, botón imantado) además del estilo, con presupuesto de movimiento controlado.
+- **Imágenes con animación** (nivel C): Ken Burns, cortinilla de entrada, zoom al hover y barrido de
+  luz, con pausa y `prefers-reduced-motion`. Las imágenes se descargan de Google/bancos libres a
+  `src/reskin/images/`, se registran en `src/reskin/RESKIN-IMAGES.md` y el skill **avisa al final**
+  de que son provisionales e indica cómo reemplazarlas por las del usuario.
+- **Todo dentro del proyecto:** efectos, imágenes y registro se guardan en `src/reskin/` (o
+  `app/reskin/` sin `src/`), nunca en la carpeta de la skill ni en la raíz del repo.
 - **Restiliza los gráficos de terceros** (Recharts, Chart.js…): tooltips, ejes, rejilla y series.
 - **Respeta el sistema:** con Tailwind, tokens al theme y utilidades; sin Tailwind, variables CSS.
   Sin paquetes npm nuevos.
@@ -28,8 +37,8 @@ aplica el estilo con los tokens y el sistema de estilos que el proyecto ya usa.
 | Nivel | Qué cambia | Ideal para |
 |---|---|---|
 | **A · Piel** | Clases, CSS y tokens | Proyectos frágiles o si solo quieres color y forma |
-| **B · Escena** *(recomendado)* | A + fondo con escena, fuentes, efectos (partículas, scroll, tilt) | Dashboards y apps |
-| **C · Completo** | B + piezas decorativas e imágenes provisionales | Landings, portafolios, sitios de marca |
+| **B · Escena** *(recomendado)* | A + fondo con escena, fuentes, efectos (partículas, scroll, tilt, imán) y un momento firma | Dashboards y apps |
+| **C · Completo** | B + piezas decorativas nuevas e imágenes provisionales animadas | Landings, portafolios, sitios de marca |
 
 La lógica nunca se toca en ningún nivel.
 
@@ -67,7 +76,7 @@ Lee ./reskin/SKILL.md y úsala como guía para este proyecto.
    No cambies lógica, textos ni rutas.
    ```
 
-3. Confirma el stack que detecta y responde las 3 preguntas con el selector.
+3. Confirma el stack que detecta y responde las 5 preguntas con el selector.
 4. Revisa el brief y elige "Aplicar".
 5. Mira el diff: solo clases, CSS y tokens. Ejecuta tu build y revisa 360/768/1280px.
 
@@ -103,7 +112,7 @@ que cambiar de estilo no cambia el marcado.
 
 ## La regla
 
-Solo se tocan **estilos y capas decorativas**: clases, CSS, tokens, escena, tipografía, movimiento, efectos e imágenes provisionales. Nunca
+Solo se tocan **estilos y capas decorativas**: clases, CSS, tokens, escena, tipografía, movimiento, efectos, momentos firma e imágenes provisionales. Nunca
 estado, hooks, props, textos, `key`, rutas, fetching, tests, dependencias ni lockfiles. La
 guía completa está en `references/rules.md`.
 
@@ -113,11 +122,11 @@ guía completa está en `references/rules.md`.
 SKILL.md                       flujo, niveles y tabla de carga
 references/
   detection.md                 framework, capa de estilos, router, TypeScript, entrypoints
-  interview.md                 las 4 preguntas, recomendación y confirmación del brief
+  interview.md                 las 5 preguntas (incluida paleta), recomendación y confirmación
   rules.md                     niveles, límites y accesibilidad
   design-depth.md              puerta anti-genérico (7 ingredientes, regla de los 6)
-  effects.md                   partículas, scroll, parallax, tilt: instalación y recetas
-  images.md                    imágenes provisionales, registro y aviso final
+  effects.md                   destino, partículas, scroll, imán y momentos firma: recetas
+  images.md                    imágenes: descarga, animación, registro y aviso final
   charts-and-widgets.md        gráficos, tooltips y widgets de terceros
   styles/                      11 fichas de estilo
   adapters/                    react, nextjs, html-css, tailwind-v4, tailwind-v3
