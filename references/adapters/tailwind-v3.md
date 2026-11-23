@@ -53,7 +53,7 @@ module.exports = {
 
 - Usa `theme.extend`, nunca `theme` completo: no pises colores, radios ni sombras del
   proyecto.
-- El ejemplo usa los nombres de glassmorphism/liquid. En retro mapea los tokens reales del
+- El ejemplo usa los nombres de glassmorphism/liquid. En los demás estilos mapea los tokens reales del
   archivo (`surface`, `shadow-hard`...); no mapees `glass` ni `shadow-1` si el estilo no los
   define.
 - No toques `content`, `plugins`, `presets`, `darkMode` ni `corePlugins`.

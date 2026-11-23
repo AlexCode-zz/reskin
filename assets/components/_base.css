@@ -5,8 +5,8 @@
    hoja del estilo (assets/components/<estilo>.css), que se carga DESPUÉS.
 
    Aplica a: brutalism · minimalism · claymorphism · neumorphism ·
-             spatial · doodle · y2k · aurora
-   (glassmorphism, liquid-glass y retro traen su biblioteca completa.)
+             spatial · doodle · aurora · comic
+   (glassmorphism y liquid-glass traen su biblioteca completa.)
 
    Uso: copia solo lo que el proyecto necesita. Con Tailwind traduce
    a utilidades; con CSS Modules usa :global(.rs-*).

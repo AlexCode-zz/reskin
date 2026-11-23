@@ -5,13 +5,13 @@ Estas reglas mandan sobre el estilo elegido y sobre cualquier preferencia estét
 ## 0. Niveles de intervención (se eligen en el brief)
 
 Un reskin que solo cambia colores se ve genérico. Por eso el skill trabaja por niveles; **la
-lógica queda intacta en los tres**. Cada nivel incluye al anterior.
+lógica de negocio queda intacta en los tres**. Cada nivel incluye al anterior.
 
 | Nivel | Qué añade | Por defecto en |
 |---|---|---|
 | **A · Piel** | Solo `className`/`class`/`style`, CSS y tokens | Cuando el usuario lo pide explícitamente o el proyecto es muy frágil |
 | **B · Escena** *(recomendado)* | Escena de fondo (`body::before/::after`), tipografía del estilo (`<link>` de fuentes), `reskin-fx.css/.js`, atributos `data-rs-*`, partículas, scroll reveal, parallax, tilt, botones imantados, animación de imágenes existentes (Ken Burns, zoom) y hover con vida | Dashboards, apps, paneles |
-| **C · Completo** | B + piezas decorativas nuevas (hero, ticker, stickers, marcos), **momentos firma** e **imágenes** nuevas, también animadas (`references/images.md`) | Landings, portafolios, sitios de marca |
+| **C · Completo** | B + piezas decorativas nuevas (hero, ticker, stickers, marcos), **momentos firma**, **funciones nuevas de diseño** (§1b) e **imágenes** por enlace, también animadas (`references/images.md`) | Landings, portafolios, sitios de marca |
 
 Mínimo de impacto visual (ver `references/design-depth.md`): en B y C el resultado debe cambiar
 **tipografía, forma, profundidad, escena y movimiento**, no solo el color. Si el diff solo
@@ -19,18 +19,18 @@ contiene colores, el reskin no está terminado.
 
 ## 1. Superficie, no comportamiento
 
-La lógica nunca se toca. Lo que cambia según el nivel es cuánta presentación se añade.
+La lógica del producto (datos, estado, handlers, API, rutas) nunca se toca. Lo que cambia según el nivel es cuánta presentación se añade.
 
 | Permitido (según nivel) | Prohibido (siempre) |
 |---|---|
-| `className`, `class`, `style` con propiedades visuales (A, B, C) | Estados, hooks, `useEffect`, refs, handlers, condiciones |
+| `className`, `class`, `style` con propiedades visuales (A, B, C) | Estados, hooks, `useEffect`, refs, handlers y condiciones **del producto existente** |
 | CSS, tokens, keyframes y media queries en el entrypoint existente (A, B, C) | Props, API de componentes, rutas, fetching, validación, tests |
 | Colores, tipografía, radios, sombras, espaciado, movimiento (A, B, C) | Textos existentes, `key` de listas, `aria-*`, roles, orden de tabulación |
 | Overrides visuales de la librería de UI (tema, `sx`, variantes) (A, B, C) | Dependencias npm, versiones, lockfiles, configuración de build (salvo tokens del theme de Tailwind: ver §2) |
 | Pseudo-elementos de `body`/`html` para la escena; atributos `data-rs-*`; archivos `reskin-fx.css/.js` copiados al proyecto (B, C) | Reestructurar el DOM existente, mover o envolver contenido, cambiar elementos semánticos |
-| **Añadir** elementos decorativos nuevos y hermanos (`aria-hidden="true"`, `pointer-events:none`), momentos firma e imágenes con `alt=""` o `alt` descriptivo (C) | Quitar o reemplazar elementos existentes |
+| **Añadir** elementos decorativos nuevos y hermanos (`aria-hidden="true"`, `pointer-events:none`), momentos firma, secciones nuevas de presentación (héroe, bandas, galerías), funciones de diseño (§1b) e imágenes con `alt=""` o `alt` descriptivo (C) | Quitar o reemplazar elementos existentes |
 
-**Destino (no negociable):** todo archivo nuevo del reskin (efectos, imágenes, registro) vive en
+**Destino (no negociable):** todo archivo nuevo del reskin (efectos, registro de imágenes) vive en
 `<src>/reskin/` **dentro del proyecto**: `src/reskin/` si existe `src/`, si no `app/reskin/` o
 `pages/reskin/`, y en HTML puro `reskin/` junto al `index.html`. Excepción única: el script de
 efectos de Next en `public/reskin/`. Nunca en la carpeta de la skill (`assets/`) ni suelto en la raíz
@@ -48,6 +48,28 @@ opcionales, cortos y `aria-hidden`; nunca información que el usuario necesite.
 **Imágenes (nivel C):** primero como `background-image` CSS en un contenedor existente (cero
 DOM). Si hace falta un elemento, uno nuevo y hermano. Siempre con el protocolo de
 `references/images.md` (marcadas como provisionales y avisadas al final).
+
+## 1b. Funciones nuevas de diseño (frontend)
+
+Además de cambiar el aspecto, el skill puede **añadir funciones de frontend de presentación**, siempre
+que el usuario las haya aprobado en la pregunta 4 del brief (nivel B/C):
+
+| Función | Cómo se hace |
+|---|---|
+| Efectos de scroll y movimiento | reveal, parallax, tilt, botón imantado, barra de progreso: `reskin-fx` con atributos `data-rs-*` |
+| Partículas / fondo animado | `data-rs-particles` (`orbs`, `stars`, `bubbles`, `confetti`…) |
+| Imágenes con animación | Por enlace directo de Google Imágenes, con respaldo (`images.md`) |
+| Piezas firma | Ticker, ráfagas, globos, stickers, capas 3D, collage de viñetas: elementos nuevos, hermanos y `aria-hidden` |
+| Secciones decorativas nuevas (C) | Héroe, banda de imágenes, galería, contadores animados: marcado nuevo y hermano |
+
+**Límites de estas funciones (siempre):**
+
+1. **Solo presentación:** no leen ni escriben datos del producto, no llaman a APIs, no cambian rutas, estado ni validaciones.
+2. **Aditivas:** no quitan, mueven ni reemplazan contenido existente. Si el diseño exige mover algo, **pregunta**.
+3. **Aisladas:** viven en `<src>/reskin/` y se activan por atributos; si el JS falla, la app funciona igual.
+4. **Accesibles:** `prefers-reduced-motion`, foco visible, `aria-hidden` en lo decorativo, nada informativo solo dentro de un efecto.
+5. **Sin dependencias npm nuevas:** `reskin-fx` (vanilla) o lo que el proyecto ya tenga.
+6. **React/Next:** un componente nuevo solo si es presentacional, sin estado de negocio, dentro de `<src>/reskin/`. Preferir marcado + `data-rs-*` antes que hooks.
 
 ## 2. Respeta el sistema de estilos que ya existe
 
@@ -172,7 +194,7 @@ No es opcional y no se negocia por estética.
 - `backdrop-filter` crea un containing block: los hijos `position: fixed` se posicionan respecto al vidrio. Revisa modales y menús; si el proyecto usa un portal, no lo cambies.
 - Entrega siempre el fallback opaco (`@supports not (backdrop-filter: ...)`).
 - Evita `background-attachment: fixed` en iOS; usa una capa fija o deja el fondo en el body.
-- Escena con gradientes CSS (pesan cero). Imágenes (nivel C): ≤ 200 KB cada una, `loading="lazy"`, `width`/`height` o `aspect-ratio` para evitar saltos, y `fetchpriority="high"` solo en la del hero.
+- Escena con gradientes CSS (pesan cero). Imágenes (nivel C): por enlace, preferir resultados de ≤ 300 KB, `loading="lazy"`, `width`/`height` o `aspect-ratio` para evitar saltos, y `fetchpriority="high"` solo en la del hero.
 - Imágenes animadas: `will-change` no permanente; Ken Burns con `scale ≤ 1.1`; como máximo una `.rs-img-kb` y una `.rs-img-reveal` visible a la vez.
 - Partículas: ≤ 90 en escritorio, ≈ 55 en móvil; un solo canvas; DPR ≤ 2.
 
@@ -202,7 +224,7 @@ Detente si:
 
 - [ ] El brief aprobado está implementado, incluida la **paleta** aprobada.
 - [ ] El diff no contiene lógica, props, estado, textos, rutas ni dependencias.
-- [ ] Todo lo nuevo está en `<src>/reskin/` del proyecto (efectos, imágenes, registro), no en la raíz ni en la skill.
+- [ ] Todo lo nuevo está en `<src>/reskin/` del proyecto (efectos, registro de imágenes), no en la raíz ni en la skill.
 - [ ] Contraste AA verificado en el peor caso (texto y UI).
 - [ ] Foco visible y navegación por teclado intacta.
 - [ ] `prefers-reduced-motion` respetado y probado.

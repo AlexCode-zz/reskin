@@ -35,7 +35,7 @@ La entrevista es **en vivo, con flechas/selección**, no escribiendo números en
 Un campo por pregunta:
 
 - **Texto** (`question`): la pregunta, en una línea.
-- **Header** (`header`): máximo 30 caracteres: `Estilo`, `Tono`, `Alcance`.
+- **Header** (`header`): máximo 30 caracteres: `Estilo`, `Tono`, `Funciones`, `Alcance`.
 - **Opciones** (`options`): 2–3 reales, cada una con `label` (2–4 palabras) y `description`
   (una razón corta ligada al proyecto detectado).
 - La recomendada va **primero**, con "(Recomendado)" en el label y la razón en `description`.
@@ -46,20 +46,21 @@ Un campo por pregunta:
 
 - Si la herramienta admite varias preguntas: **una sola llamada** con las 5.
 - Si exige una por llamada: 5 llamadas seguidas, sin pedir permiso entre ellas.
+- **La pregunta 4 es de selección múltiple**: `multiple: true` en `question` (OpenCode) o `multiSelect: true` en `AskUserQuestion` (Claude Code). Máximo 4 opciones; la respuesta libre sirve para "ninguna" u otra función.
 - Nunca cambies a plan B porque haya que hacer varias llamadas.
 
 ## Las 5 preguntas
 
 | # | Tema | Pregunta | Opciones | Recomendación |
 |---|---|---|---|---|
-| 1 | Estilo | ¿Qué estilo visual aplicamos? | Las 4 mejores para el proyecto (ver abajo); el usuario puede escribir **cualquiera de los 11** en la respuesta libre | Ver la guía de recomendación |
-| 2 | Tono | ¿Tono claro u oscuro? | Claro / Oscuro / Según la app | Datos, herramientas, terminal o uso nocturno → Oscuro. Contenido, docs, marketing o comercio → Claro. Si ya existe toggle de tema → Según la app. Estilos de un solo tono (retro, claymorphism, doodle, y2k) no preguntan: se anotan en el resumen. |
+| 1 | Estilo | ¿Qué estilo visual aplicamos? | Las 4 mejores para el proyecto (ver abajo); el usuario puede escribir **cualquiera de los 10** en la respuesta libre | Ver la guía de recomendación |
+| 2 | Tono | ¿Tono claro u oscuro? | Claro / Oscuro / Según la app | Datos, herramientas, terminal o uso nocturno → Oscuro. Contenido, docs, marketing o comercio → Claro. Si ya existe toggle de tema → Según la app. Estilos de un solo tono (claymorphism, doodle) no preguntan: se anotan en el resumen. |
 | 3 | **Paleta** | **¿Qué paleta de colores usamos?** | Conservar la actual / Paleta del estilo / Neutra + un acento | **Conservar** si el proyecto ya tiene marca o variables propias; **Paleta del estilo** si los colores son de plantilla (azul índigo, slate por defecto); **Neutra + un acento** si el usuario no tiene marca y quiere algo sobrio. En la respuesta libre puede pegar hex o el nombre de su marca. **Nunca se omite.** |
-| 4 | Intensidad | ¿Cuánto cambiamos? | Piel + escena + efectos + piezas (nivel B) / Completo con imágenes animadas (nivel C) / Solo piel (nivel A) | **B** para apps y dashboards; **C** para landings, portafolios y sitios de marca; **A** solo si el usuario lo pide o el proyecto es frágil. Aquí se aprueban fuentes, efectos, momentos firma e imágenes. |
+| 4 | **Funciones nuevas de diseño** | **¿Qué funciones nuevas de diseño agregamos?** (selección múltiple) | **Efectos de scroll y movimiento** (reveal, parallax, tilt, botón imantado) / **Partículas y fondo animado** / **Imágenes con animación** (enlaces de Google, sin descargar) / **Piezas firma nuevas** (ticker, stickers, capa 3D, ráfagas, globos) | Apps y dashboards → recomienda *Efectos* y *Partículas*. Landings, portafolios y marcas → recomienda las cuatro. Proyecto frágil o el usuario pide solo "cambiar la piel" → ninguna. Si no elige nada (o escribe "ninguna"), es **nivel A**. Aquí se aprueban fuentes, efectos, momentos firma e imágenes. **Nunca se omite.** |
 | 5 | Alcance | ¿Hasta dónde llega el reskin? | Toda la app / Solo los componentes principales / Una página o ruta específica | Toda la app: un reskin a medias se ve incoherente. |
 
-**Los 11 estilos** (para la respuesta libre): glassmorphism, liquid-glass, retro (arcade/CRT/synthwave),
-brutalism (mono/pop), minimalism, claymorphism, neumorphism, spatial, doodle, y2k, aurora.
+**Los 10 estilos** (para la respuesta libre): glassmorphism, liquid-glass, brutalism (mono/pop), minimalism,
+claymorphism, neumorphism, spatial, doodle, aurora, comic.
 `assets/preview.html?style=<id>` los muestra: ofrécelo si el usuario duda.
 
 **Guía de recomendación del estilo (las 4 opciones):**
@@ -67,10 +68,10 @@ brutalism (mono/pop), minimalism, claymorphism, neumorphism, spatial, doodle, y2
 | Proyecto | Recomendado | Alternativas |
 |---|---|---|
 | Dashboard / SaaS / datos | Glassmorphism o Aurora | Minimalism, Brutalism |
-| App de estudio / productividad personal | Doodle o Claymorphism | Y2K, Minimalism |
-| Portafolio / agencia / marca creativa | Brutalism | Minimalism, Aurora |
+| App de estudio / productividad personal | Doodle o Claymorphism | Comic, Minimalism |
+| Portafolio / agencia / marca creativa | Brutalism o Comic | Minimalism, Aurora |
 | Landing tech / fintech | Aurora | Spatial, Glassmorphism |
-| Juego / demo / nostalgia | Retro o Y2K | Brutalism (pop) |
+| Juego / comunidad / evento / app de estudio con carácter | Comic | Brutalism (pop), Doodle |
 | Premium, multimedia | Spatial o Liquid Glass | Aurora |
 | Panel de control / ajustes | Neumorphism (con aviso de accesibilidad) | Minimalism |
 
@@ -106,22 +107,30 @@ hex. Los 5 colores de gráfico se derivan del acento y de `--rs-accent-2/3`; no 
 Cuando la paleta sea "Conservar la actual", no cambies los tokens de color: solo los de forma,
 profundidad, tipografía y movimiento.
 
-La pregunta de intensidad **decide si hay efectos, momentos, fuentes e imágenes**: el brief los lista
-(efectos: máximo 3 + 2 momentos por `effects.md`; fuentes: pareja del estilo; imágenes: protocolo de
-`images.md` con aviso final). Sin esa aprobación no se añaden.
+La pregunta 4 **decide qué funciones nuevas se añaden** y fija el nivel:
+
+| Marcó | Nivel | Qué entra |
+|---|---|---|
+| Nada / "ninguna" | **A** | Solo piel (clases, CSS, tokens) |
+| Efectos de scroll y movimiento y/o Partículas | **B** | Escena, fuentes, `reskin-fx` (reveal, parallax, tilt, imán, partículas) |
+| Imágenes y/o Piezas firma | **C** | B + piezas nuevas (ticker, ráfagas, globos, capas 3D) + imágenes por enlace (`images.md`) con aviso final |
+
+Máximo 3 efectos ambientales + 2 momentos firma por `effects.md`; fuentes: pareja del estilo. Sin esa
+aprobación no se añade nada. Si el usuario eligió **imágenes**, el brief lo dice y el agente busca los
+enlaces en Google Imágenes con las consultas de `style-playbook.md`.
 
 Qué hace la respuesta de **tono** con los tokens: *Oscuro* → solo el bloque base (o
 `data-theme="dark"` en `<html>`); *Claro* → los valores `[data-theme="light"]` como base;
 *Según la app* → ambos. Si el usuario elige Oscuro y su sistema está en claro, el reskin debe
 verse oscuro igual: no dejes activo el `@media (prefers-color-scheme: light)`.
 
-**Estilos de un solo tono.** Retro (oscuro), Claymorphism, Doodle y Y2K (claros) no tienen par: no
+**Estilos de un solo tono.** Claymorphism y Doodle (claros) no tienen par: no
 les afecta la respuesta de tono; si el usuario pide el otro, anótalo en el resumen
-("Retro oscuro (por diseño)"). Con dos temas: glassmorphism, liquid-glass, brutalism, minimalism,
-neumorphism, spatial y aurora.
+("Doodle claro (por diseño)"). Con dos temas: glassmorphism, liquid-glass, brutalism, minimalism,
+neumorphism, spatial, aurora y comic.
 
 Sin solapamientos: el **tono** cubre la luminosidad (claro/oscuro), la **paleta** cubre los
-matices y el acento, la **intensidad** decide cuánto se añade y el **alcance** la extensión. La
+matices y el acento, las **funciones nuevas** deciden cuánto se añade y el **alcance** la extensión. La
 tipografía no tiene pregunta propia: la trae el estilo aprobado. Si el usuario quiere otra cosa,
 lo dirá con "Cambiar algo" o en la respuesta libre.
 
@@ -152,19 +161,19 @@ selector interactivo. Nunca por defecto ni por comodidad.
 - Tono: oscuro
 - Paleta: conservar la actual (--rs-accent #5a4ef0) · o: paleta del estilo · o: neutra + acento #e05a2b
 - Alcance: toda la app
-- Intensidad: B · escena + efectos (partículas orbs, reveal, magnet) · momento firma: tarjeta héroe con tilt
+- Funciones nuevas: efectos de scroll (reveal, parallax) + partículas orbs → nivel B · momento firma: tarjeta héroe con tilt
 - Fuentes: Plus Jakarta Sans
-- Imágenes: no (nivel B) · o: sí, 1 héroe + 4 apoyo descargadas de bancos libres; aviso final (nivel C)
-- Destino: src/reskin/ (reskin-fx.css, reskin-fx.js, images/, RESKIN-IMAGES.md)
+- Imágenes: no (nivel B) · o: sí, 1 héroe + 4 de apoyo por **enlace directo de Google Imágenes** (sin descargar), con respaldo y aviso final (nivel C)
+- Destino: src/reskin/ (reskin-fx.css, reskin-fx.js, RESKIN-IMAGES.md)
 - Implementación: tokens → @theme → utilidades; efectos con reskin-fx (sin hojas de componentes nuevas)
-- No se toca: lógica, estado, props, textos, rutas, dependencias npm
+- No se toca: lógica de negocio, datos, handlers existentes, textos, rutas, dependencias npm
 ```
 
 Confirma con la **misma herramienta**, no escribiendo "responde sí" en el chat:
 
 - `header`: `Confirmar`
 - Opciones, en este orden:
-  1. `Aplicar` (Recomendado) — "Aplico el brief: clases, CSS, tokens, escena y efectos; sin tocar lógica".
+  1. `Aplicar` (Recomendado) — "Aplico el brief: diseño, escena, funciones nuevas de diseño e imágenes aprobadas; sin tocar la lógica de negocio".
   2. `Cambiar algo` — "Ajustamos estilo, tono, paleta o alcance antes de editar".
 
 Si la herramienta no está disponible, pregunta en el chat: "¿Aplico este brief?".
@@ -175,7 +184,7 @@ preguntas que no cambiaron.
 ## No preguntar
 
 - Lo que ya está en `package.json`, los configs o el CSS.
-- Funcionalidad nueva, copy, rutas o bugs: no es un reskin.
+- Funcionalidad de producto nueva (datos, API, auth, copy, rutas) o bugs: no es un reskin. Las **funciones de diseño** (efectos, partículas, imágenes, piezas decorativas) sí se preguntan.
 - Logo o branding si el usuario no pidió cambiarlo.
 - "¿Qué framework usas?" cuando el script o los archivos ya lo dicen.
 - **Nunca omitas la paleta** por creer que ya la conoces: aunque detectes colores en el CSS, la

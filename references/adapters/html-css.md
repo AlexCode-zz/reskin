@@ -88,7 +88,7 @@ El CSS sale de las recetas del estilo; no dupliques aquí los valores. La escena
 | Añadir `<div>` para la escena | Usar `body` o el wrapper raíz |
 | Renombrar `.active` o `.is-open` | Conservar los nombres que usa el JS |
 | Vidrio sin scrim | `background-image: var(--rs-scrim)` |
-| Retro con radios grandes | Radios 0–6px y sombras duras |
+| Cómic o brutalism con radios grandes | Radios 4–10px (cómic) o 0 (brutalism) y sombras duras |
 | Scanlines encima del texto | Capa decorativa detrás, opacidad ≤ 0.10 |
 
 ## Efectos, fuentes y escena (nivel B/C)
@@ -97,4 +97,4 @@ El CSS sale de las recetas del estilo; no dupliques aquí los valores. La escena
 2. En `<head>`: `<link>` de fuentes del estilo y `<link rel="stylesheet" href="reskin/reskin-fx.css">`; antes de `</body>`: `<script src="reskin/reskin-fx.js" defer></script>`.
 3. `<html data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">`.
 4. Sin build: nada que compilar; abre con `npx serve` o doble clic.
-5. Imágenes: carpeta `reskin/images/` y registro `reskin/RESKIN-IMAGES.md`, todo dentro de `reskin/` (ver `images.md`).
+5. Imágenes: enlaces directos con `data-rs-img` (y respaldo) y registro `reskin/RESKIN-IMAGES.md`, dentro de `reskin/` (ver `images.md`).

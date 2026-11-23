@@ -104,4 +104,4 @@ Next.
 4. Fuentes con `next/font/google` (Anton, Inter, etc.): asigna la variable CSS a `--rs-font-display`/`--rs-font-body`. Es parte de Next; no `npm install`.
 5. Server Components: los efectos son vanilla y corren en el cliente; no conviertas componentes a `"use client"` por esto.
 6. `reskin-fx.js` es un script clásico (IIFE); no lo importes como módulo de React.
-7. Imágenes (nivel C): `src/reskin/images/` + registro `src/reskin/RESKIN-IMAGES.md`; con `next/image` conserva el componente y solo añade clases (`.rs-img-kb`, `.rs-media--zoom`). Ver `images.md`.
+7. Imágenes (nivel C): enlaces directos con `<img data-rs-img>` + registro `src/reskin/RESKIN-IMAGES.md`; con `next/image` conserva el componente y solo añade clases (`.rs-img-kb`, `.rs-media--zoom`). Ver `images.md`.

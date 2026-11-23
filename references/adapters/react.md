@@ -115,5 +115,5 @@ Solo cambia la composición de clases; `onSelect`, `active` y `label` no se toca
 3. En `index.html`: `<html data-rs-fx="…" data-rs-particles="…" data-rs-reveal-auto="…">` y el `<link>` de fuentes del estilo. Es el único lugar que no es JSX.
 4. Deja `#root`, `.App` y `main` sin fondo opaco: la escena vive en `<html>`/`body::before`.
 5. Elementos que React re-renderiza: los `data-rs-*` los pone el script (no se pierden) o, si los añades en JSX, van como atributos estáticos; no cambies condiciones ni props.
-6. Imágenes (nivel C): `background-image` CSS o `<img alt="">` hermano nuevo, descargadas a `src/reskin/images/` y registradas en `src/reskin/RESKIN-IMAGES.md`; ver `images.md`.
+6. Imágenes (nivel C): `background-image` CSS o `<img alt="">` hermano nuevo, por enlace directo con `data-rs-img` y registradas en `src/reskin/RESKIN-IMAGES.md`; ver `images.md`.
 7. Imágenes con vida: añade `.rs-img-kb`, `.rs-img-reveal`, `.rs-media--zoom` o `.rs-sheen` a los elementos existentes; el JS no interviene.

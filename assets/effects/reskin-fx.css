@@ -122,3 +122,7 @@
   .rs-sheen::after { display: none; }
   .rs-fx-progress { display: none; }
 }
+
+/* Respaldo de fondos con imagen enlazada: background-image: url("https://..."), var(--rs-img-fallback); */
+:root { --rs-img-fallback: linear-gradient(135deg, var(--rs-surface-2, #dfe2ea), var(--rs-accent-soft, #c9ccd6)); }
+img[data-rs-img] { background: var(--rs-surface-2, #dfe2ea); }

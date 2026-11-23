@@ -7,7 +7,7 @@
 <!--
   Abre este archivo en el navegador (doble clic o `npx serve assets`).
   Cambia de estilo con el selector o con la URL:  preview.html?style=aurora&theme=dark
-  Estilos: glassmorphism liquid-glass retro brutalism minimalism claymorphism neumorphism spatial doodle y2k aurora
+  Estilos: glassmorphism liquid-glass brutalism minimalism claymorphism neumorphism spatial doodle aurora comic
   Sirve para comparar estilos ANTES de aplicarlos y como referencia de marcado (las clases son las mismas en todos).
 -->
 <script>
@@ -16,23 +16,22 @@
   var S = {
     "glassmorphism": { own: 1, fx: "reveal spot", p: "", theme: "dark", auto: ".rs-card, .rs-hero > *" },
     "liquid-glass":  { own: 1, fx: "reveal spot", p: "", theme: "dark", auto: ".rs-card, .rs-hero > *" },
-    "retro":         { own: 1, fx: "particles reveal", p: "pixels", theme: "", auto: ".rs-card, .rs-hero > *" },
     "brutalism":     { fx: "reveal", p: "", theme: "", auto: ".rs-card, .rs-hero > *" },
     "minimalism":    { fx: "reveal parallax", p: "", theme: "", auto: ".rs-card, .rs-hero > *" },
     "claymorphism":  { fx: "particles reveal", p: "bubbles", theme: "", auto: ".rs-card, .rs-hero > *" },
     "neumorphism":   { fx: "reveal", p: "", theme: "", auto: ".rs-card, .rs-hero > *" },
     "spatial":       { fx: "particles reveal tilt glow", p: "stars", theme: "dark", auto: ".rs-card, .rs-hero > *" },
     "doodle":        { fx: "particles reveal", p: "dust", theme: "", auto: ".rs-card, .rs-hero > *" },
-    "y2k":           { fx: "particles reveal", p: "stars", theme: "", auto: ".rs-card, .rs-hero > *" },
-    "aurora":        { fx: "particles reveal spot glow", p: "orbs", theme: "", auto: ".rs-card, .rs-hero > *" }
+    "aurora":        { fx: "particles reveal spot glow", p: "orbs", theme: "", auto: ".rs-card, .rs-hero > *" },
+    "comic":         { fx: "reveal", p: "", theme: "", auto: ".rs-card, .rs-hero > *" }
   };
   var id = q.get("style") || "aurora"; if (!S[id]) id = "aurora";
   var c = S[id], theme = q.get("theme") || c.theme, r = document.documentElement;
   var fonts = {
     "brutalism": "Anton&family=Archivo:wght@400;600;800", "minimalism": "Instrument+Serif&family=Inter:wght@400;500;600",
     "claymorphism": "Baloo+2:wght@600;800&family=Nunito:wght@500;700;800", "neumorphism": "Montserrat:wght@500;600;700;800",
-    "spatial": "Inter:wght@400;500;600;700", "doodle": "Caveat+Brush&family=Patrick+Hand", "y2k": "Pixelify+Sans:wght@500;700&family=VT323",
-    "aurora": "Plus+Jakarta+Sans:wght@500;600;800", "retro": "Press+Start+2P&family=Space+Mono:wght@400;700"
+    "spatial": "Inter:wght@400;500;600;700", "doodle": "Caveat+Brush&family=Patrick+Hand",
+    "aurora": "Plus+Jakarta+Sans:wght@500;600;800", "comic": "Bangers&family=Comic+Neue:wght@400;700"
   };
   var L = function (h) { document.write('<link rel="stylesheet" href="' + h + '">'); };
   if (fonts[id]) L("https://fonts.googleapis.com/css2?family=" + fonts[id] + "&display=swap");
@@ -41,7 +40,6 @@
   L("components/" + id + ".css"); L("effects/reskin-fx.css");
   if (theme) r.setAttribute("data-theme", theme);
   if (id === "brutalism" && q.get("v")) r.setAttribute("data-brutal", q.get("v"));
-  if (id === "retro" && q.get("v")) r.setAttribute("data-retro", q.get("v"));
   r.setAttribute("data-rs-fx", q.get("fx") === "off" ? "" : c.fx);
   if (c.p) r.setAttribute("data-rs-particles", c.p);
   r.setAttribute("data-rs-reveal-auto", c.auto);
@@ -139,7 +137,7 @@
   <select id="th" aria-label="Tema"><option value="">auto</option><option value="dark">oscuro</option><option value="light">claro</option></select>
 </label>
 <script>
-  var ids = ["glassmorphism","liquid-glass","retro","brutalism","minimalism","claymorphism","neumorphism","spatial","doodle","y2k","aurora"];
+  var ids = ["glassmorphism","liquid-glass","brutalism","minimalism","claymorphism","neumorphism","spatial","doodle","aurora","comic"];
   var sel = document.getElementById("sel"), th = document.getElementById("th");
   ids.forEach(function (i) { var o = document.createElement("option"); o.value = i; o.textContent = i; if (i === window.__id) o.selected = true; sel.appendChild(o); });
   th.value = new URLSearchParams(location.search).get("theme") || "";

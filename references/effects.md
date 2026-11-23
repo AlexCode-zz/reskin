@@ -19,7 +19,6 @@ carpeta de la skill (`assets/`), nunca en la raíz del repo por comodidad.
 | Pieza | Destino |
 |---|---|
 | `reskin-fx.css` + `reskin-fx.js` | `<src>/reskin/` |
-| Imágenes provisionales | `<src>/reskin/images/` |
 | Registro de imágenes | `<src>/reskin/RESKIN-IMAGES.md` |
 
 Cómo se resuelve `<src>`:
@@ -84,15 +83,14 @@ elemento**: así se cubre la app entera con una línea. Alternativa sin tocar `<
 |---|---|---|---|
 | Glassmorphism | `particles reveal spot` | `orbs` | `.rs-card--glow` |
 | Liquid Glass | `particles reveal tilt` | `orbs` | brillo especular en `.rs-media` |
-| Retro | `particles reveal` | `pixels` (arcade) · `stars` (synth) · ninguna (CRT) | glitch en hover del título, cursor `█` |
 | Brutalism | `reveal` (`pop`) + `parallax` en imagen | ninguna o `confetti` en `pop` | `.rs-ticker`, `.rs-blocks` |
 | Minimalism | `reveal` + `parallax` suave | ninguna | reveal lento y corto (≤ 24px) |
 | Claymorphism | `particles reveal` | `bubbles` | `.rs-float` en burbujas de icono |
 | Neumorphism | `reveal` | ninguna | sin efectos agresivos: el relieve ya es el efecto |
 | Spatial | `particles reveal tilt glow` | `stars` | `.rs-depth-1/2` con tilt, `.rs-card--grabber` |
 | Doodle | `particles reveal` | `dust` | giros ±1°, cinta `.rs-card--taped` |
-| Y2K | `particles reveal` | `stars` (destellos) | ventanas `.rs-card`, `.rs-lcd`, `.rs-sparkle` |
 | Aurora | `particles reveal spot glow` | `orbs` | `.rs-aurora-band`, `.rs-gradient-text` |
+| Comic | `reveal` (`pop`) + `parallax` en imagen | ninguna (o `confetti` solo en un CTA) | `.rs-burst`, `.rs-bubble`, `.rs-caption`, `.rs-speedlines` |
 
 Si una fila trae 4, elige 3: `glow` y `spot` compiten entre sí según el estilo. Si el momento firma es
 el **botón imantado**, sustituye uno de los ambientales por `magnet`: el presupuesto es 3 ambientales +
@@ -113,14 +111,15 @@ añade **al menos uno** por vista principal (máximo 2 por página) además de l
 
 | Momento | Cómo se hace | Estilos donde brilla |
 |---|---|---|
-| **Ticker / cinta infinita** | `.rs-marquee` con el contenido duplicado y `aria-hidden` | brutalism, retro, y2k, doodle |
+| **Ticker / cinta infinita** | `.rs-marquee` con el contenido duplicado y `aria-hidden` | brutalism, comic, doodle |
 | **Botón imantado con flecha** | `data-rs-fx="magnet"` en el `.rs-btn--arrow` primario | aurora, liquid-glass, spatial |
 | **Tarjeta héroe con tilt + spotlight** | `data-rs-tilt` + `data-rs-spot` en la tarjeta destacada | glassmorphism, spatial, liquid-glass |
 | **Capas de profundidad** | 2–3 `.rs-depth-1/2` con `translateZ` y parallax distinto | spatial, aurora |
-| **Ventana / polaroid con sticker** | `.rs-media--polaroid` + `.rs-sticker` + `aria-hidden` | doodle, y2k, claymorphism |
+| **Ventana / polaroid con sticker** | `.rs-media--polaroid` + `.rs-sticker` + `aria-hidden` | doodle, claymorphism |
 | **Número o palabra gigante de fondo** | pseudo-elemento `content` decorativo detrás del hero | brutalism, minimalism |
 | **Imagen que respira** | `.rs-img-kb` + scrim del estilo sobre la foto del hero | todos; ver `images.md` |
-| **Sección que cambia de luz** | `body::before` con gradiente que se mueve con `--rs-scroll` (efecto `scroll`) | aurora, spatial, retro |
+| **Sección que cambia de luz** | `body::before` con gradiente que se mueve con `--rs-scroll` (efecto `scroll`) | aurora, spatial |
+| **Ráfaga de onomatopeya + globo de diálogo** | `.rs-burst` (¡POW!) junto al titular y `.rs-bubble` con el mensaje clave; reveal `pop` | comic |
 | **Aparición en cascada** | `data-rs-reveal-auto` sobre las tarjetas de una sección | todos |
 
 Reglas de los momentos:

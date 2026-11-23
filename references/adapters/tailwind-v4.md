@@ -46,7 +46,7 @@ mapea lo necesario. **No crees una hoja nueva.**
   `--radius-rs-*` genera `rounded-rs-*`; `--shadow-rs-*` genera `shadow-rs-*`;
   `--font-rs-*` genera `font-rs-*`.
 - Mapea solo lo que uses. No inventes nombres que no estén en el theme.
-- El ejemplo usa los nombres de glassmorphism/liquid. En retro mapea los tokens reales del
+- El ejemplo usa los nombres de glassmorphism/liquid. En los demás estilos mapea los tokens reales del
   archivo (`--color-rs-surface`, `--shadow-rs-hard`...); no mapees `glass` ni `shadow-1`
   si el estilo no los define.
 
@@ -91,7 +91,7 @@ mapea lo necesario. **No crees una hoja nueva.**
 | Error | Arreglo |
 |---|---|
 | `bg-glass` sin token | Mapear `--color-rs-glass` o usar `bg-[var(--rs-glass)]` |
-| `rounded-2xl` en retro | `rounded-rs-sm` o `rounded-none` |
+| `rounded-2xl` en brutalism o comic | `rounded-rs-sm` o `rounded-none` |
 | `transition-all` | `transition-colors duration-[var(--rs-dur-fast)]` |
 | Blur en botones/inputs | Solo en superficies; controles con relleno y borde |
 | Crear `tailwind.config.js` en v4 | No hace falta; tokens en `@theme` |

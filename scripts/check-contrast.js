@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* reskin · verificador de contraste WCAG de tokens. Sin dependencias.
  * Uso:  node scripts/check-contrast.js                      (todos los estilos)
- *       node scripts/check-contrast.js assets/tokens/y2k.css (uno)
+ *       node scripts/check-contrast.js assets/tokens/comic.css (uno)
  * Sale con código 1 si algún par baja de AA.
  */
 const fs = require("fs"), path = require("path");

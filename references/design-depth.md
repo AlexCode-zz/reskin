@@ -26,7 +26,7 @@ cambia 1–5 y se declara así en el brief.
 - Todas las tarjetas idénticas: sin jerarquía (una tarjeta "héroe" más grande/oscura/colorida).
 - Fondo plano de un solo color.
 - Sin estados: hover, active y foco sin carácter propio del estilo.
-- Retro = "fondo oscuro + fuente mono". Retro necesita escena (grid, sol, scanlines, píxeles) y sombras duras.
+- Comic = "fondo amarillo + fuente graciosa". Comic necesita tinta gruesa, trama de puntos, viñetas y rótulos, no solo la fuente.
 - Glass sin nada detrás: el vidrio necesita luz y color que desenfocar.
 - Efectos pegados sin criterio (partículas + tilt + parallax + marquee a la vez). **Máximo 3 efectos ambientales + 2 momentos firma por página.**
 - Reskin "bonito pero quieto": mismo marcado, cero piezas nuevas. Si en B/C no hay al menos un momento firma (ticker, capa 3D, imagen animada, imán), falta trabajo.

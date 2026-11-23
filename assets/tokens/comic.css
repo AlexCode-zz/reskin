@@ -1,0 +1,62 @@
+/* ============================================================
+   reskin · comic tokens  (cómic / historieta pop)
+   Papel crema, entintado negro grueso, trama de puntos (Ben-Day), colores primarios.
+   Tema claro por defecto (papel). Oscuro: [data-theme="dark"] ("noche de ciudad").
+   Fuentes (con aprobación del brief):
+   https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap
+   ============================================================ */
+:root {
+  --rs-scheme: light;
+  --rs-bg: #fff4d6; --rs-surface: #ffffff; --rs-surface-2: #ffe8a3;
+  --rs-ink: #111111; --rs-ink-muted: #3d3d3d;
+  --rs-accent: #ffd60a; --rs-accent-ink: #111111; --rs-accent-text: #a30f1b;
+  --rs-accent-2: #e63946; --rs-accent-3: #1d4ed8; --rs-accent-soft: rgb(255 214 10 / 0.45);
+  --rs-danger: #c1121f; --rs-danger-ink: #ffffff; --rs-success: #0b6e3f; --rs-warning: #8a4f00;
+  --rs-outline: #111111;
+  /* Escena: trama de puntos roja y azul desfasada + rayos de acción arriba a la derecha */
+  --rs-scene:
+    radial-gradient(circle at 25% 25%, rgb(230 57 70 / 0.18) 1.5px, transparent 1.7px) 0 0 / 16px 16px,
+    radial-gradient(circle at 75% 75%, rgb(29 78 216 / 0.12) 1.5px, transparent 1.7px) 8px 8px / 16px 16px,
+    repeating-conic-gradient(from 0deg at 100% 0%, rgb(255 214 10 / 0.22) 0deg 7deg, transparent 7deg 14deg);
+  --rs-dots: radial-gradient(rgb(17 17 17 / 0.9) 1px, transparent 1.2px) 0 0 / 6px 6px;
+  --rs-chart-1: #1d4ed8; --rs-chart-2: #e63946; --rs-chart-3: #111111; --rs-chart-4: #0d8a52; --rs-chart-5: #7b2cbf;
+  --rs-chart-grid: rgb(17 17 17 / 0.28); --rs-chart-axis: var(--rs-ink-muted);
+  --rs-tooltip-bg: #111111; --rs-tooltip-ink: #fff4d6;
+
+  --rs-border: #111111; --rs-border-width: 3px; --rs-border-width-sm: 2px;
+  --rs-radius: 6px; --rs-radius-sm: 4px; --rs-radius-lg: 10px;
+  --rs-shadow: 6px 6px 0 var(--rs-outline); --rs-shadow-lg: 9px 9px 0 var(--rs-outline); --rs-shadow-btn: 4px 4px 0 var(--rs-outline);
+  --rs-focus: #1d4ed8;
+
+  --rs-font-display: "Bangers", Impact, "Arial Narrow Bold", sans-serif;
+  --rs-font-body: "Comic Neue", "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
+  --rs-font-btn: var(--rs-font-display);
+  --rs-weight-display: 400;
+  --rs-text-display: clamp(3.25rem, 10vw, 8rem);
+  --rs-text-h1: clamp(2.25rem, 5.5vw, 4rem);
+  --rs-text-h2: clamp(1.5rem, 3vw, 2.25rem);
+  --rs-leading-display: 0.95; --rs-tracking-display: 0.03em; --rs-tracking-btn: 0.06em;
+
+  --rs-dur: 120ms; --rs-ease: cubic-bezier(0.3, 1.6, 0.5, 1);   /* rebote corto: "pop" */
+  --rs-fx-p1: #ffd60a; --rs-fx-p2: #e63946; --rs-fx-p3: #1d4ed8;
+}
+/* Noche de ciudad: azul marino, entintado claro y sombra negra */
+[data-theme="dark"] {
+  --rs-scheme: dark;
+  --rs-bg: #12163a; --rs-surface: #1c2150; --rs-surface-2: #272d6b;
+  --rs-ink: #fff4d6; --rs-ink-muted: #c9cbe8;
+  --rs-accent: #ffd60a; --rs-accent-ink: #111111; --rs-accent-text: #ffd60a;
+  --rs-accent-2: #ff6b81; --rs-accent-3: #7fb2ff; --rs-accent-soft: rgb(255 214 10 / 0.2);
+  --rs-danger: #ff8f99; --rs-success: #4be3a0; --rs-warning: #ffc04d;
+  --rs-outline: #000000; --rs-border: #fff4d6;
+  --rs-scene:
+    radial-gradient(circle at 25% 25%, rgb(255 244 214 / 0.10) 1.5px, transparent 1.7px) 0 0 / 16px 16px,
+    radial-gradient(circle at 75% 75%, rgb(255 107 129 / 0.10) 1.5px, transparent 1.7px) 8px 8px / 16px 16px,
+    repeating-conic-gradient(from 0deg at 100% 0%, rgb(255 214 10 / 0.08) 0deg 7deg, transparent 7deg 14deg);
+  --rs-dots: radial-gradient(rgb(255 244 214 / 0.8) 1px, transparent 1.2px) 0 0 / 6px 6px;
+  --rs-chart-1: #ffd60a; --rs-chart-2: #ff6b81; --rs-chart-3: #7fb2ff; --rs-chart-4: #4be3a0; --rs-chart-5: #d9a5ff;
+  --rs-chart-grid: rgb(255 244 214 / 0.3);
+  --rs-tooltip-bg: #fff4d6; --rs-tooltip-ink: #111111;
+  --rs-focus: #ffd60a;
+}
+@media (prefers-reduced-motion: reduce) { :root { --rs-dur: 0.01ms; } }

@@ -11,6 +11,9 @@
  *   scroll     expone --rs-scroll (0–1) en <html> para escenas que cambian de luz
  *   progress   barra de progreso de lectura (aria-hidden)
  *
+ * Imágenes enlazadas: <img data-rs-img src="https://..."> cambia solo a un respaldo si el enlace falla
+ * (data-rs-fallback="..." para elegir el respaldo). Siempre activo.
+ *
  * Imágenes con vida: Ken Burns, zoom y sheen son CSS puro; .rs-img-reveal usa el observer de
  * scroll de este script. Ver reskin-fx.css y references/images.md.
  *
@@ -248,8 +251,26 @@
     var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { size(); if (reduce) draw(0, 0); }, 150); });
   }
 
+  /* ---------- imágenes por enlace: respaldo si el enlace falla ----------
+     Las imágenes enlazadas (Google u otro sitio) pueden caducar o bloquear el enlace directo.
+     Toda <img data-rs-img> que falle cambia a data-rs-fallback (o a un SVG neutro) sin tocar el layout.
+     Siempre activo (no depende de data-rs-fx). */
+  var FALLBACK = "data:image/svg+xml;utf8," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 100' preserveAspectRatio='xMidYMid slice'><rect width='160' height='100' fill='#c9ccd6'/><path d='M0 100 L60 40 L100 80 L125 55 L160 90 V100Z' fill='#9aa0b4'/><circle cx='118' cy='28' r='10' fill='#e4e6ee'/></svg>");
+  function swapBroken(img) {
+    if (!img || img.nodeName !== "IMG" || !img.hasAttribute("data-rs-img") || img.hasAttribute("data-rs-broken")) return;
+    img.setAttribute("data-rs-broken", "1");
+    img.removeAttribute("srcset");
+    img.src = img.getAttribute("data-rs-fallback") || cfgIn.imageFallback || FALLBACK;
+  }
+  function initImageFallback() {
+    document.addEventListener("error", function (e) { swapBroken(e.target); }, true);
+    var imgs = document.querySelectorAll("img[data-rs-img]");
+    for (var i = 0; i < imgs.length; i++) if (imgs[i].complete && imgs[i].naturalWidth === 0 && imgs[i].getAttribute("src")) swapBroken(imgs[i]);
+  }
+
   /* ---------- arranque ---------- */
   function boot() {
+    try { initImageFallback(); } catch (e0) {}
     try {
       initReveal(); initParallax(); initScroll(); initPointer(); initParticles();
       if (document.body && "MutationObserver" in window && (revealAuto || has("reveal") || has("parallax") || document.querySelector(".rs-img-reveal"))) {
