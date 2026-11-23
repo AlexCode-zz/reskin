@@ -45,7 +45,6 @@ Foto limpia con luz natural, fondo neutro, un solo sujeto, `saturate(.85)`, radi
 
 - Tokens: `assets/tokens/minimalism.css` · Componentes: `assets/components/_base.css` + `assets/components/minimalism.css`
 - Fuentes (brief aprobado, con fallback): Instrument Serif + Inter (`https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap`).
-- Vista previa: `assets/preview.html?style=minimalism`
 - Variables útiles: `--rs-hairline`, `--rs-input-border` (3:1, los campos NO usan el borde hairline).
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`).

@@ -45,7 +45,6 @@ Imagen con marco elevado de la misma superficie, sin borde; preferir ilustracion
 
 - Tokens: `assets/tokens/neumorphism.css` · Componentes: `assets/components/_base.css` + `assets/components/neumorphism.css`
 - Fuentes (brief aprobado, con fallback): Montserrat (`https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap`).
-- Vista previa: `assets/preview.html?style=neumorphism`
 - Variables clave: `--rs-neu-dark`, `--rs-neu-light`, `--rs-shadow`, `--rs-shadow-sm`, `--rs-shadow-in`.
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`).

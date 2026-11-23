@@ -46,7 +46,6 @@ Ilustraciones 3D/papel cálidas o fotos con borde de tinta; `.rs-media--polaroid
 
 - Tokens: `assets/tokens/doodle.css` · Componentes: `assets/components/_base.css` + `assets/components/doodle.css`
 - Fuentes (brief aprobado, con fallback): Caveat Brush + Patrick Hand (`https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Patrick+Hand&display=swap`).
-- Vista previa: `assets/preview.html?style=doodle`
 - Variables útiles: `--rs-squiggle` (subrayado SVG), `--rs-radius` (asimétrico), `--rs-shadow-btn`.
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`).

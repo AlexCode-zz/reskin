@@ -46,7 +46,6 @@ Foto en B/N de alto contraste (arquitectura, objetos, textura), recorte rectangu
 
 - Tokens: `assets/tokens/brutalism.css` · Componentes: `assets/components/_base.css` + `assets/components/brutalism.css`
 - Fuentes (brief aprobado, con fallback): Anton + Archivo (`https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;600;800&display=swap`); pop usa Space Grotesk.
-- Vista previa: `assets/preview.html?style=brutalism`
 - Variables útiles: `--rs-shadow`, `--rs-shadow-lg`, `--rs-radius` (0), `--rs-accent` (lima).
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`).

@@ -45,7 +45,6 @@ Foto o render como entorno detrás (en `body::before` o como imagen de fondo del
 
 - Tokens: `assets/tokens/spatial.css` · Componentes: `assets/components/_base.css` + `assets/components/spatial.css`
 - Fuentes (brief aprobado, con fallback): Inter (`https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap`).
-- Vista previa: `assets/preview.html?style=spatial`
 - Variables clave: `--rs-glass`, `--rs-glass-strong`, `--rs-glass-border`, `--rs-glass-edge`, `--rs-blur`. `--rs-surface` es el fallback opaco.
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`).

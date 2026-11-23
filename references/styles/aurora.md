@@ -45,7 +45,6 @@ Capturas de producto o renders limpios en tarjeta flotante (radio 28px, sombra e
 
 - Tokens: `assets/tokens/aurora.css` · Componentes: `assets/components/_base.css` + `assets/components/aurora.css`
 - Fuentes (brief aprobado, con fallback): Plus Jakarta Sans (`https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;800&display=swap`).
-- Vista previa: `assets/preview.html?style=aurora`
 - Variables clave: `--rs-aurora` (las manchas), `--rs-accent-grad`, `--rs-spot`.
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`).

@@ -89,7 +89,7 @@ de la skill ni en la raíz del repo. Ver `references/effects.md § Destino de lo
    - **Referencias del estilo:** antes de diseñar, consulta su ficha en `references/style-playbook.md`
      (referencia visual, qué buscar, héroe, pieza firma, tipografía).
 5. **Verificar.** Build/lint/typecheck si existen; `node scripts/check-contrast.js` (todos los tokens,
-   incluida la paleta nueva, pasan AA); `assets/preview.html?style=<id>` como referencia visual; foco;
+   incluida la paleta nueva, pasan AA); foco;
    reduced motion y JS de efectos desactivado; 360/768/1280; tooltips y ejes de gráficos restilizados;
    diff sin cambios en la lógica de negocio; que todo lo añadido esté en `<src>/reskin/` y no en la raíz. Pasa la **regla de los 6**
    de `design-depth.md`.
@@ -130,7 +130,6 @@ del CSS existente; clases semánticas en el CSS global o module. No introduzcas 
 | Gráficos, tooltips, selects o librerías de UI de terceros | `references/charts-and-widgets.md` |
 | Framework | `references/adapters/{react,nextjs,html-css}.md` |
 | Capa Tailwind | `references/adapters/tailwind-v4.md` o `tailwind-v3.md` |
-| Ver los estilos renderizados | `assets/preview.html?style=<id>` |
 
 Combinaciones: Next + Tailwind → `nextjs` + `tailwind-*`; React + Tailwind → `react` + `tailwind-*`;
 HTML/CSS puro → `html-css`. No cargues el adaptador de otro framework ni estilos que no se eligieron.

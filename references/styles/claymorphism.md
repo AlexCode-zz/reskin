@@ -46,7 +46,6 @@ Ilustración 3D tipo plastilina o foto con fondo pastel; radio 40px y sombra inf
 
 - Tokens: `assets/tokens/claymorphism.css` · Componentes: `assets/components/_base.css` + `assets/components/claymorphism.css`
 - Fuentes (brief aprobado, con fallback): Baloo 2 + Nunito (`https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap`).
-- Vista previa: `assets/preview.html?style=claymorphism`
 - Variables útiles: `--rs-clay-hi`, `--rs-clay-lo` (las dos luces de la plastilina), `--rs-shadow-btn`.
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`).

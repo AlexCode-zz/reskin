@@ -61,7 +61,7 @@ Un campo por pregunta:
 
 **Los 10 estilos** (para la respuesta libre): glassmorphism, liquid-glass, brutalism (mono/pop), minimalism,
 claymorphism, neumorphism, spatial, doodle, aurora, comic.
-`assets/preview.html?style=<id>` los muestra: ofrécelo si el usuario duda.
+
 
 **Guía de recomendación del estilo (las 4 opciones):**
 

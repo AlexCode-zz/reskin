@@ -305,4 +305,3 @@ El vidrio solo luce si hay **algo que desenfocar detrás**. Antes de aplicarlo, 
 
 - Efectos: `data-rs-fx="particles reveal spot"`, `data-rs-particles="orbs"` (máximo 3).
 - Imágenes (nivel C): una foto/gradiente intenso detrás del cristal; ver `references/images.md`.
-- Vista previa: `assets/preview.html?style=glassmorphism`.

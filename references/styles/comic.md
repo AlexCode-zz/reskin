@@ -45,7 +45,6 @@ Foto con más contraste y saturación, trama de puntos encima (viene en `.rs-med
 
 - Tokens: `assets/tokens/comic.css` · Componentes: `assets/components/_base.css` + `assets/components/comic.css`
 - Fuentes (brief aprobado, con fallback): `https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap`
-- Vista previa: `assets/preview.html?style=comic`
 - Variables útiles: `--rs-outline` (negro de entintado), `--rs-accent` (amarillo), `--rs-accent-2` (rojo), `--rs-accent-3` (azul), `--rs-dots` (trama de puntos), `--rs-shadow`, `--rs-shadow-lg`.
 
 **Con Tailwind:** tokens a `@theme` (v4) o `theme.extend` (v3) y utilidades con valores arbitrarios; `_base.css` y esta hoja se traducen a utilidades, sin hoja nueva (salvo `reskin-fx.*`). Para `clip-path` de la ráfaga y los degradados de la escena, usa `[clip-path:var(...)]` o conserva el bloque en el CSS global ya existente.
